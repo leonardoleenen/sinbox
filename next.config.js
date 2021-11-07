@@ -1,4 +1,7 @@
 /** @type {import('next').NextConfig} */
 module.exports = {
-  reactStrictMode: true,
+    reactStrictMode: true,
+    env: {
+        FIREBASE_CONFIG: process.env.FIREBASE_CONFIG
+    }
 }
