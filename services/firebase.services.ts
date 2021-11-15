@@ -1,4 +1,5 @@
 import { initializeApp } from 'firebase/app'
+import { getDatabase } from 'firebase/database'
 import { getFirestore, collection, getDocs } from 'firebase/firestore/lite'
 import '@firebase/firestore'
 
@@ -6,7 +7,7 @@ class FirebaseManager {
     private firebaseApp: any
 
     constructor() {
-        if (process.env.FIREBASE_CONFIG) {
+        if (process.env.FIREBASE) {
             this.firebaseApp = initializeApp(
                 JSON.parse(
                     Buffer.from(
@@ -15,6 +16,8 @@ class FirebaseManager {
                     ).toString()
                 )
             )
+
+            console.log('inicializamos')
         } else {
             console.log('vacio')
         }
@@ -22,6 +25,10 @@ class FirebaseManager {
 
     getDB() {
         return getFirestore(this.firebaseApp)
+    }
+
+    getAuth() {
+        return this.firebaseApp.getAuth()
     }
 
     getFirebaseApp() {
