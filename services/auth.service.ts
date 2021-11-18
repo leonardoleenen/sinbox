@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 import { firebaseManager } from './firebase.services'
-import { getFirestore, collection, getDocs } from 'firebase/firestore/lite'
+import { getDocs, collection, doc, getDoc } from 'firebase/firestore'
 
 export const tokenDecode = (token: string): User => {
     return jwt.decode(token) as User
@@ -11,9 +11,8 @@ export const setToken = (token: string) => {
 }
 
 export const userAlreadyExist = async (id: string) => {
-    const usersCol = collection(firebaseManager.getDB(), 'users')
-    const users = await getDocs(usersCol)
-    console.log(users)
+    const docRef = doc(firebaseManager.getDB(), 'users', id)
+    const docSnap = await getDoc(docRef)
 
-    return false
+    return docSnap.exists()
 }

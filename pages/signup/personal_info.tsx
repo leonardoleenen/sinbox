@@ -1,104 +1,80 @@
 import React from 'react'
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
+import { SignUpStore } from '../../store/sigup.store'
 const Page: NextPage = () => {
     const router = useRouter()
+    const state = SignUpStore.useState(s => s)
+    const goNext = () => {
+        router.push('/signup/inscription')
+    }
+
     return (
         <section className="py-20">
             <div className="container px-4 mx-auto">
                 <div className="max-w-2xl mx-auto text-center">
-                    <div className="max-w-md mb-8 mx-auto">
+                    <div className="max-w-md mb-8 mx-auto prose">
                         <span className="text-sm text-blueGray-400">
-                            Datos de Contacto
+                            Registro de Usuario
                         </span>
-                        <h2 className="mt-2 text-4xl font-bold font-heading">
-                            Datos personales de contacto
-                        </h2>
+                        <h1>Datos personales de contacto</h1>
                     </div>
+
                     <div>
-                        <div className="mb-4 text-sm" data-removed="true">
-                            <span className="mr-4 font-semibold">
-                                Departament:
-                            </span>
-                            <label className="mr-4">
+                        <div className="mb-4">
+                            <div className="form-control">
                                 <input
-                                    className="mr-1"
-                                    type="radio"
-                                    name="department"
-                                    value="1"
+                                    type="text"
+                                    onChange={e => {
+                                        SignUpStore.update(s => {
+                                            s.userCn = e.target.value
+                                        })
+                                    }}
+                                    placeholder="Nombre y Apellido Completo"
+                                    className="input input-bordered"
                                 />
-                                <span>Support</span>
-                            </label>
-                            <label>
+                            </div>
+                        </div>
+                        <div className="mb-4">
+                            <div className="form-control">
                                 <input
-                                    className="mr-1"
-                                    type="radio"
-                                    name="department"
-                                    value="2"
+                                    type="text"
+                                    onChange={e => {
+                                        SignUpStore.update(s => {
+                                            s.email = e.target.value
+                                        })
+                                    }}
+                                    placeholder="Email de contacto"
+                                    className="input input-bordered"
                                 />
-                                <span>Sales</span>
-                            </label>
+                            </div>
                         </div>
                         <div className="mb-4">
-                            <input
-                                className="w-full p-4 text-xs font-semibold leading-none bg-blueGray-50 rounded outline-none"
-                                type="text"
-                                placeholder="Subject"
-                            />
-                        </div>
-                        <div className="mb-4">
-                            <input
-                                className="w-full p-4 text-xs font-semibold leading-none bg-blueGray-50 rounded outline-none"
-                                type="text"
-                                placeholder="Name"
-                            />
-                        </div>
-                        <div className="mb-4">
-                            <input
-                                className="w-full p-4 text-xs font-semibold leading-none bg-blueGray-50 rounded outline-none"
-                                type="email"
-                                placeholder="name@example.com"
-                            />
-                        </div>
-                        <div className="mb-4">
-                            <textarea
-                                className="w-full h-24 p-4 text-xs font-semibold leading-none resize-none bg-blueGray-50 rounded outline-none"
-                                placeholder="Message..."
-                            ></textarea>
-                        </div>
-                        <div className="mb-4">
-                            <label className="flex px-2 bg-blueGray-50 rounded">
+                            <div className="form-control">
                                 <input
-                                    className="hidden"
-                                    type="file"
-                                    placeholder="Choose file.."
-                                    name="Choose file"
+                                    type="text"
+                                    onChange={e => {
+                                        SignUpStore.update(s => {
+                                            s.personalId = e.target.value
+                                        })
+                                    }}
+                                    placeholder="Nro de DNI"
+                                    className="input input-bordered"
                                 />
-                                <div
-                                    className="my-1 ml-auto px-4 py-3 text-xs text-white font-semibold leading-none bg-blueGray-500 hover:bg-blueGray-600 rounded cursor-pointer"
-                                    data-removed="true"
-                                >
-                                    Browse
-                                </div>
-                            </label>
+                            </div>
                         </div>
-                        <div className="flex justify-between items-center">
-                            <label>
-                                <input
-                                    className="mr-1"
-                                    type="checkbox"
-                                    name="terms"
-                                    value="1"
-                                />
-                                <span className="text-sm font-semibold">
-                                    I agree to terms and conditions.
-                                </span>
-                            </label>
+
+                        <div className="flex justify-end items-center">
                             <button
-                                className="py-4 px-8 text-sm text-white font-semibold leading-none bg-blue-600 hover:bg-blue-700 rounded"
-                                onClick={() =>
-                                    router.push('/signup/inscription')
+                                className="btn btn-primary"
+                                disabled={
+                                    !state.personalId ||
+                                    !state.email ||
+                                    !state.userCn
+                                        ? 'disabled'
+                                        : ''
                                 }
+                                onClick={goNext}
                             >
                                 Continuar
                             </button>

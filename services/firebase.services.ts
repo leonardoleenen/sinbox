@@ -1,6 +1,5 @@
 import { initializeApp } from 'firebase/app'
-import { getDatabase } from 'firebase/database'
-import { getFirestore, collection, getDocs } from 'firebase/firestore/lite'
+import { getFirestore } from 'firebase/firestore'
 import '@firebase/firestore'
 
 class FirebaseManager {
@@ -24,7 +23,7 @@ class FirebaseManager {
     }
 
     getDB() {
-        return getFirestore(this.firebaseApp)
+        return getFirestore()
     }
 
     getAuth() {

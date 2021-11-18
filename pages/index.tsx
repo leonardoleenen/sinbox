@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import {
     setToken,
     tokenDecode,
@@ -12,17 +12,20 @@ import { useRouter } from 'next/router'
 import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
 import { firebaseManager } from '../services/firebase.services'
 import { SignUpStore } from '../store/sigup.store'
+import Loader from '../components/loader'
+
 const Home: NextPage = () => {
     const router = useRouter()
     firebaseManager
     const { token } = router.query
-
+    const [loading, setLoading] = useState(false)
     const provider = new GoogleAuthProvider()
 
     const sigWithGoogle = () => {
         const auth = getAuth()
         signInWithPopup(auth, provider)
             .then(async result => {
+                setLoading(true)
                 // This gives you a Google Access Token. You can use it to access the Google API.
                 const credential =
                     GoogleAuthProvider.credentialFromResult(result)
@@ -32,8 +35,9 @@ const Home: NextPage = () => {
                 SignUpStore.update(s => {
                     s.user = user
                 })
-                await userAlreadyExist(user.uid)
-                router.push('/signup/personal_info')
+                const existUser = await userAlreadyExist(user.uid)
+                if (existUser) router.push('/inbox')
+                else router.push('/signup/personal_info')
                 // ...
             })
             .catch(error => {
@@ -52,6 +56,8 @@ const Home: NextPage = () => {
         setToken(token as string)
         //router.push('/inbox')
     }, [token])
+
+    if (loading) return <Loader />
     return (
         <section className="py-12 bg-blue-600 flex h-screen items-center">
             <div className="container px-4 mx-auto">
@@ -78,16 +84,7 @@ const Home: NextPage = () => {
                         <p className="my-6 text-xs text-blueGray-400 text-center">
                             continuar el proceso con{' '}
                         </p>
-                        <button
-                            className="flex items-center w-full px-4 py-3 mb-2 text-xs text-blueGray-500 font-semibold leading-none border hover:bg-blueGray-50 rounded"
-                            href="/inbox/welcome"
-                        >
-                            <img
-                                className="h-6 pr-10"
-                                src="/logos/facebook-sign.svg"
-                            />
-                            <span> Facebook</span>
-                        </button>
+
                         <button
                             onClick={sigWithGoogle}
                             className="flex items-center px-4 py-3 w-full text-xs text-blueGray-500 font-semibold leading-none border hover:bg-blueGray-50 rounded"
