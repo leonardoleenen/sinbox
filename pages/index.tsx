@@ -13,6 +13,7 @@ import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
 import { firebaseManager } from '../services/firebase.services'
 import { SignUpStore } from '../store/sigup.store'
 import Loader from '../components/loader'
+import Link from 'next/link'
 
 const Home: NextPage = () => {
     const router = useRouter()
@@ -29,7 +30,7 @@ const Home: NextPage = () => {
                 // This gives you a Google Access Token. You can use it to access the Google API.
                 const credential =
                     GoogleAuthProvider.credentialFromResult(result)
-                const token = credential.accessToken
+                const token = credential && credential.accessToken
                 // The signed-in user info.
                 const user = result.user
                 SignUpStore.update(s => {
@@ -75,25 +76,51 @@ const Home: NextPage = () => {
                     </a>
                     <div className="mt-12 mb-8 p-8 bg-white rounded">
                         <span className="text-sm text-blueGray-400">
-                            Sign In
+                            Ingreso
                         </span>
-                        <h4 className="mb-6 text-3xl">
-                            Ingresar o registrarse
-                        </h4>
-
+                        <h4 className="mb-6 text-3xl">Prensa y medios </h4>
+                        <div className="flex mb-4 px-4 bg-blueGray-50 rounded">
+                            <input
+                                type="text"
+                                placeholder="username"
+                                className="input input-bordered w-full"
+                            />
+                        </div>
+                        <div className="flex mb-6 px-4 bg-blueGray-50 rounded">
+                            <input
+                                type="password"
+                                placeholder="password"
+                                className="input input-bordered w-full"
+                            />
+                        </div>
+                        <a
+                            href="/"
+                            className="block w-full p-4 text-center text-xs text-white font-semibold leading-none bg-blue-600 hover:bg-blue-700 rounded"
+                        >
+                            Ingresar con clave y usuario
+                        </a>
                         <p className="my-6 text-xs text-blueGray-400 text-center">
-                            continuar el proceso con{' '}
+                            o utilizando una red social
                         </p>
-
                         <button
-                            onClick={sigWithGoogle}
+                            className="flex items-center w-full px-4 py-3 mb-2 text-xs text-blueGray-500 font-semibold leading-none border hover:bg-blueGray-50 rounded"
+                            href="#"
+                        >
+                            <img
+                                className="h-6 pr-10"
+                                src="/logos/facebook-sign.svg"
+                            />
+                            <span>Ingresar Facebook</span>
+                        </button>
+                        <button
                             className="flex items-center px-4 py-3 w-full text-xs text-blueGray-500 font-semibold leading-none border hover:bg-blueGray-50 rounded"
+                            href="#"
                         >
                             <img
                                 className="h-6 pr-10"
                                 src="/logos/google-sign.svg"
                             />
-                            <span>Google</span>
+                            <span>Ingresar con Google</span>
                         </button>
                     </div>
                     <div>
@@ -102,14 +129,14 @@ const Home: NextPage = () => {
                                 className="underline hover:text-blue-100"
                                 href="#"
                             >
-                                Police privacy
+                                Politicas de privacidad
                             </a>{' '}
                             and{' '}
                             <a
                                 className="underline hover:text-blue-100"
                                 href="#"
                             >
-                                Terms of Use
+                                Terminos de uso
                             </a>
                         </p>
                     </div>
