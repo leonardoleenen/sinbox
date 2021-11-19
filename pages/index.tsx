@@ -93,29 +93,20 @@ const Home: NextPage = () => {
                                 className="input input-bordered w-full"
                             />
                         </div>
-                        <a
-                            href="/"
-                            className="block w-full p-4 text-center text-xs text-white font-semibold leading-none bg-blue-600 hover:bg-blue-700 rounded"
-                        >
+                        <button className="block w-full p-4 text-center text-xs text-white font-semibold leading-none bg-blue-600 hover:bg-blue-700 rounded">
                             Ingresar con clave y usuario
-                        </a>
+                        </button>
                         <p className="my-6 text-xs text-blueGray-400 text-center">
                             o utilizando una red social
                         </p>
-                        <button
-                            className="flex items-center w-full px-4 py-3 mb-2 text-xs text-blueGray-500 font-semibold leading-none border hover:bg-blueGray-50 rounded"
-                            href="#"
-                        >
+                        <button className="flex items-center w-full px-4 py-3 mb-2 text-xs text-blueGray-500 font-semibold leading-none border hover:bg-blueGray-50 rounded">
                             <img
                                 className="h-6 pr-10"
                                 src="/logos/facebook-sign.svg"
                             />
                             <span>Ingresar Facebook</span>
                         </button>
-                        <button
-                            className="flex items-center px-4 py-3 w-full text-xs text-blueGray-500 font-semibold leading-none border hover:bg-blueGray-50 rounded"
-                            href="#"
-                        >
+                        <button className="flex items-center px-4 py-3 w-full text-xs text-blueGray-500 font-semibold leading-none border hover:bg-blueGray-50 rounded">
                             <img
                                 className="h-6 pr-10"
                                 src="/logos/google-sign.svg"

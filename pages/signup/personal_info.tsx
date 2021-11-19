@@ -71,8 +71,8 @@ const Page: NextPage = () => {
                                     !state.personalId ||
                                     !state.email ||
                                     !state.userCn
-                                        ? 'disabled'
-                                        : ''
+                                        ? true
+                                        : false
                                 }
                                 onClick={goNext}
                             >
