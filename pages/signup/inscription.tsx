@@ -1,10 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
+import { SignUpStore } from '../../store/sigup.store'
+import { businessService } from '../../services/business.service'
 
 const Page: NextPage = () => {
     const router = useRouter()
-
+    const state = SignUpStore.useState(s => s)
+    const [loading, setLoading] = useState(false)
     const CompanyData = () => {
         return (
             <div className="prose">
@@ -12,7 +15,43 @@ const Page: NextPage = () => {
                     <div className="form-control">
                         <input
                             type="text"
-                            placeholder="Razon Social"
+                            onChange={e => {
+                                SignUpStore.update(s => {
+                                    s.datosEmpresa.grupoEconomico =
+                                        e.target.value
+                                })
+                            }}
+                            placeholder="Grupo economico"
+                            className="input input-bordered"
+                        />
+                    </div>
+                </div>
+                <div className="mb-4">
+                    <div className="form-control">
+                        <select className="select select-bordered w-full max-w-xs">
+                            <option>Medio / Tipo de Servicio</option>
+                            <option>Periodico</option>
+                            <option>Revista</option>
+                            <option>TV Abierta</option>
+                            <option>TV Cable</option>
+                            <option>Radio AM</option>
+                            <option>Radio FM</option>
+                            <option>Sitio Web</option>
+                            <option>Otro Medio grafico</option>
+                            <option>Productora de Contenido</option>
+                        </select>
+                    </div>
+                </div>
+                <div className="mb-4">
+                    <div className="form-control">
+                        <input
+                            type="text"
+                            onChange={e => {
+                                SignUpStore.update(s => {
+                                    s.datosEmpresa.razonSocial = e.target.value
+                                })
+                            }}
+                            placeholder="Nombre comercial"
                             className="input input-bordered"
                         />
                     </div>
@@ -21,40 +60,86 @@ const Page: NextPage = () => {
                     <div className="form-control">
                         <input
                             type="text"
+                            onChange={e => {
+                                SignUpStore.update(s => {
+                                    s.datosEmpresa.cuit = e.target.value
+                                })
+                            }}
                             placeholder="Cuit"
                             className="input input-bordered"
                         />
                     </div>
                 </div>
+                <div className="mb-4">
+                    <div className="form-control">
+                        <input
+                            type="text"
+                            placeholder="Nro de IIBB"
+                            onChange={e => {
+                                SignUpStore.update(s => {
+                                    s.datosEmpresa.iibb = e.target.value
+                                })
+                            }}
+                            className="input input-bordered"
+                        />
+                    </div>
+                </div>
+                <div className="mb-4">
+                    <div className="form-control">
+                        <input
+                            type="text"
+                            onChange={e => {
+                                SignUpStore.update(s => {
+                                    s.datosEmpresa.domicilioLegal =
+                                        e.target.value
+                                })
+                            }}
+                            placeholder="Domicilio legal"
+                            className="input input-bordered"
+                        />
+                    </div>
+                </div>
                 <section>
-                    <h2>Apoderados / Reprentantes legales</h2>
-                    <div className="flex justify-between">
-                        <section className="flex">
-                            <div className="form-control">
-                                <input
-                                    type="text"
-                                    placeholder="Nombre y Apellido"
-                                    className="input input-bordered"
-                                />
-                            </div>
-                            <div className="form-control">
-                                <input
-                                    type="text"
-                                    placeholder="DNI"
-                                    className="input input-bordered"
-                                />
-                            </div>
-                            <div className="form-control">
-                                <input
-                                    type="text"
-                                    placeholder="Email"
-                                    className="input input-bordered"
-                                />
-                            </div>
-                            <button className="btn btn-outline btn-primary">
-                                Agregar
-                            </button>
-                        </section>
+                    <h2>Destinatario Factura</h2>
+                    <div className="mb-4">
+                        <div className="form-control">
+                            <select className="select select-bordered w-full max-w-xs">
+                                <option>Condición frente a AFIP</option>
+                                <option>Monotributista</option>
+                                <option>Responsable Inscripto</option>
+                                <option>Responsable Exento</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div className="mb-4">
+                        <div className="form-control">
+                            <input
+                                type="text"
+                                onChange={e => {
+                                    SignUpStore.update(s => {
+                                        s.datosEmpresa.destinatarioFactura.nombreComercial =
+                                            e.target.value
+                                    })
+                                }}
+                                placeholder="Nombre comercial"
+                                className="input input-bordered"
+                            />
+                        </div>
+                    </div>
+                    <div className="mb-4">
+                        <div className="form-control">
+                            <input
+                                type="text"
+                                onChange={e => {
+                                    SignUpStore.update(s => {
+                                        s.datosEmpresa.destinatarioFactura.cuit =
+                                            e.target.value
+                                    })
+                                }}
+                                placeholder="Cuit"
+                                className="input input-bordered"
+                            />
+                        </div>
                     </div>
                 </section>
             </div>
@@ -64,6 +149,9 @@ const Page: NextPage = () => {
     const PersonalData = () => {
         return <div> Personal </div>
     }
+    const goNext = () => {
+        router.push('/signup/offer-letter')
+    }
 
     return (
         <div>
@@ -72,40 +160,324 @@ const Page: NextPage = () => {
                     <div className="max-w-2xl mx-auto text-center prose">
                         <div className="max-w-md mb-8 mx-auto">
                             <span className="text-sm text-blueGray-400">
-                                Registro nueva persona física
+                                Registro nuevo proveedor
                             </span>
                             <h1>Complete todos los datos y pulse finalizar</h1>
                         </div>
                         <div>
-                            <div className="mb-4 text-sm">
-                                <span className="mr-4 font-semibold">
-                                    Tipo de Inscripción
-                                </span>
-                                <label className="mr-4">
-                                    <input
-                                        className="mr-1"
-                                        type="radio"
-                                        name="department"
-                                        value="1"
-                                    />
-                                    <span>Persona Fisica</span>
-                                </label>
-                                <label>
-                                    <input
-                                        className="mr-1"
-                                        type="radio"
-                                        name="department"
-                                        value="2"
-                                    />
-                                    <span>Persona Juridica</span>
-                                </label>
+                            <div className="prose">
+                                <div className="mb-4">
+                                    <div className="form-control">
+                                        <input
+                                            type="text"
+                                            onChange={e => {
+                                                SignUpStore.update(s => {
+                                                    s.datosEmpresa.grupoEconomico =
+                                                        e.target.value
+                                                })
+                                            }}
+                                            placeholder="Grupo economico"
+                                            className="input input-bordered"
+                                        />
+                                    </div>
+                                </div>
+                                <div className="mb-4">
+                                    <div className="form-control">
+                                        <select
+                                            onChange={e => {
+                                                SignUpStore.update(s => {
+                                                    s.datosEmpresa.medio =
+                                                        e.target.value
+                                                })
+                                            }}
+                                            className="select select-bordered w-full "
+                                        >
+                                            <option>
+                                                Medio / Tipo de Servicio
+                                            </option>
+                                            <option value="PERIODICO">
+                                                Periodico
+                                            </option>
+                                            <option value="REVISRA">
+                                                Revista
+                                            </option>
+                                            <option value="TV ABIERTA">
+                                                TV Abierta
+                                            </option>
+                                            <option value="TV CABLE">
+                                                TV Cable
+                                            </option>
+                                            <option value="RADIO AM">
+                                                Radio AM
+                                            </option>
+                                            <option value="RADIO FM">
+                                                Radio FM
+                                            </option>
+                                            <option value="SITIO WEB">
+                                                Sitio Web
+                                            </option>
+                                            <option value="OTRO MEDIO">
+                                                Otro Medio grafico
+                                            </option>
+                                            <option value="PRODUCTORA DE CONTENIDO">
+                                                Productora de Contenido
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div className="mb-4 flex ">
+                                    <div className="form-control w-full">
+                                        <input
+                                            type="text"
+                                            onChange={e => {
+                                                SignUpStore.update(s => {
+                                                    s.datosEmpresa.razonSocial =
+                                                        e.target.value
+                                                })
+                                            }}
+                                            placeholder="Nombre comercial"
+                                            className="input input-bordered"
+                                        />
+                                    </div>
+
+                                    <div className="form-control ml-4 ">
+                                        <label
+                                            className="
+                                                        w-64
+                                                        flex flex-col
+                                                        items-center
+                                                        px-4
+                                                        py-3
+                                                        bg-white
+                                                        rounded-md
+                                                        shadow-md
+                                                        tracking-wide
+                                                        uppercase
+                                                        border border-blue
+                                                        cursor-pointer
+                                                        hover:bg-purple-600 hover:text-white
+                                                        text-purple-600
+                                                        ease-linear
+                                                        transition-all
+                                                        duration-150
+                                                    "
+                                        >
+                                            <i className="fas fa-cloud-upload-alt fa-3x"></i>
+                                            <span className="text-base leading-normal">
+                                                Contrato Social
+                                            </span>
+                                            <input
+                                                type="file"
+                                                className="hidden"
+                                            />
+                                        </label>
+                                    </div>
+                                </div>
+                                <div className="mb-4 flex">
+                                    <div className="form-control w-full">
+                                        <input
+                                            type="text"
+                                            onChange={e => {
+                                                SignUpStore.update(s => {
+                                                    s.datosEmpresa.cuit =
+                                                        e.target.value
+                                                })
+                                            }}
+                                            placeholder="Cuit"
+                                            className="input input-bordered"
+                                        />
+                                    </div>
+                                    <div className="form-control ml-4">
+                                        <label
+                                            className="
+                                                        w-64
+                                                        flex flex-col
+                                                        items-center
+                                                        px-4
+                                                        py-3
+                                                        bg-white
+                                                        rounded-md
+                                                        shadow-md
+                                                        tracking-wide
+                                                        uppercase
+                                                        border border-blue
+                                                        cursor-pointer
+                                                        hover:bg-purple-600 hover:text-white
+                                                        text-purple-600
+                                                        ease-linear
+                                                        transition-all
+                                                        duration-150
+                                                    "
+                                        >
+                                            <i className="fas fa-cloud-upload-alt fa-3x"></i>
+                                            <span className="text-base leading-normal">
+                                                Constancia de CUIT
+                                            </span>
+                                            <input
+                                                type="file"
+                                                className="hidden"
+                                            />
+                                        </label>
+                                    </div>
+                                </div>
+                                <div className="mb-4 flex">
+                                    <div className="form-control w-full">
+                                        <input
+                                            type="text"
+                                            placeholder="Nro de IIBB"
+                                            onChange={e => {
+                                                SignUpStore.update(s => {
+                                                    s.datosEmpresa.iibb =
+                                                        e.target.value
+                                                })
+                                            }}
+                                            className="input input-bordered"
+                                        />
+                                    </div>
+                                    <div className="form-control ml-4">
+                                        <label
+                                            className="
+                                                        w-64
+                                                        flex flex-col
+                                                        items-center
+                                                        px-4
+                                                        py-3
+                                                        bg-white
+                                                        rounded-md
+                                                        shadow-md
+                                                        tracking-wide
+                                                        uppercase
+                                                        border border-blue
+                                                        cursor-pointer
+                                                        hover:bg-purple-600 hover:text-white
+                                                        text-purple-600
+                                                        ease-linear
+                                                        transition-all
+                                                        duration-150
+                                                    "
+                                        >
+                                            <i className="fas fa-cloud-upload-alt fa-3x"></i>
+                                            <span className="text-base leading-normal">
+                                                Constancia de IIBB
+                                            </span>
+                                            <input
+                                                type="file"
+                                                className="hidden"
+                                            />
+                                        </label>
+                                    </div>
+                                </div>
+                                <div className="mb-4">
+                                    <div className="form-control">
+                                        <input
+                                            type="text"
+                                            onChange={e => {
+                                                SignUpStore.update(s => {
+                                                    s.datosEmpresa.domicilioLegal =
+                                                        e.target.value
+                                                })
+                                            }}
+                                            placeholder="Domicilio legal"
+                                            className="input input-bordered"
+                                        />
+                                    </div>
+                                </div>
+                                <section>
+                                    <h2>Destinatario Factura</h2>
+                                    <div className="mb-4">
+                                        <div className="form-control">
+                                            <select
+                                                onChange={e => {
+                                                    SignUpStore.update(s => {
+                                                        s.datosEmpresa.destinatarioFactura.condicionAfip =
+                                                            e.target.value
+                                                    })
+                                                }}
+                                                className="select select-bordered w-full "
+                                            >
+                                                <option>
+                                                    Condición frente a AFIP
+                                                </option>
+                                                <option value="MONOTRIBUTO">
+                                                    Monotributista
+                                                </option>
+                                                <option value="RESPONSABLE INSCRIPTO">
+                                                    Responsable Inscripto
+                                                </option>
+                                                <option value="RESPONSABLE EXENTO">
+                                                    Responsable Exento
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div className="mb-4">
+                                        <div className="form-control">
+                                            <input
+                                                type="text"
+                                                onChange={e => {
+                                                    SignUpStore.update(s => {
+                                                        s.datosEmpresa.destinatarioFactura.nombreComercial =
+                                                            e.target.value
+                                                    })
+                                                }}
+                                                placeholder="Nombre comercial"
+                                                className="input input-bordered"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="mb-4 flex">
+                                        <div className="form-control w-full">
+                                            <input
+                                                type="text"
+                                                onChange={e => {
+                                                    SignUpStore.update(s => {
+                                                        s.datosEmpresa.destinatarioFactura.cuit =
+                                                            e.target.value
+                                                    })
+                                                }}
+                                                placeholder="Cuit"
+                                                className="input input-bordered"
+                                            />
+                                        </div>
+
+                                        <div className="form-control ml-4">
+                                            <label
+                                                className="
+                                                        w-64
+                                                        flex flex-col
+                                                        items-center
+                                                        px-4
+                                                        py-3
+                                                        bg-white
+                                                        rounded-md
+                                                        shadow-md
+                                                        tracking-wide
+                                                        uppercase
+                                                        border border-blue
+                                                        cursor-pointer
+                                                        hover:bg-purple-600 hover:text-white
+                                                        text-purple-600
+                                                        ease-linear
+                                                        transition-all
+                                                        duration-150
+                                                    "
+                                            >
+                                                <i className="fas fa-cloud-upload-alt fa-3x"></i>
+                                                <span className="text-base leading-normal">
+                                                    Constancia de CUIT
+                                                </span>
+                                                <input
+                                                    type="file"
+                                                    className="hidden"
+                                                />
+                                            </label>
+                                        </div>
+                                    </div>
+                                </section>
                             </div>
-                            <CompanyData />
                             <div className="flex justify-end items-center">
                                 <button
-                                    onClick={() =>
-                                        router.push('/inbox/success')
-                                    }
+                                    onClick={goNext}
                                     className="py-4 px-8 text-sm text-white font-semibold leading-none bg-blue-600 hover:bg-blue-700 rounded"
                                 >
                                     Submit

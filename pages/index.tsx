@@ -14,6 +14,7 @@ import { firebaseManager } from '../services/firebase.services'
 import { SignUpStore } from '../store/sigup.store'
 import Loader from '../components/loader'
 import Link from 'next/link'
+import { businessService } from '../services/business.service'
 
 const Home: NextPage = () => {
     const router = useRouter()
@@ -22,7 +23,7 @@ const Home: NextPage = () => {
     const [loading, setLoading] = useState(false)
     const provider = new GoogleAuthProvider()
 
-    const sigWithGoogle = () => {
+    const signWithGoogle = () => {
         const auth = getAuth()
         signInWithPopup(auth, provider)
             .then(async result => {
@@ -35,10 +36,22 @@ const Home: NextPage = () => {
                 const user = result.user
                 SignUpStore.update(s => {
                     s.user = user
+                    s.userCn = user.displayName as string
+                    s.email = user.email as string
                 })
                 const existUser = await userAlreadyExist(user.uid)
-                if (existUser) router.push('/inbox')
-                else router.push('/signup/personal_info')
+                if (!existUser) router.push('/signup')
+                else {
+                    const company = await businessService.getCompanyControlled(
+                        user.uid
+                    )
+                    SignUpStore.update(s => {
+                        s.companyInReview = company
+                    })
+                    if (company.status === 'APPROVED') router.push('/inbox')
+                    if (company.status === 'PENDING')
+                        router.push('/signup/wait-for-approval')
+                }
                 // ...
             })
             .catch(error => {
@@ -106,7 +119,10 @@ const Home: NextPage = () => {
                             />
                             <span>Ingresar Facebook</span>
                         </button>
-                        <button className="flex items-center px-4 py-3 w-full text-xs text-blueGray-500 font-semibold leading-none border hover:bg-blueGray-50 rounded">
+                        <button
+                            onClick={signWithGoogle}
+                            className="flex items-center px-4 py-3 w-full text-xs text-blueGray-500 font-semibold leading-none border hover:bg-blueGray-50 rounded"
+                        >
                             <img
                                 className="h-6 pr-10"
                                 src="/logos/google-sign.svg"
