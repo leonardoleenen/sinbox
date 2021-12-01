@@ -30,7 +30,7 @@ const Component = (): JSX.Element => {
                         <li>
                             <a
                                 className="text-sm text-blueGray-400 hover:text-blueGray-500"
-                                href="/inbox"
+                                href="/inbox/welcom"
                             >
                                 Inbox
                             </a>

@@ -39,7 +39,7 @@ const Page: NextPage = () => {
                             <li>
                                 <a
                                     className="text-sm text-blueGray-400 hover:text-blueGray-500"
-                                    href="#"
+                                    href="/inbox/faq"
                                 >
                                     Preguntas Frecuentes
                                 </a>
@@ -50,7 +50,7 @@ const Page: NextPage = () => {
                                     href="#"
                                     data-removed="true"
                                 >
-                                    About Us
+                                    Sobre nosotros
                                 </a>
                             </li>
                             <li>
@@ -59,23 +59,16 @@ const Page: NextPage = () => {
                                     href="#"
                                     data-removed="true"
                                 >
-                                    Features
+                                    Novedades
                                 </a>
                             </li>
                         </ul>
                         <div className="hidden lg:block">
                             <a
-                                className="mr-2 inline-block px-4 py-3 text-xs text-blue-600 hover:text-blue-700 font-semibold leading-none border border-blue-200 hover:border-blue-300 rounded"
-                                href="#"
-                                data-removed="true"
-                            >
-                                Log In
-                            </a>
-                            <a
                                 className="inline-block px-4 py-3 text-xs font-semibold leading-none hover:bg-blue-700 text-white rounded bg-red-600"
-                                href="#"
+                                href="/"
                             >
-                                Logout
+                                Salir
                             </a>
                         </div>
                     </nav>
@@ -105,10 +98,10 @@ const Page: NextPage = () => {
                                         onClick={() =>
                                             router.push('/inbox/inscription')
                                         }
-                                        className="block sm:inline-block py-4 px-8 mb-4 sm:mb-0 sm:mr-3 text-xs text-white text-center font-semibold leading-none bg-blue-600 hover:bg-blue-700 rounded"
+                                        className="block sm:inline-block py-4 px-8 mb-4 sm:mb-0 sm:mr-3 text-xs text-white text-center font-semibold leading-none bg-gray-600 hover:bg-gray-700 rounded"
                                         href="#"
                                     >
-                                        Nueva Inscripción
+                                        Presentar certificacion de Servicios
                                     </a>
                                     <a
                                         onClick={() =>
@@ -188,7 +181,7 @@ const Page: NextPage = () => {
                                         className="block p-4 text-sm text-blueGray-500 hover:bg-blue-50 hover:text-blue-600"
                                         href="#"
                                     >
-                                        About Us
+                                        Sobre nosotros
                                     </a>
                                 </li>
                                 <li className="mb-1">
@@ -196,22 +189,16 @@ const Page: NextPage = () => {
                                         className="block p-4 text-sm text-blueGray-500 hover:bg-blue-50 hover:text-blue-600"
                                         href="#"
                                     >
-                                        Features
+                                        Novedades
                                     </a>
                                 </li>
                             </ul>
                             <div className="mt-4 pt-6 border-t border-blueGray-100">
                                 <a
                                     className="block px-4 py-3 mb-3 text-xs text-center font-semibold leading-none bg-blue-600 hover:bg-blue-700 text-white rounded"
-                                    href="#"
+                                    href="/"
                                 >
-                                    Logout
-                                </a>
-                                <a
-                                    className="block px-4 py-3 mb-2 text-xs text-center text-blue-600 hover:text-blue-700 font-semibold leading-none border border-blue-200 hover:border-blue-300 rounded"
-                                    href="#"
-                                >
-                                    Log In
+                                    Salir
                                 </a>
                             </div>
                         </div>

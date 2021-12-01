@@ -26,7 +26,7 @@ const Page: NextPage = () => {
                             </p>
                             <a
                                 className="inline-block text-xs py-4 px-8 text-white font-semibold leading-none bg-blue-600 hover:bg-blue-700 rounded"
-                                onClick={() => router.push('/inbox')}
+                                onClick={() => router.push('/inbox/welcome')}
                                 href="#"
                             >
                                 Entendido, volver a la bandeja

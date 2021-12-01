@@ -48,7 +48,8 @@ const Home: NextPage = () => {
                     SignUpStore.update(s => {
                         s.companyInReview = company
                     })
-                    if (company.status === 'APPROVED') router.push('/inbox')
+                    if (company.status === 'APPROVED')
+                        router.push('/inbox/welcome')
                     if (company.status === 'PENDING')
                         router.push('/signup/wait-for-approval')
                 }
