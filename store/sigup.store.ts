@@ -7,6 +7,7 @@ interface ISignUpStore {
     personalId: string
     datosEmpresa: Company
     companyInReview?: Company
+    loading: boolean
 }
 
 export const SignUpStore = new Store<ISignUpStore>({
@@ -14,6 +15,7 @@ export const SignUpStore = new Store<ISignUpStore>({
     userCn: '',
     email: '',
     personalId: '',
+    loading: false,
     datosEmpresa: {
         razonSocial: '',
         grupoEconomico: '',

@@ -20,26 +20,27 @@ const Home: NextPage = () => {
     const router = useRouter()
     firebaseManager
     const { token } = router.query
-    const [loading, setLoading] = useState(false)
     const provider = new GoogleAuthProvider()
-
+    const state = SignUpStore.useState(s => s)
     const signWithGoogle = () => {
         const auth = getAuth()
         signInWithPopup(auth, provider)
             .then(async result => {
-                setLoading(true)
+                SignUpStore.update(s => {
+                    s.loading = !s.loading
+                })
                 // This gives you a Google Access Token. You can use it to access the Google API.
                 const credential =
                     GoogleAuthProvider.credentialFromResult(result)
                 const token = credential && credential.accessToken
                 // The signed-in user info.
                 const user = result.user
+                const existUser = await userAlreadyExist(user.uid)
                 SignUpStore.update(s => {
                     s.user = user
                     s.userCn = user.displayName as string
                     s.email = user.email as string
                 })
-                const existUser = await userAlreadyExist(user.uid)
                 if (!existUser) router.push('/signup')
                 else {
                     const company = await businessService.getCompanyControlled(
@@ -71,8 +72,8 @@ const Home: NextPage = () => {
         setToken(token as string)
         //router.push('/inbox')
     }, [token])
-
-    if (loading) return <Loader />
+    console.log(state.loading)
+    if (state.loading) return <Loader />
     return (
         <section className="py-12 bg-blue-600 flex h-screen items-center">
             <div className="container px-4 mx-auto">
