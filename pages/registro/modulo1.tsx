@@ -463,12 +463,12 @@ const Page: NextPage = () => {
                       </div>
                       <div className="mb-4 flex">
                         <div className="form-control w-full">
-                          <input
-                            type="text"
-
-                            placeholder="Tipo Doc"
-                            className="input input-bordered"
-                          />
+                        <select className="select select-bordered select-primary w-full max-w-xs">
+  <option disabled selected>Tipo de Documento</option> 
+  <option>DNI</option> 
+  <option>CI</option> 
+  <option>PASAPORTE</option>
+</select>
                         </div>
                         <div className="form-control w-full ml-4">
                           <input
@@ -495,6 +495,41 @@ const Page: NextPage = () => {
                           />
                         </div>
                       </div>
+                      <div className="mb-8 flex ">
+                        <div className="form-control">
+                          <button className="btn btn-outline btn-sm">Agregar</button>
+                        </div>
+                      </div>
+
+
+                      <div className="mb-8 ">
+                        <div className="overflow-x-auto">
+                          <table className="table w-full">
+                            <thead>
+                              <tr>
+                                <th>Nombre</th>
+                                <th>Apellido</th>
+                                <th>Tipo Doc</th>
+                                <th>Nro Doc</th>
+                                <th>CUIL</th>
+                                <th>Fraccion</th>
+
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <th></th>
+                                <td></td>
+                                <td></td>
+
+                              </tr>
+
+                            </tbody>
+                          </table>
+                        </div>
+
+                      </div>
+
                       <div className="mb-4 flex">
                         <div className="form-control w-full">
                           <label className="cursor-pointer label">
@@ -540,7 +575,7 @@ const Page: NextPage = () => {
                           />
                         </div>
                       </div>
-                      <div className="mb-2 flex ">
+                      <div className="mb-8 flex ">
                         <div className="form-control">
                           <button className="btn btn-outline btn-sm">Agregar</button>
                         </div>
