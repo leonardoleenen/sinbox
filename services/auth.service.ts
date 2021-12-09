@@ -12,8 +12,6 @@ export const setToken = (token: string) => {
 
 export const userAlreadyExist = async (id: string) => {
     const docRef = doc(firebaseManager.getDB(), 'users', id)
-
     const docSnap = await getDoc(docRef)
-
     return docSnap.exists()
 }
