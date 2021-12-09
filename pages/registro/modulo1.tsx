@@ -870,26 +870,138 @@ const Page: NextPage = () => {
                     </div>
                    
                   </div>
+                  <h5>Monto </h5>
                   <div className="mb-4 flex ">
                     <div className="form-control w-full">
                       <input
                         type="text"
 
-                        placeholder="Plazo"
+                        placeholder="Fecha"
                         className="input input-bordered"
                       />
                     </div>
 
                     <div className="form-control ml-4 w-full ">
+                      <input
+                        type="text"
+                        placeholder="Reg nro"
+                        className="input input-bordered"
+                      />
 
                     </div>
+                   
+                  </div>
+                  <h5>Embargos u otras medidas - Anotación </h5>
+                  <div className="mb-4 flex ">
+                    <div className="form-control w-full">
+                      <input
+                        type="text"
+
+                        placeholder="Tomo"
+                        className="input input-bordered"
+                      />
+                    </div>
+
                     <div className="form-control ml-4 w-full ">
-
+                      <input
+                        type="text"
+                        placeholder="Folio"
+                        className="input input-bordered"
+                      />
 
                     </div>
+                   
+                  </div>
+                  <div className="mb-4 flex ">
+                    <div className="form-control w-full">
+                      <input
+                        type="text"
 
+                        placeholder="numero"
+                        className="input input-bordered"
+                      />
+                    </div>
+
+                    <div className="form-control ml-4 w-full ">
+                      <input
+                        type="text"
+                        placeholder="Fecha"
+                        className="input input-bordered"
+                      />
+
+                    </div>
+                   
+                  </div>
+                  <div className="mb-4 flex ">
+                    <div className="form-control w-full">
+                      <input
+                        type="text"
+
+                        placeholder="Juzgado"
+                        className="input input-bordered"
+                      />
+                    </div>
+
+                    <div className="form-control ml-4 w-full ">
+                      <input
+                        type="text"
+                        placeholder="Profesional que intervino"
+                        className="input input-bordered"
+                      />
+
+                    </div>
+                   
+                  </div>
+                  <div className="mb-4 flex ">
+                    <div className="form-control w-full">
+                      <input
+                        type="text"
+
+                        placeholder="monto"
+                        className="input input-bordered"
+                      />
+                    </div>
+
+                    <div className="form-control ml-4 w-full ">
+                      
+
+                    </div>
+                   
+                  </div>
+                </section>
+
+                <section>
+
+                  <h3>12. Se agregan</h3>
+                  <div className="mb-4 ">
+                    <div className="form-control w-full">
+                    <input
+                        type="text"
+
+                        placeholder="ANEXOS CONTINUANDO RUBRO/ S Nº:"
+                        className="input input-bordered"
+                      />
+                    </div>
+                    <div className="form-control w-full ">
+                      <label
+                        className=" mt-3  w-64  flex flex-col  items-center px-4  py-3    bg-white  rounded-md shadow-md tracking-wide  uppercase
+                                   border border-blue  cursor-pointerhover:bg-purple-600 hover:text-white  text-purple-600ease-linear transition-all   duration-150  "
+                      >
+                        <i className="fas fa-cloud-upload-alt fa-3x"></i>
+                        <span className="text-base leading-normal">
+                          Firmar digitalmente
+                        </span>
+                        <input
+                          type="file"
+                          className="hidden"
+                        />
+                      </label>
+                    </div>
 
                   </div>
+
+
+
                 </section>
               </div>
               <div className="flex justify-end items-center">
