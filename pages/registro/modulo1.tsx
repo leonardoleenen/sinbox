@@ -119,14 +119,14 @@ const Page: NextPage = () => {
                       <div className="mb-4 flex">
                         <div className="form-control w-full">
                           <label className="cursor-pointer label">
-                          <span className="label-text">Dominio</span>
-                            <input type="checkbox" className="toggle toggle-accent" />
+                            <span className="label-text">Dominio</span>
+                            <input type="checkbox" className="toggle toggle-primary" />
                           </label>
                         </div>
                         <div className="form-control w-full">
                           <label className="cursor-pointer label">
-                          <span className="label-text">Propiedad horizontal</span>
-                            <input type="checkbox" className="toggle toggle-accent" />
+                            <span className="label-text">Propiedad horizontal</span>
+                            <input type="checkbox" className="toggle toggle-primary" />
                           </label>
                         </div>
                       </div>
@@ -437,11 +437,11 @@ const Page: NextPage = () => {
                         <div className="form-control w-full">
                           <label className="cursor-pointer label">
                             <span className="label-text">Persona humana</span>
-                            <input type="checkbox" className="toggle toggle-accent" />
+                            <input type="checkbox" className="toggle toggle-primary" />
                           </label>
                         </div>
                         <div className="form-control w-full">
-                          
+
                         </div>
                       </div>
                       <div className="mb-4 flex">
@@ -499,11 +499,11 @@ const Page: NextPage = () => {
                         <div className="form-control w-full">
                           <label className="cursor-pointer label">
                             <span className="label-text">Persona Juridica</span>
-                            <input type="checkbox" className="toggle toggle-accent" />
+                            <input type="checkbox" className="toggle toggle-primary" />
                           </label>
                         </div>
                         <div className="form-control w-full">
-                          
+
                         </div>
                       </div>
                       <div className="mb-4 flex">
@@ -577,125 +577,125 @@ const Page: NextPage = () => {
                 </section>
 
                 <section>
-                <div className="card  card shadow-lg mt-8">
+                  <div className="card  card shadow-lg mt-8">
                     <div className="card-body">
                       <h3 className="card-title" >5. Solicitante</h3>
 
 
 
-                 
-                  <div className="mb-4 ">
-                    <div className="form-control w-full">
-                      <input
-                        type="text"
 
-                        placeholder="Solicitante"
-                        className="input input-bordered"
-                      />
+                      <div className="mb-4 ">
+                        <div className="form-control w-full">
+                          <input
+                            type="text"
+
+                            placeholder="Solicitante"
+                            className="input input-bordered"
+                          />
+                        </div>
+
+                      </div>
+                      <div className="mb-4 flex">
+                        <div className="form-control w-full">
+                          <input
+                            type="text"
+
+                            placeholder="Registro Nro"
+                            className="input input-bordered"
+                          />
+                        </div>
+                        <div className="form-control w-full ml-4">
+                          <input
+                            type="text"
+                            placeholder="Localidad"
+                            className="input input-bordered"
+                          />
+                        </div>
+                      </div>
+                      <div className="mb-4 flex">
+                        <div className="form-control w-full">
+                          <input
+                            type="text"
+
+                            placeholder="Provincia"
+                            className="input input-bordered"
+                          />
+                        </div>
+                        <div className="form-control w-full ml-4">
+                          <input
+                            type="text"
+                            placeholder="Domicilio"
+                            className="input input-bordered"
+                          />
+                        </div>
+                      </div>
+                      <div className="mb-4 flex">
+                        <div className="form-control w-full">
+                          <input
+                            type="text"
+
+                            placeholder="Telefono"
+                            className="input input-bordered"
+                          />
+                        </div>
+                        <div className="form-control w-full ml-4">
+
+                        </div>
+
+                      </div>
                     </div>
-
                   </div>
-                  <div className="mb-4 flex">
-                    <div className="form-control w-full">
-                      <input
-                        type="text"
-
-                        placeholder="Registro Nro"
-                        className="input input-bordered"
-                      />
-                    </div>
-                    <div className="form-control w-full ml-4">
-                      <input
-                        type="text"
-                        placeholder="Localidad"
-                        className="input input-bordered"
-                      />
-                    </div>
-                  </div>
-                  <div className="mb-4 flex">
-                    <div className="form-control w-full">
-                      <input
-                        type="text"
-
-                        placeholder="Provincia"
-                        className="input input-bordered"
-                      />
-                    </div>
-                    <div className="form-control w-full ml-4">
-                      <input
-                        type="text"
-                        placeholder="Domicilio"
-                        className="input input-bordered"
-                      />
-                    </div>
-                  </div>
-                  <div className="mb-4 flex">
-                    <div className="form-control w-full">
-                      <input
-                        type="text"
-
-                        placeholder="Telefono"
-                        className="input input-bordered"
-                      />
-                    </div>
-                    <div className="form-control w-full ml-4">
-
-                    </div>
-
-                  </div>
-</div>
-</div>
                 </section>
                 <section>
 
-                <div className="card  card shadow-lg mt-8">
+                  <div className="card  card shadow-lg mt-8">
                     <div className="card-body">
                       <h3 className="card-title" >6. Se agregar</h3>
 
 
-                  <div className="mb-4 ">
-                    <div className="form-control w-full">
-                      <input
-                        type="text"
+                      <div className="mb-4 ">
+                        <div className="form-control w-full">
+                          <input
+                            type="text"
 
-                        placeholder="Anexos continuando rubro S/n"
-                        className="input input-bordered"
-                      />
+                            placeholder="Anexos continuando rubro S/n"
+                            className="input input-bordered"
+                          />
+                        </div>
+
+                      </div>
                     </div>
-
                   </div>
-</div>
-</div>
                 </section>
                 <section>
-                <div className="card  card shadow-lg mt-8">
+                  <div className="card  card shadow-lg mt-8">
                     <div className="card-body">
                       <h3 className="card-title" >7.Observaciones</h3>
 
-                  <div className="mb-4 ">
-                    <div className="form-control w-full">
-                      <textarea className="textarea h-24 textarea-bordered" placeholder="Otros Datos, enmiendas,etc"></textarea>
+                      <div className="mb-4 ">
+                        <div className="form-control w-full">
+                          <textarea className="textarea h-24 textarea-bordered" placeholder="Otros Datos, enmiendas,etc"></textarea>
 
-                    </div>
-                    <div className="form-control w-full ">
-                      <label
-                        className=" mt-3  w-64  flex flex-col  items-center px-4  py-3    bg-white  rounded-md shadow-md tracking-wide  uppercase
+                        </div>
+                        <div className="form-control w-full ">
+                          <label
+                            className=" mt-3  w-64  flex flex-col  items-center px-4  py-3    bg-white  rounded-md shadow-md tracking-wide  uppercase
                                    border border-blue  cursor-pointerhover:bg-purple-600 hover:text-white  text-purple-600ease-linear transition-all   duration-150  "
-                      >
-                        <i className="fas fa-cloud-upload-alt fa-3x"></i>
-                        <span className="text-base leading-normal">
-                          Firmar digitalmente
-                        </span>
-                        <input
-                          type="file"
-                          className="hidden"
-                        />
-                      </label>
-                    </div>
+                          >
+                            <i className="fas fa-cloud-upload-alt fa-3x"></i>
+                            <span className="text-base leading-normal">
+                              Firmar digitalmente
+                            </span>
+                            <input
+                              type="file"
+                              className="hidden"
+                            />
+                          </label>
+                        </div>
 
+                      </div>
+                    </div>
                   </div>
-</div>
-</div>
 
                 </section>
                 <div className="max-w-md mb-8 mt-4 mx-auto">
@@ -703,359 +703,359 @@ const Page: NextPage = () => {
                   <h1>Para uso exclusivo del registro</h1>
                 </div>
                 <section>
-                <div className="card  card shadow-lg mt-8">
+                  <div className="card  card shadow-lg mt-8">
                     <div className="card-body">
                       <h3 className="card-title" >8. No puede despacharse la solicitud por causa de:</h3>
 
-                  <div className="mb-4 ">
-                    <div className="form-control w-full">
-                      <textarea className="textarea h-24 textarea-bordered"  
-                      disabled
-                      placeholder="Otros Datos, enmiendas,etc"></textarea>
+                      <div className="mb-4 ">
+                        <div className="form-control w-full">
+                          <textarea className="textarea h-24 textarea-bordered"
+                            disabled
+                            placeholder="Otros Datos, enmiendas,etc"></textarea>
 
+                        </div>
+
+
+                      </div>
                     </div>
 
-
                   </div>
-</div>
-
-</div>
                 </section>
 
                 <section>
-                <div className="card  card shadow-lg mt-8">
+                  <div className="card  card shadow-lg mt-8">
                     <div className="card-body">
                       <h3 className="card-title" >9. El Inmueble determinado en el rubro 3 consta a nombre de la/s personas determinada/s en el rubro 4</h3>
 
-                  <div className="mb-4 flex ">
-                    <div className="form-control w-full">
-                      <input
-                        type="text"
-                        disabled
-                        placeholder="solicitud Nro"
-                        className="input input-bordered"
-                      />
-                    </div>
+                      <div className="mb-4 flex ">
+                        <div className="form-control w-full">
+                          <input
+                            type="text"
+                            disabled
+                            placeholder="solicitud Nro"
+                            className="input input-bordered"
+                          />
+                        </div>
 
-                    <div className="form-control ml-4 w-full ">
-                      <input
-                        type="text"
-                        disabled
-                        placeholder="Fecha"
-                        className="input input-bordered"
-                      />
+                        <div className="form-control ml-4 w-full ">
+                          <input
+                            type="text"
+                            disabled
+                            placeholder="Fecha"
+                            className="input input-bordered"
+                          />
 
-                    </div>
-                    <div className="form-control ml-4 w-full ">
-                      <input
-                        type="text"
-                        disabled
-                        placeholder="Antecede"
-                        className="input input-bordered"
-                      />
+                        </div>
+                        <div className="form-control ml-4 w-full ">
+                          <input
+                            type="text"
+                            disabled
+                            placeholder="Antecede"
+                            className="input input-bordered"
+                          />
 
+                        </div>
+                      </div>
                     </div>
-</div>
-</div>
                   </div>
                 </section>
                 <section>
-                <div className="card  card shadow-lg mt-8">
+                  <div className="card  card shadow-lg mt-8">
                     <div className="card-body">
                       <h3 className="card-title" >10. ADVERTENCIA: CERTIFICACIONES VIGENTES</h3>
- <span>(con prioridad respecto de la presente: Art. 42 Ley 6435)</span>
-                  <div className="mb-4 flex ">
-                    <div className="form-control w-full">
-                      <input
-                        type="text"
-                        disabled
-                        placeholder="Fecha"
-                        className="input input-bordered"
-                      />
+                      <span>(con prioridad respecto de la presente: Art. 42 Ley 6435)</span>
+                      <div className="mb-4 flex ">
+                        <div className="form-control w-full">
+                          <input
+                            type="text"
+                            disabled
+                            placeholder="Fecha"
+                            className="input input-bordered"
+                          />
+                        </div>
+
+                        <div className="form-control ml-4 w-full ">
+                          <input
+                            type="text"
+                            disabled
+                            placeholder="Certificado"
+                            className="input input-bordered"
+                          />
+
+                        </div>
+                        <div className="form-control ml-4 w-full ">
+                          <input
+                            type="text"
+                            disabled
+                            placeholder="Operacion"
+                            className="input input-bordered"
+                          />
+
+                        </div>
+
+
+                      </div>
+                      <div className="mb-4 flex ">
+                        <div className="form-control w-full">
+                          <input
+                            type="text"
+                            disabled
+                            placeholder="Escribano o juzgado"
+                            className="input input-bordered"
+                          />
+                        </div>
+
+                        <div className="form-control ml-4 w-full ">
+                          <input
+                            type="text"
+                            disabled
+                            placeholder="Reg nro"
+                            className="input input-bordered"
+                          />
+
+                        </div>
+                        <div className="form-control ml-4 w-full ">
+                          <input
+                            type="text"
+                            disabled
+                            placeholder="Localidad"
+                            className="input input-bordered"
+                          />
+
+                        </div>
+
+
+                      </div>
+                      <div className="mb-4 flex ">
+                        <div className="form-control w-full">
+                          <input
+                            type="text"
+                            disabled
+                            placeholder="Plazo"
+                            className="input input-bordered"
+                          />
+                        </div>
+
+                        <div className="form-control ml-4 w-full ">
+
+                        </div>
+                        <div className="form-control ml-4 w-full ">
+
+
+                        </div>
+                      </div>
                     </div>
-
-                    <div className="form-control ml-4 w-full ">
-                      <input
-                        type="text"
-                        disabled
-                        placeholder="Certificado"
-                        className="input input-bordered"
-                      />
-
-                    </div>
-                    <div className="form-control ml-4 w-full ">
-                      <input
-                        type="text"
-                        disabled
-                        placeholder="Operacion"
-                        className="input input-bordered"
-                      />
-
-                    </div>
-
-
-                  </div>
-                  <div className="mb-4 flex ">
-                    <div className="form-control w-full">
-                      <input
-                        type="text"
-                        disabled
-                        placeholder="Escribano o juzgado"
-                        className="input input-bordered"
-                      />
-                    </div>
-
-                    <div className="form-control ml-4 w-full ">
-                      <input
-                        type="text"
-                        disabled
-                        placeholder="Reg nro"
-                        className="input input-bordered"
-                      />
-
-                    </div>
-                    <div className="form-control ml-4 w-full ">
-                      <input
-                        type="text"
-                        disabled
-                        placeholder="Localidad"
-                        className="input input-bordered"
-                      />
-
-                    </div>
-
-
-                  </div>
-                  <div className="mb-4 flex ">
-                    <div className="form-control w-full">
-                      <input
-                        type="text"
-                        disabled
-                        placeholder="Plazo"
-                        className="input input-bordered"
-                      />
-                    </div>
-
-                    <div className="form-control ml-4 w-full ">
-
-                    </div>
-                    <div className="form-control ml-4 w-full ">
-
-
-                    </div>
-</div>
-</div>
                   </div>
                 </section>
                 <section>
-                <div className="card  card shadow-lg mt-8">
+                  <div className="card  card shadow-lg mt-8">
                     <div className="card-body">
                       <h3 className="card-title" >11. Por el inmueble determinado en la solicitud se registra </h3>
-                  
-                  <h5>Hipoteca - Inscripcion </h5>
-                  <div className="mb-4 flex ">
-                    <div className="form-control w-full">
-                      <input
-                        type="text"
-                        disabled
-                        placeholder="Tomo"
-                        className="input input-bordered"
-                      />
+
+                      <h5>Hipoteca - Inscripcion </h5>
+                      <div className="mb-4 flex ">
+                        <div className="form-control w-full">
+                          <input
+                            type="text"
+                            disabled
+                            placeholder="Tomo"
+                            className="input input-bordered"
+                          />
+                        </div>
+
+                        <div className="form-control ml-4 w-full ">
+                          <input
+                            type="text"
+                            disabled
+                            placeholder="Folio"
+                            className="input input-bordered"
+                          />
+
+                        </div>
+                        <div className="form-control ml-4 w-full ">
+                          <input
+                            type="text"
+                            disabled
+                            placeholder="Numero"
+                            className="input input-bordered"
+                          />
+
+                        </div>
+
+
+                      </div>
+                      <h5>Escrituracion </h5>
+                      <div className="mb-4 flex ">
+                        <div className="form-control w-full">
+                          <input
+                            type="text"
+                            disabled
+                            placeholder="Fecha"
+                            className="input input-bordered"
+                          />
+                        </div>
+
+                        <div className="form-control ml-4 w-full ">
+                          <input
+                            type="text"
+                            disabled
+                            placeholder="Reg nro"
+                            className="input input-bordered"
+                          />
+
+                        </div>
+
+                      </div>
+
+                      <div className="mb-4 flex ">
+                        <div className="form-control w-full">
+                          <input
+                            type="text"
+                            disabled
+                            placeholder="Localidad"
+                            className="input input-bordered"
+                          />
+                        </div>
+
+                        <div className="form-control ml-4 w-full ">
+                          <input
+                            type="text"
+                            disabled
+                            placeholder="Escribano"
+                            className="input input-bordered"
+                          />
+
+                        </div>
+
+                      </div>
+                      <h5>Monto </h5>
+                      <div className="mb-4 flex ">
+                        <div className="form-control w-full">
+                          <input
+                            type="text"
+                            disabled
+                            placeholder="Fecha"
+                            className="input input-bordered"
+                          />
+                        </div>
+
+                        <div className="form-control ml-4 w-full ">
+                          <input
+                            type="text"
+                            disabled
+                            placeholder="Reg nro"
+                            className="input input-bordered"
+                          />
+
+                        </div>
+
+                      </div>
+                      <h5>Embargos u otras medidas - Anotación </h5>
+                      <div className="mb-4 flex ">
+                        <div className="form-control w-full">
+                          <input
+                            type="text"
+                            disabled
+                            placeholder="Tomo"
+                            className="input input-bordered"
+                          />
+                        </div>
+
+                        <div className="form-control ml-4 w-full ">
+                          <input
+                            type="text"
+                            disabled
+                            placeholder="Folio"
+                            className="input input-bordered"
+                          />
+
+                        </div>
+
+                      </div>
+                      <div className="mb-4 flex ">
+                        <div className="form-control w-full">
+                          <input
+                            type="text"
+                            disabled
+                            placeholder="numero"
+                            className="input input-bordered"
+                          />
+                        </div>
+
+                        <div className="form-control ml-4 w-full ">
+                          <input
+                            type="text"
+                            disabled
+                            placeholder="Fecha"
+                            className="input input-bordered"
+                          />
+
+                        </div>
+
+                      </div>
+                      <div className="mb-4 flex ">
+                        <div className="form-control w-full">
+                          <input
+                            type="text"
+                            disabled
+                            placeholder="Juzgado"
+                            className="input input-bordered"
+                          />
+                        </div>
+
+                        <div className="form-control ml-4 w-full ">
+                          <input
+                            type="text"
+                            disabled
+                            placeholder="Profesional que intervino"
+                            className="input input-bordered"
+                          />
+
+                        </div>
+
+                      </div>
+                      <div className="mb-4 flex ">
+                        <div className="form-control w-full">
+                          <input
+                            type="text"
+                            disabled
+                            placeholder="monto"
+                            className="input input-bordered"
+                          />
+                        </div>
+
+                        <div className="form-control ml-4 w-full ">
+
+
+                        </div>
+                      </div>
                     </div>
-
-                    <div className="form-control ml-4 w-full ">
-                      <input
-                        type="text"
-                        disabled
-                        placeholder="Folio"
-                        className="input input-bordered"
-                      />
-
-                    </div>
-                    <div className="form-control ml-4 w-full ">
-                      <input
-                        type="text"
-                        disabled
-                        placeholder="Numero"
-                        className="input input-bordered"
-                      />
-
-                    </div>
-
-
-                  </div>
-                  <h5>Escrituracion </h5>
-                  <div className="mb-4 flex ">
-                    <div className="form-control w-full">
-                      <input
-                        type="text"
-                        disabled
-                        placeholder="Fecha"
-                        className="input input-bordered"
-                      />
-                    </div>
-
-                    <div className="form-control ml-4 w-full ">
-                      <input
-                        type="text"
-                        disabled
-                        placeholder="Reg nro"
-                        className="input input-bordered"
-                      />
-
-                    </div>
-
-                  </div>
-
-                  <div className="mb-4 flex ">
-                    <div className="form-control w-full">
-                      <input
-                        type="text"
-                        disabled
-                        placeholder="Localidad"
-                        className="input input-bordered"
-                      />
-                    </div>
-
-                    <div className="form-control ml-4 w-full ">
-                      <input
-                        type="text"
-                        disabled
-                        placeholder="Escribano"
-                        className="input input-bordered"
-                      />
-
-                    </div>
-
-                  </div>
-                  <h5>Monto </h5>
-                  <div className="mb-4 flex ">
-                    <div className="form-control w-full">
-                      <input
-                        type="text"
-                        disabled
-                        placeholder="Fecha"
-                        className="input input-bordered"
-                      />
-                    </div>
-
-                    <div className="form-control ml-4 w-full ">
-                      <input
-                        type="text"
-                        disabled
-                        placeholder="Reg nro"
-                        className="input input-bordered"
-                      />
-
-                    </div>
-
-                  </div>
-                  <h5>Embargos u otras medidas - Anotación </h5>
-                  <div className="mb-4 flex ">
-                    <div className="form-control w-full">
-                      <input
-                        type="text"
-                        disabled
-                        placeholder="Tomo"
-                        className="input input-bordered"
-                      />
-                    </div>
-
-                    <div className="form-control ml-4 w-full ">
-                      <input
-                        type="text"
-                        disabled
-                        placeholder="Folio"
-                        className="input input-bordered"
-                      />
-
-                    </div>
-
-                  </div>
-                  <div className="mb-4 flex ">
-                    <div className="form-control w-full">
-                      <input
-                        type="text"
-                        disabled
-                        placeholder="numero"
-                        className="input input-bordered"
-                      />
-                    </div>
-
-                    <div className="form-control ml-4 w-full ">
-                      <input
-                        type="text"
-                        disabled
-                        placeholder="Fecha"
-                        className="input input-bordered"
-                      />
-
-                    </div>
-
-                  </div>
-                  <div className="mb-4 flex ">
-                    <div className="form-control w-full">
-                      <input
-                        type="text"
-                        disabled
-                        placeholder="Juzgado"
-                        className="input input-bordered"
-                      />
-                    </div>
-
-                    <div className="form-control ml-4 w-full ">
-                      <input
-                        type="text"
-                        disabled
-                        placeholder="Profesional que intervino"
-                        className="input input-bordered"
-                      />
-
-                    </div>
-
-                  </div>
-                  <div className="mb-4 flex ">
-                    <div className="form-control w-full">
-                      <input
-                        type="text"
-                        disabled
-                        placeholder="monto"
-                        className="input input-bordered"
-                      />
-                    </div>
-
-                    <div className="form-control ml-4 w-full ">
-
-
-                    </div>
-</div>
-</div>
                   </div>
                 </section>
 
                 <section>
-                <div className="card  card shadow-lg mt-8">
+                  <div className="card  card shadow-lg mt-8">
                     <div className="card-body">
                       <h3 className="card-title" >12. Se agregan </h3>
-                  
-               
-                  <div className="mb-4  ">
-                    <div className="form-control w-full">
-                      <input
-                        type="text"
-                        disabled
-                        placeholder="ANEXOS CONTINUANDO RUBRO/ S Nº:"
-                        className="input input-bordered"
-                      />
+
+
+                      <div className="mb-4  ">
+                        <div className="form-control w-full">
+                          <input
+                            type="text"
+                            disabled
+                            placeholder="ANEXOS CONTINUANDO RUBRO/ S Nº:"
+                            className="input input-bordered"
+                          />
+                        </div>
+                        <div className="form-control mt-3 ">
+                          <button className="btn btn-disabled" role="button" aria-disabled="true">Firmar digitalmente</button>
+                        </div>
+                        <div>
+                        </div>
+                      </div>
                     </div>
-                    <div className="form-control mt-3 ">
-                    <button className="btn btn-disabled"  role="button" aria-disabled="true">Firmar digitalmente</button>
-                    </div>
-<div>
                   </div>
-</div>
-</div>
-</div>
 
                 </section>
               </div>
