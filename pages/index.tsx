@@ -72,7 +72,6 @@ const Home: NextPage = () => {
         setToken(token as string)
         //router.push('/inbox')
     }, [token])
-    console.log(state.loading)
     if (state.loading) return <Loader />
     return (
         <section className="py-12 bg-blue-600 flex h-screen items-center">

@@ -6,6 +6,7 @@ import { businessService } from '../../services/business.service'
 import { isString } from 'lodash'
 import SecurePages from '../../components/signup/securePages'
 import { useForm, useFormState } from 'react-hook-form'
+import FileUpload from '../../components/fileupload/fileUpload'
 const Page: NextPage = () => {
     const router = useRouter()
     const state = SignUpStore.useState(s => s)
@@ -160,7 +161,6 @@ const Page: NextPage = () => {
     const PersonalData = () => {
         return <div> Personal </div>
     }
-
     const onSubmit = (data: any) => {
         SignUpStore.update(s => {
             s.datosEmpresa.grupoEconomico = data.grupoEconomico
@@ -281,39 +281,10 @@ const Page: NextPage = () => {
                                                 }`}
                                             />
                                         </div>
-
-                                        <div className="form-control ml-4 ">
-                                            <label
-                                                className="
-                                                        w-64
-                                                        flex flex-col
-                                                        items-center
-                                                        px-4
-                                                        py-3
-                                                        bg-white
-                                                        rounded-md
-                                                        shadow-md
-                                                        tracking-wide
-                                                        uppercase
-                                                        border border-blue
-                                                        cursor-pointer
-                                                        hover:bg-purple-600 hover:text-white
-                                                        text-purple-600
-                                                        ease-linear
-                                                        transition-all
-                                                        duration-150
-                                                    "
-                                            >
-                                                <i className="fas fa-cloud-upload-alt fa-3x"></i>
-                                                <span className="text-base leading-normal">
-                                                    Contrato Social
-                                                </span>
-                                                <input
-                                                    type="file"
-                                                    className="hidden"
-                                                />
-                                            </label>
-                                        </div>
+                                        <FileUpload
+                                            placeholder="Contrato Social"
+                                            extensions={['jpg', 'pdf', 'jpeg']}
+                                        />
                                     </div>
                                     <div className="mb-4 flex">
                                         <div className="form-control w-full">
