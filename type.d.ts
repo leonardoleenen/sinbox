@@ -8,16 +8,28 @@ type User = {
 }
 
 type Company = {
-    razonSocial: string
+    razonSocial: {
+        value: string
+        constancia: string
+    }
     grupoEconomico: string
     medio: string
-    cuit: string
-    iibb: string
+    cuit: {
+        value: number
+        constancia: string
+    }
+    iibb: {
+        value: number
+        constancia: string
+    }
     domicilioLegal: string
     destinatarioFactura: {
         condicionAfip: string
         nombreComercial: string
-        cuit: string
+        cuit: {
+            value: number
+            constancia: string
+        }
     }
     representante: {
         email: string

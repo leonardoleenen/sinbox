@@ -17,15 +17,27 @@ export const SignUpStore = new Store<ISignUpStore>({
     personalId: '',
     loading: false,
     datosEmpresa: {
-        razonSocial: '',
+        razonSocial: {
+            value: '',
+            constancia: ''
+        },
         grupoEconomico: '',
         medio: '',
-        cuit: '',
-        iibb: '',
+        cuit: {
+            nro: 0,
+            constancia: ''
+        },
+        iibb: {
+            nro: 0,
+            constancia: ''
+        },
         domicilioLegal: '',
         destinatarioFactura: {
             nombreComercial: '',
-            cuit: '',
+            cuit: {
+                nro: 0,
+                constancia: ''
+            },
             condicionAfip: ''
         },
         representante: {

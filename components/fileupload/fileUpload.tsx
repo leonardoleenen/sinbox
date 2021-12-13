@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import type { NextPage } from 'next'
-
+import { firebaseManager } from '../../services/firebase.services'
+import { SignUpStore } from '../../store/sigup.store'
 interface FileUpload {
     placeholder: string
     extensions: Array<string>
+    type: string
 }
 interface FileInfo {
     extension: string
@@ -11,7 +13,12 @@ interface FileInfo {
     fileName: string
 }
 
-const FileUpload: NextPage<FileUpload> = ({ placeholder, extensions }) => {
+const FileUpload: NextPage<FileUpload> = ({
+    placeholder,
+    extensions,
+    type
+}) => {
+    const state = SignUpStore.useState(s => s)
     /*Manage blob*/
     const [file, setFile] = useState<any>({})
     const [blob, setBlob] = useState<any>()
@@ -24,12 +31,41 @@ const FileUpload: NextPage<FileUpload> = ({ placeholder, extensions }) => {
         setPreview(!preview)
     }
     const deleteFile = () => {
-        if (preview) {
-            setPreview(false)
-            setBlob({})
+        if (fileInfo?.fileName) {
+            if (preview) {
+                setPreview(false)
+                setBlob({})
+            }
+            setFile({})
+            setFileInfo(undefined)
+            firebaseManager
+                .deleteFile(fileInfo?.fileName)
+                .then(snapshot => {
+                    SignUpStore.update(s => {
+                        switch (type) {
+                            case 'cuitDestinatario':
+                                s.datosEmpresa.destinatarioFactura.cuit.constancia =
+                                    ''
+                                break
+                            case 'cuit':
+                                s.datosEmpresa.cuit.constancia = ''
+                                break
+                            case 'iibb':
+                                s.datosEmpresa.iibb.constancia = ''
+                                break
+                            case 'razonSocial':
+                                s.datosEmpresa.razonSocial.constancia = ''
+                                break
+                            default:
+                                console.error('Incorrect type')
+                                break
+                        }
+                    })
+                })
+                .catch(err => {
+                    console.log(err)
+                })
         }
-        setFile({})
-        setFileInfo(undefined)
     }
     const checkExtension = (file: File): { ext: string; correct: boolean } => {
         const ext: string = file.type.split('/')[1]
@@ -59,12 +95,38 @@ const FileUpload: NextPage<FileUpload> = ({ placeholder, extensions }) => {
                 const formattedName = checkImgName(uploadedFile.name, ext)
                 const data = new FormData()
                 data.append('file', uploadedFile, formattedName)
-                setFileInfo({
-                    fileName: formattedName,
-                    extension: ext,
-                    size: uploadedFile.size
+
+                firebaseManager.uploadFile(data.get('file')).then(snapshot => {
+                    setFileInfo({
+                        fileName: formattedName,
+                        extension: ext,
+                        size: uploadedFile.size
+                    })
+                    setFile(data)
+                    SignUpStore.update(s => {
+                        switch (type) {
+                            case 'cuitDestinatario':
+                                s.datosEmpresa.destinatarioFactura.cuit.constancia =
+                                    snapshot.metadata.fullPath
+                                break
+                            case 'cuit':
+                                s.datosEmpresa.cuit.constancia =
+                                    snapshot.metadata.fullPath
+                                break
+                            case 'iibb':
+                                s.datosEmpresa.iibb.constancia =
+                                    snapshot.metadata.fullPath
+                                break
+                            case 'razonSocial':
+                                s.datosEmpresa.razonSocial.constancia =
+                                    snapshot.metadata.fullPath
+                                break
+                            default:
+                                console.error('Incorrect type')
+                                break
+                        }
+                    })
                 })
-                setFile(data)
             } else {
                 console.error('Incorrect extension!!')
             }
