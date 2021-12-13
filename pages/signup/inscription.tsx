@@ -3,7 +3,7 @@ import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { SignUpStore } from '../../store/sigup.store'
 import { businessService } from '../../services/business.service'
-import { isString } from 'lodash'
+import { isString, toNumber } from 'lodash'
 import SecurePages from '../../components/signup/securePages'
 import { useForm, useFormState } from 'react-hook-form'
 import FileUpload from '../../components/fileupload/fileUpload'
@@ -60,7 +60,8 @@ const Page: NextPage = () => {
                             type="text"
                             onChange={e => {
                                 SignUpStore.update(s => {
-                                    s.datosEmpresa.razonSocial = e.target.value
+                                    s.datosEmpresa.razonSocial.value =
+                                        e.target.value
                                 })
                             }}
                             placeholder="Nombre comercial"
@@ -74,7 +75,9 @@ const Page: NextPage = () => {
                             type="text"
                             onChange={e => {
                                 SignUpStore.update(s => {
-                                    s.datosEmpresa.cuit = e.target.value
+                                    s.datosEmpresa.cuit.value = toNumber(
+                                        e.target.value
+                                    )
                                 })
                             }}
                             placeholder="Cuit"
@@ -89,7 +92,9 @@ const Page: NextPage = () => {
                             placeholder="Nro de IIBB"
                             onChange={e => {
                                 SignUpStore.update(s => {
-                                    s.datosEmpresa.iibb = e.target.value
+                                    s.datosEmpresa.iibb.value = toNumber(
+                                        e.target.value
+                                    )
                                 })
                             }}
                             className="input input-bordered"
@@ -144,8 +149,8 @@ const Page: NextPage = () => {
                                 type="text"
                                 onChange={e => {
                                     SignUpStore.update(s => {
-                                        s.datosEmpresa.destinatarioFactura.cuit =
-                                            e.target.value
+                                        s.datosEmpresa.destinatarioFactura.cuit.value =
+                                            toNumber(e.target.value)
                                     })
                                 }}
                                 placeholder="Cuit"
@@ -164,16 +169,17 @@ const Page: NextPage = () => {
     const onSubmit = (data: any) => {
         SignUpStore.update(s => {
             s.datosEmpresa.grupoEconomico = data.grupoEconomico
-            s.datosEmpresa.razonSocial = data.razonSocial
+            s.datosEmpresa.razonSocial.value = data.razonSocial
             s.datosEmpresa.medio = data.medio
-            s.datosEmpresa.cuit = data.cuit
-            s.datosEmpresa.iibb = data.iibb
+            s.datosEmpresa.cuit.value = data.cuit
+            s.datosEmpresa.iibb.value = data.iibb
             s.datosEmpresa.domicilioLegal = data.domicilioLegal
             s.datosEmpresa.destinatarioFactura.condicionAfip =
                 data.condicionAfipDestinatario
             s.datosEmpresa.destinatarioFactura.nombreComercial =
                 data.nombreComercialDestinatario
-            s.datosEmpresa.destinatarioFactura.cuit = data.cuitDestinatario
+            s.datosEmpresa.destinatarioFactura.cuit.value =
+                data.cuitDestinatario
         })
         router.push('/signup/offer-letter')
     }
@@ -284,6 +290,7 @@ const Page: NextPage = () => {
                                         <FileUpload
                                             placeholder="Contrato Social"
                                             extensions={['jpg', 'pdf', 'jpeg']}
+                                            type="razonSocial"
                                         />
                                     </div>
                                     <div className="mb-4 flex">
@@ -302,38 +309,11 @@ const Page: NextPage = () => {
                                                 }`}
                                             />
                                         </div>
-                                        <div className="form-control ml-4">
-                                            <label
-                                                className="
-                                                        w-64
-                                                        flex flex-col
-                                                        items-center
-                                                        px-4
-                                                        py-3
-                                                        bg-white
-                                                        rounded-md
-                                                        shadow-md
-                                                        tracking-wide
-                                                        uppercase
-                                                        border border-blue
-                                                        cursor-pointer
-                                                        hover:bg-purple-600 hover:text-white
-                                                        text-purple-600
-                                                        ease-linear
-                                                        transition-all
-                                                        duration-150
-                                                    "
-                                            >
-                                                <i className="fas fa-cloud-upload-alt fa-3x"></i>
-                                                <span className="text-base leading-normal">
-                                                    Constancia de CUIT
-                                                </span>
-                                                <input
-                                                    type="file"
-                                                    className="hidden"
-                                                />
-                                            </label>
-                                        </div>
+                                        <FileUpload
+                                            placeholder="Constancia de CUIT"
+                                            extensions={['jpg', 'pdf', 'jpeg']}
+                                            type="cuit"
+                                        />
                                     </div>
                                     <div className="mb-4 flex">
                                         <div className="form-control w-full">
@@ -351,38 +331,11 @@ const Page: NextPage = () => {
                                                 }`}
                                             />
                                         </div>
-                                        <div className="form-control ml-4">
-                                            <label
-                                                className="
-                                                        w-64
-                                                        flex flex-col
-                                                        items-center
-                                                        px-4
-                                                        py-3
-                                                        bg-white
-                                                        rounded-md
-                                                        shadow-md
-                                                        tracking-wide
-                                                        uppercase
-                                                        border border-blue
-                                                        cursor-pointer
-                                                        hover:bg-purple-600 hover:text-white
-                                                        text-purple-600
-                                                        ease-linear
-                                                        transition-all
-                                                        duration-150
-                                                    "
-                                            >
-                                                <i className="fas fa-cloud-upload-alt fa-3x"></i>
-                                                <span className="text-base leading-normal">
-                                                    Constancia de IIBB
-                                                </span>
-                                                <input
-                                                    type="file"
-                                                    className="hidden"
-                                                />
-                                            </label>
-                                        </div>
+                                        <FileUpload
+                                            placeholder="Constancia de IIBB"
+                                            extensions={['jpg', 'pdf', 'jpeg']}
+                                            type="iibb"
+                                        />
                                     </div>
                                     <div className="mb-4">
                                         <div className="form-control">
@@ -479,38 +432,15 @@ const Page: NextPage = () => {
                                                     }`}
                                                 />
                                             </div>
-                                            <div className="form-control ml-4">
-                                                <label
-                                                    className="
-                                                        w-64
-                                                        flex flex-col
-                                                        items-center
-                                                        px-4
-                                                        py-3
-                                                        bg-white
-                                                        rounded-md
-                                                        shadow-md
-                                                        tracking-wide
-                                                        uppercase
-                                                        border border-blue
-                                                        cursor-pointer
-                                                        hover:bg-purple-600 hover:text-white
-                                                        text-purple-600
-                                                        ease-linear
-                                                        transition-all
-                                                        duration-150
-                                                    "
-                                                >
-                                                    <i className="fas fa-cloud-upload-alt fa-3x"></i>
-                                                    <span className="text-base leading-normal">
-                                                        Constancia de CUIT
-                                                    </span>
-                                                    <input
-                                                        type="file"
-                                                        className="hidden"
-                                                    />
-                                                </label>
-                                            </div>
+                                            <FileUpload
+                                                placeholder="Constancia de CUIT"
+                                                extensions={[
+                                                    'jpg',
+                                                    'pdf',
+                                                    'jpeg'
+                                                ]}
+                                                type="cuitDestinatario"
+                                            />
                                         </div>
                                     </section>
                                 </div>
