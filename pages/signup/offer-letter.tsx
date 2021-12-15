@@ -49,7 +49,7 @@ const Page: NextPage = () => {
                 identityProvider: state.user.providerId,
                 role: 'PROVIDER',
                 name: state.userCn,
-                controllerCompanyCuit: state.datosEmpresa.cuit
+                controllerCompanyCuit: state.datosEmpresa.cuit.value
             }
         )
         router.push('/signup/success')

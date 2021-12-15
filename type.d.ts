@@ -15,7 +15,7 @@ type Company = {
     grupoEconomico: string
     medio: string
     cuit: {
-        value: number
+        value: string
         constancia: string
     }
     iibb: {

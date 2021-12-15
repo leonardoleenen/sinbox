@@ -21,8 +21,10 @@ const Page: NextPage = () => {
                             <p className="text-sm md:text-base text-white pt-8">
                                 Tenemos un registro con su usuario para la
                                 empresa{' '}
-                                <b>{state.companyInReview?.razonSocial}</b>.
-                                Dicha solicitud se encuentra en proceso de
+                                <b>
+                                    {state.companyInReview?.razonSocial.value}
+                                </b>
+                                . Dicha solicitud se encuentra en proceso de
                                 revisión. Por favor aguarde a ser contactado.
                                 Dicho contacto se realizará por comunicación
                                 oficial al mail{' '}

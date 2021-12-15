@@ -6,7 +6,10 @@ interface FileUpload {
     placeholder: string
     extensions: Array<string>
     type: string
+    readonly?: boolean
+    optionalParams?: any
 }
+
 interface FileInfo {
     extension: string
     size: number
@@ -16,7 +19,9 @@ interface FileInfo {
 const FileUpload: NextPage<FileUpload> = ({
     placeholder,
     extensions,
-    type
+    type,
+    readonly = false,
+    optionalParams = undefined
 }) => {
     const state = SignUpStore.useState(s => s)
     /*Manage blob*/
@@ -149,10 +154,18 @@ const FileUpload: NextPage<FileUpload> = ({
 
                 <input
                     type="file"
+                    readOnly={readonly}
                     onChange={onChangeHandler}
                     className="hidden"
                 />
             </label>
+            {optionalParams && (
+                <>
+                    <span>{optionalParams[0]?.name}</span>
+                    <span>{optionalParams[0]?.extension}</span>
+                    <span>{optionalParams[0]?.size}</span>
+                </>
+            )}
             {fileInfo?.fileName && (
                 <>
                     <span>{fileInfo?.fileName}</span>

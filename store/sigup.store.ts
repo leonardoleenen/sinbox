@@ -24,18 +24,18 @@ export const SignUpStore = new Store<ISignUpStore>({
         grupoEconomico: '',
         medio: '',
         cuit: {
-            nro: 0,
+            value: '',
             constancia: ''
         },
         iibb: {
-            nro: 0,
+            value: 0,
             constancia: ''
         },
         domicilioLegal: '',
         destinatarioFactura: {
             nombreComercial: '',
             cuit: {
-                nro: 0,
+                value: 0,
                 constancia: ''
             },
             condicionAfip: ''
