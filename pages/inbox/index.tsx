@@ -1,20 +1,33 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import Container from '../../components/container'
 import Header from '../../components/header'
+import { businessService } from '../../services/business.service'
+import { InboxStore } from '../../store/inbox.store'
+import _ from 'lodash'
 
 const Page: NextPage = () => {
     const router = useRouter()
+    const state = InboxStore.useState(s => s)
 
-    // router.push('/inbox/welcome')
+    useEffect(() => {
+        businessService.getProviderPendingToApprove().then(qs => {
+            InboxStore.update(s => {
+                s.providersToApprove = qs.docs.map(d => d.data()) as any
+            })
+        })
+    }, [])
+
+    console.log(state.providersToApprove)
+
     return (
         <div>
             <Header />
             <Container>
                 <div className="my-6">
                     <h2 className="text-2xl mb-2 leading-tight font-bold font-heading">
-                        Mis certificaciones
+                        Bandeja de tramites pendientes
                     </h2>
                 </div>
 
@@ -23,36 +36,31 @@ const Page: NextPage = () => {
                         <thead>
                             <tr>
                                 <th></th>
-                                <th>Name</th>
-                                <th>Job</th>
-                                <th>Favorite Color</th>
+                                <th>Tipo</th>
+                                <th>Grupo Economico</th>
+                                <th>Fecha Solicitud</th>
+                                <th>Presentado por</th>
+                                <th>Accion</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <th>9</th>
-                                <td>Lesya Tinham</td>
-                                <td>Safety Technician IV</td>
-                                <td>Maroon</td>
-                            </tr>
-                            <tr>
-                                <th>10</th>
-                                <td>Zaneta Tewkesbury</td>
-                                <td>VP Marketing</td>
-                                <td>Green</td>
-                            </tr>
-                            <tr>
-                                <th>11</th>
-                                <td>Andy Tipple</td>
-                                <td>Librarian</td>
-                                <td>Indigo</td>
-                            </tr>
-                            <tr>
-                                <th>12</th>
-                                <td>Sophi Biles</td>
-                                <td>Recruiting Manager</td>
-                                <td>Maroon</td>
-                            </tr>
+                            {state.providersToApprove.map((e, i) => (
+                                <tr key={`form${i + 1}`}>
+                                    <th>{i + 1}</th>
+                                    <td>Nueva alta</td>
+                                    <td>{e.grupoEconomico}</td>
+                                    <td>Completar</td>
+                                    <td>{e.representante.nombreApellido}</td>
+                                    <td>
+                                        <select className="select select-bordered w-full max-w-xs">
+                                            <option>Elija una accion</option>
+                                            <option>Revisar </option>
+                                            <option>Revisar y aprobar</option>
+                                            <option>Revisar y rechazar</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
                 </div>

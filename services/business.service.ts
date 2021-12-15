@@ -1,4 +1,12 @@
-import { getDocs, collection, doc, getDoc, setDoc } from 'firebase/firestore'
+import {
+    getDocs,
+    collection,
+    query,
+    doc,
+    getDoc,
+    setDoc,
+    where
+} from 'firebase/firestore'
 import { firebaseManager } from './firebase.services'
 
 class BusinessService {
@@ -22,6 +30,14 @@ class BusinessService {
             user.controllerCompanyCuit as string
         )
         return company
+    }
+
+    async getProviderPendingToApprove() {
+        const q = query(
+            collection(firebaseManager.getDB(), 'provider'),
+            where('status', '==', 'PENDING')
+        )
+        return getDocs(q)
     }
 }
 
