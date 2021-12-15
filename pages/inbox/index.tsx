@@ -23,8 +23,31 @@ const Page: NextPage = () => {
 
     return (
         <div>
+            <div id="company-data" className="modal">
+                <div className="modal-box">
+                    <p>
+                        Enim dolorem dolorum omnis atque necessitatibus.
+                        Consequatur aut adipisci qui iusto illo eaque.
+                        Consequatur repudiandae et. Nulla ea quasi eligendi.
+                        Saepe velit autem minima.
+                    </p>
+                    <div className="modal-action">
+                        <a href="/inbox" className="btn btn-primary">
+                            Accept
+                        </a>
+                        <a href="/inbox" className="btn">
+                            Close
+                        </a>
+                    </div>
+                </div>
+            </div>
+
             <Header />
             <Container>
+                <a href="/inbox#company-data" className="btn btn-primary">
+                    open modal
+                </a>
+
                 <div className="my-6">
                     <h2 className="text-2xl mb-2 leading-tight font-bold font-heading">
                         Bandeja de tramites pendientes
