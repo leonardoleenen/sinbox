@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import Container from '../../components/container'
@@ -10,7 +10,7 @@ import _ from 'lodash'
 const Page: NextPage = () => {
     const router = useRouter()
     const state = InboxStore.useState(s => s)
-
+    const [companyId, setCompanyId] = useState<string>()
     useEffect(() => {
         businessService.getProviderPendingToApprove().then(qs => {
             InboxStore.update(s => {
@@ -19,23 +19,24 @@ const Page: NextPage = () => {
         })
     }, [])
 
-    console.log(state.providersToApprove)
+    const selectCompany = async (cuit: string) => {
+        setCompanyId(await businessService.getCompanyIdByCuit(cuit))
+    }
 
     return (
         <div>
             <div id="company-data" className="modal">
                 <div className="modal-box">
                     <p>
-                        Enim dolorem dolorum omnis atque necessitatibus.
-                        Consequatur aut adipisci qui iusto illo eaque.
-                        Consequatur repudiandae et. Nulla ea quasi eligendi.
-                        Saepe velit autem minima.
+                        <iframe
+                            src={companyId && `/inscription?id=${companyId}`}
+                        />
                     </p>
                     <div className="modal-action">
-                        <a href="/inbox" className="btn btn-primary">
+                        <a href="/inbox#" className="btn btn-primary">
                             Accept
                         </a>
-                        <a href="/inbox" className="btn">
+                        <a href="/inbox#" className="btn">
                             Close
                         </a>
                     </div>
@@ -75,7 +76,12 @@ const Page: NextPage = () => {
                                     <td>Completar</td>
                                     <td>{e.representante.nombreApellido}</td>
                                     <td>
-                                        <select className="select select-bordered w-full max-w-xs">
+                                        <select
+                                            onChange={() =>
+                                                selectCompany(e.cuit.value)
+                                            }
+                                            className="select select-bordered w-full max-w-xs"
+                                        >
                                             <option>Elija una accion</option>
                                             <option>Revisar </option>
                                             <option>Revisar y aprobar</option>

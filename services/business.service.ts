@@ -46,6 +46,14 @@ class BusinessService {
         return company
     }
 
+    async getCompanyIdByCuit(cuit: string) {
+        const q = query(
+            collection(firebaseManager.getDB(), 'provider'),
+            where('cuit.value', '==', cuit)
+        )
+        return (await (await getDocs(q)).docs.map(d => d.id)[0]) as string
+    }
+
     async getProviderPendingToApprove() {
         const q = query(
             collection(firebaseManager.getDB(), 'provider'),
