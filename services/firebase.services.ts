@@ -5,9 +5,10 @@ import {
     ref,
     uploadBytes,
     deleteObject,
-    list
+    getMetadata
 } from 'firebase/storage'
 import '@firebase/firestore'
+import _ from 'lodash'
 
 class FirebaseManager {
     private firebaseApp: any
@@ -34,10 +35,29 @@ class FirebaseManager {
         return deleteObject(storageRef)
     }
     getFile(fileName: any) {
-        const listRef = ref(this.storage, `files/${fileName}`)
-        return listRef.fullPath
+        const listRef = ref(this.storage, `${fileName}`)
+        return getMetadata(listRef)
     }
-    // updateFile(file) { }
+    async getFilesByProvider(provider: any) {
+        const arrayFiles = []
+        for (const i in provider) {
+            if (_.has(provider[i], 'constancia')) {
+                const constancia = provider[i].constancia
+                if (constancia !== '') {
+                    const { size, contentType, name } = await this.getFile(
+                        constancia
+                    )
+                    arrayFiles.push({
+                        type: i.toString(),
+                        name: name,
+                        size,
+                        extension: contentType?.split('/')[1]
+                    })
+                }
+            }
+        }
+        return arrayFiles
+    }
     getDB() {
         return getFirestore()
     }
