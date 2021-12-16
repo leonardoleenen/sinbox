@@ -674,11 +674,6 @@
     lodash.merge "^4.6.2"
     lodash.uniq "^4.5.0"
 
-"@types/estree@0.0.39":
-  version "0.0.39"
-  resolved "https://registry.yarnpkg.com/@types/estree/-/estree-0.0.39.tgz#e177e699ee1b8c22d23174caaa7422644389509f"
-  integrity sha512-EYNwp3bU+98cpU4lAWYYL7Zz+2gryWH1qbdDTidVd6hkiR6weksdbMadyXKXNPEkQFhXM+hVO9ZygomHXp+AIw==
-
 "@types/json-schema@^7.0.9":
   version "7.0.9"
   resolved "https://registry.npmjs.org/@types/json-schema/-/json-schema-7.0.9.tgz"
@@ -3715,14 +3710,6 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
     hash-base "^3.0.0"
     inherits "^2.0.1"
 
-rollup@^0.61.2:
-  version "0.61.2"
-  resolved "https://registry.yarnpkg.com/rollup/-/rollup-0.61.2.tgz#30a953736964683a5b8ea952b137a393d84e6302"
-  integrity sha512-NN7GaX3c9I3oz+CjEex7+JbnSxrLMTBXNRThI4qdN2Tq0K/7RiedlEzOHyuVAHPZKvQeoPiRioTWL3xhmN+oCg==
-  dependencies:
-    "@types/estree" "0.0.39"
-    "@types/node" "*"
-
 run-parallel@^1.1.9:
   version "1.2.0"
   resolved "https://registry.npmjs.org/run-parallel/-/run-parallel-1.2.0.tgz"
@@ -4235,13 +4222,6 @@ watchpack@2.1.1:
   dependencies:
     glob-to-regexp "^0.4.1"
     graceful-fs "^4.1.2"
-
-webauthn-simple-app@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/webauthn-simple-app/-/webauthn-simple-app-2.0.0.tgz#c239c46e39b230cf6c60e7b3d14553a4165b8ee0"
-  integrity sha512-oZ59SYX4iqX+2y+/A3kCI3OhhiaQ33QMr8HTR/hAcpfpR2/xUWUA2wYftSB4W8MRTgpLGuHUVna4gJhUwNvNfQ==
-  dependencies:
-    rollup "^0.61.2"
 
 webidl-conversions@^3.0.0:
   version "3.0.1"

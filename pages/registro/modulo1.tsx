@@ -3,7 +3,7 @@ import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { SignUpStore } from '../../store/sigup.store'
 import { businessService } from '../../services/business.service'
-import { WebAuthnApp } from 'webauthn-simple-app'
+
 const Page: NextPage = () => {
     const router = useRouter()
     const state = SignUpStore.useState(s => s)

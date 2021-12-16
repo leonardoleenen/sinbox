@@ -64,9 +64,9 @@ const Page: NextPage = () => {
                             {state.providersToApprove.map((e, i) => (
                                 <tr key={`form${i + 1}`}>
                                     <th>{i + 1}</th>
-                                    <td>Nueva alta</td>
+                                    <td>Alta proveedor prensa</td>
                                     <td>{e.grupoEconomico}</td>
-                                    <td>Completar</td>
+                                    <td>01/12/2021</td>
                                     <td>{e.representante.nombreApellido}</td>
                                     <td>
                                         <select
@@ -83,6 +83,51 @@ const Page: NextPage = () => {
                                     </td>
                                 </tr>
                             ))}
+                            <tr>
+                                <th>2</th>
+                                <td>Alta proveedor prensa</td>
+                                <td>FM Radio Santa Fe</td>
+                                <td>01/12/2021</td>
+                                <td>Francico Alvarez</td>
+                                <td>
+                                    <select className="select select-bordered w-full max-w-xs">
+                                        <option>Elija una accion</option>
+                                        <option>Revisar </option>
+                                        <option>Revisar y aprobar</option>
+                                        <option>Revisar y rechazar</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>3</th>
+                                <td>Alta proveedor prensa</td>
+                                <td>AM Radio Santa Fe</td>
+                                <td>01/12/2021</td>
+                                <td>Patricio Molina</td>
+                                <td>
+                                    <select className="select select-bordered w-full max-w-xs">
+                                        <option>Elija una accion</option>
+                                        <option>Revisar </option>
+                                        <option>Revisar y aprobar</option>
+                                        <option>Revisar y rechazar</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>4</th>
+                                <td>Certificación servicios Prensa</td>
+                                <td>AM Radio Santa Fe</td>
+                                <td>03/12/2021</td>
+                                <td>Patricio Molina</td>
+                                <td>
+                                    <select className="select select-bordered w-full max-w-xs">
+                                        <option>Elija una accion</option>
+                                        <option>Revisar </option>
+                                        <option>Revisar y aprobar</option>
+                                        <option>Revisar y rechazar</option>
+                                    </select>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
