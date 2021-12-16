@@ -48,6 +48,7 @@ type TariffOffer = {
 }
 
 type RegistroPropiedad ={
+    acto:string,
     actoYMonto: Array<{
         lote:string,
         manzana:string,

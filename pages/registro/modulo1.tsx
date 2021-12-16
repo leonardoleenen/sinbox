@@ -18,6 +18,7 @@ const Page: NextPage = () => {
             plano: string
         }>
     }>()
+
     
     return (
         <div>
@@ -45,6 +46,8 @@ const Page: NextPage = () => {
                                                     type="text"
                                                     placeholder="Acto y monto"
                                                     className="input input-bordered"
+                                                    
+                                                   
                                                 />
                                             </div>
                                         </div>
