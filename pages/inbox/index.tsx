@@ -11,6 +11,7 @@ const Page: NextPage = () => {
     const router = useRouter()
     const state = InboxStore.useState(s => s)
     const [companyId, setCompanyId] = useState<string>()
+    const [showCompanyData, setShowCompanyData] = useState(false)
     useEffect(() => {
         businessService.getProviderPendingToApprove().then(qs => {
             InboxStore.update(s => {
@@ -21,34 +22,26 @@ const Page: NextPage = () => {
 
     const selectCompany = async (cuit: string) => {
         setCompanyId(await businessService.getCompanyIdByCuit(cuit))
+        setShowCompanyData(true)
     }
 
+    const DataCompanyModal = () => {
+        return (
+            <div className="h-screen w-screen">
+                <div></div>
+                <iframe
+                    className="h-screen w-screen"
+                    src={companyId && `/inscription?id=${companyId}`}
+                />
+            </div>
+        )
+    }
+
+    if (showCompanyData) return <DataCompanyModal />
     return (
         <div>
-            <div id="company-data" className="modal">
-                <div className="modal-box">
-                    <p>
-                        <iframe
-                            src={companyId && `/inscription?id=${companyId}`}
-                        />
-                    </p>
-                    <div className="modal-action">
-                        <a href="/inbox#" className="btn btn-primary">
-                            Accept
-                        </a>
-                        <a href="/inbox#" className="btn">
-                            Close
-                        </a>
-                    </div>
-                </div>
-            </div>
-
             <Header />
             <Container>
-                <a href="/inbox#company-data" className="btn btn-primary">
-                    open modal
-                </a>
-
                 <div className="my-6">
                     <h2 className="text-2xl mb-2 leading-tight font-bold font-heading">
                         Bandeja de tramites pendientes
@@ -71,9 +64,9 @@ const Page: NextPage = () => {
                             {state.providersToApprove.map((e, i) => (
                                 <tr key={`form${i + 1}`}>
                                     <th>{i + 1}</th>
-                                    <td>Nueva alta</td>
+                                    <td>Alta proveedor prensa</td>
                                     <td>{e.grupoEconomico}</td>
-                                    <td>Completar</td>
+                                    <td>01/12/2021</td>
                                     <td>{e.representante.nombreApellido}</td>
                                     <td>
                                         <select
@@ -90,6 +83,51 @@ const Page: NextPage = () => {
                                     </td>
                                 </tr>
                             ))}
+                            <tr>
+                                <th>2</th>
+                                <td>Alta proveedor prensa</td>
+                                <td>FM Radio Santa Fe</td>
+                                <td>01/12/2021</td>
+                                <td>Francico Alvarez</td>
+                                <td>
+                                    <select className="select select-bordered w-full max-w-xs">
+                                        <option>Elija una accion</option>
+                                        <option>Revisar </option>
+                                        <option>Revisar y aprobar</option>
+                                        <option>Revisar y rechazar</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>3</th>
+                                <td>Alta proveedor prensa</td>
+                                <td>AM Radio Santa Fe</td>
+                                <td>01/12/2021</td>
+                                <td>Patricio Molina</td>
+                                <td>
+                                    <select className="select select-bordered w-full max-w-xs">
+                                        <option>Elija una accion</option>
+                                        <option>Revisar </option>
+                                        <option>Revisar y aprobar</option>
+                                        <option>Revisar y rechazar</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>4</th>
+                                <td>Certificación servicios Prensa</td>
+                                <td>AM Radio Santa Fe</td>
+                                <td>03/12/2021</td>
+                                <td>Patricio Molina</td>
+                                <td>
+                                    <select className="select select-bordered w-full max-w-xs">
+                                        <option>Elija una accion</option>
+                                        <option>Revisar </option>
+                                        <option>Revisar y aprobar</option>
+                                        <option>Revisar y rechazar</option>
+                                    </select>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
