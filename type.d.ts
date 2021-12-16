@@ -107,4 +107,12 @@ type RegistroPropiedad ={
         tipo:string,
         fraccion:string
     }>,
+    solicitante:string,
+    registroNro:string,
+    localidad:string,
+    domicilio:string,
+    provincia:string,
+    telefono:number,
+    seAgregan:string,
+    observaciones:string
 }
