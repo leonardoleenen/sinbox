@@ -385,7 +385,39 @@ const Page: NextPage = () => {
                                                     />
                                                 </div>
                                             </div>
+                                            <div className="mb-4 flex">
+                                                <div className="form-control w-full">
+                                                    <input
+                                                        type="text"
+                                                        placeholder="NO "
+                                                        className="input input-bordered"
+                                                    />
+                                                </div>
+                                                <div className="form-control w-full ml-4">
+                                                    <input
+                                                        type="text"
+                                                        placeholder="NE"
+                                                        className="input input-bordered"
+                                                    />
+                                                </div>
+                                            </div>
 
+                                            <div className="mb-4 flex">
+                                                <div className="form-control w-full">
+                                                    <input
+                                                        type="text"
+                                                        placeholder="SO "
+                                                        className="input input-bordered"
+                                                    />
+                                                </div>
+                                                <div className="form-control w-full ml-4">
+                                                    <input
+                                                        type="text"
+                                                        placeholder="SE"
+                                                        className="input input-bordered"
+                                                    />
+                                                </div>
+                                            </div>
                                             <div className="max-w-md mb-8 mx-auto">
                                                 <span className="text-sm text-blueGray-400">
                                                     Cuando es propiedad

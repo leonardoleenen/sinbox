@@ -75,5 +75,35 @@ type RegistroPropiedad ={
     superficie:string,
     plano:string,
     anio:string,
-    arranque:string
+    arranque:string,
+    norte:string,
+    sur:string,
+    este:string,
+    oeste:string,
+    noroeste:string,
+    noreste:string,
+    sureste:string,
+    suroeste:string,
+    unidad:string,
+    parcela:string,
+    ubicadaPlanta:string,
+    superficie:string,
+    valor:string,
+    comun:string,
+    personaHumana:boolean,
+    personaJuridica:boolean,
+    humana: Array<{
+        apellido:string,
+        nombre:string,
+        numeroDocumento:string,
+        tipoDocumento:string,
+        cuit:string,
+        fraccion:string
+    }>,
+    juridica: Array<{
+        denominacion:string,
+        cuit:string,
+        tipo:string,
+        fraccion:string
+    }>,
 }
