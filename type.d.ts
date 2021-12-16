@@ -46,3 +46,34 @@ type TariffOffer = {
     medio: string
     precio: number
 }
+
+type RegistroPropiedad ={
+    actoYMonto: Array<{
+        lote:string,
+        manzana:string,
+        plano:string,
+        anio:number
+
+    }>,
+    dominio:boolean,
+    propiedadHorizontal:boolean,
+    departamento:string,
+    matricula:string,
+    inscripcion: Array<{
+        tomo:string,
+        folio:string,
+        numero:string,
+    }>,
+    ubicacion:string,
+    zona:string,
+    localidad:string,
+    calle:string,
+    numero:string,
+    entreCalles:string,
+    lote:string,
+    manzana:string,
+    superficie:string,
+    plano:string,
+    anio:string,
+    arranque:string
+}

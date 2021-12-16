@@ -3,6 +3,7 @@ import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { SignUpStore } from '../../store/sigup.store'
 import { businessService } from '../../services/business.service'
+import { loadDefaultErrorComponents } from 'next/dist/server/load-components'
 
 const Page: NextPage = () => {
     const router = useRouter()
@@ -17,6 +18,7 @@ const Page: NextPage = () => {
             plano: string
         }>
     }>()
+    
     return (
         <div>
             <section className="py-20 flex h-screen ">
@@ -52,31 +54,41 @@ const Page: NextPage = () => {
                                                 mayor area inscripta,determinar:
                                             </span>
                                         </div>
-
-                                        <div className="mb-2 flex ">
-                                            <div className="form-control w-full">
-                                                <input
-                                                    type="text"
-                                                    placeholder="Lote"
-                                                    className="input input-bordered"
-                                                />
+                                        <div className="mb-4 flex">
+                                                <div className="form-control w-full">
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Lote"
+                                                        className="input input-bordered"
+                                                    />
+                                                </div>
+                                                <div className="form-control w-full ml-4">
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Manzana"
+                                                        className="input input-bordered"
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className="mb-4 flex">
+                                                <div className="form-control w-full">
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Plano"
+                                                        className="input input-bordered"
+                                                    />
+                                                </div>
+                                                <div className="form-control w-full ml-4">
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Año"
+                                                        className="input input-bordered"
+                                                    />
+                                                </div>
                                             </div>
 
-                                            <div className="form-control ml-4 w-full ">
-                                                <input
-                                                    type="text"
-                                                    placeholder="Manzana"
-                                                    className="input input-bordered"
-                                                />
-                                            </div>
-                                            <div className="form-control ml-4 w-full ">
-                                                <input
-                                                    type="text"
-                                                    placeholder="Plano"
-                                                    className="input input-bordered"
-                                                />
-                                            </div>
-                                        </div>
+                                       
+                                        
 
                                         <div className="mb-8 flex ">
                                             <div className="form-control">
@@ -93,9 +105,8 @@ const Page: NextPage = () => {
                                                         <tr>
                                                             <th>Lote/s</th>
                                                             <th>Manzana</th>
-                                                            <th>
-                                                                Plano N /año
-                                                            </th>
+                                                            <th> Plano N </th>
+                                                            <th> Año</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -231,30 +242,42 @@ const Page: NextPage = () => {
                                                         className="input input-bordered"
                                                     />
                                                 </div>
-                                                <div className="form-control w-full ml-4">
+                                               
+                                            </div>
+
+                                            <div className="mb-4 flex">
+                                            <div className="form-control w-full ">
                                                     <input
                                                         type="text"
                                                         placeholder="Zona"
                                                         className="input input-bordered"
                                                     />
                                                 </div>
-                                            </div>
-
-                                            <div className="mb-4 flex">
-                                                <div className="form-control w-full">
+                                                <div className="form-control w-full ml-4">
                                                     <input
                                                         type="text"
                                                         placeholder="Localidad"
                                                         className="input input-bordered"
                                                     />
                                                 </div>
-                                                <div className="form-control w-full ml-4">
+                                                
+                                            </div>
+                                            <div className="mb-4 flex">
+                                            <div className="form-control w-full">
                                                     <input
                                                         type="text"
-                                                        placeholder="Calle y Nro"
+                                                        placeholder="Calle"
                                                         className="input input-bordered"
                                                     />
                                                 </div>
+                                                <div className="form-control w-full ml-4">
+                                                    <input
+                                                        type="text"
+                                                        placeholder="numero"
+                                                        className="input input-bordered"
+                                                    />
+                                                </div>
+                                                
                                             </div>
 
                                             <div className="mb-4 ">
@@ -275,26 +298,39 @@ const Page: NextPage = () => {
                                                     />
                                                 </div>
 
-                                                <div className="form-control ml-4 w-full ">
+                                                <div className="form-control ml-4 w-full ml-4 ">
                                                     <input
                                                         type="text"
                                                         placeholder="Manzana"
                                                         className="input input-bordered"
                                                     />
                                                 </div>
-                                                <div className="form-control ml-4 w-full ">
+                                               
+                                            </div>
+                                            <div className="mb-4 flex ">
+                                                <div className="form-control w-full">
                                                     <input
                                                         type="text"
                                                         placeholder="Superficie"
                                                         className="input input-bordered"
                                                     />
                                                 </div>
+
+                                                <div className="form-control ml-4 w-full ">
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Plano"
+                                                        className="input input-bordered"
+                                                    />
+                                                </div>
+                                               
                                             </div>
+
                                             <div className="mb-4 flex ">
                                                 <div className="form-control w-full">
                                                     <input
                                                         type="text"
-                                                        placeholder="Plano nro / año"
+                                                        placeholder="Año"
                                                         className="input input-bordered"
                                                     />
                                                 </div>
@@ -306,9 +342,8 @@ const Page: NextPage = () => {
                                                         className="input input-bordered"
                                                     />
                                                 </div>
-                                                <div className="form-control ml-4 w-full "></div>
+                                                
                                             </div>
-
                                             <div className="max-w-md mb-8 mx-auto">
                                                 <span className="text-sm text-blueGray-400">
                                                     Rumbos, medidas lineales y
