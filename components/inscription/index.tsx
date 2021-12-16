@@ -17,7 +17,7 @@ interface Inscription {
     filesOpts?: Array<FilesOpts>
 }
 
-const Inscription: NextPage<Inscription> = ({ readonly, filesOpts }) => {
+const Inscription: NextPage<Inscription> = ({ readonly, filesOpts = [] }) => {
     const state = SignUpStore.useState(s => s)
     const router = useRouter()
     const onSubmit = (data: any) => {
@@ -88,7 +88,7 @@ const Inscription: NextPage<Inscription> = ({ readonly, filesOpts }) => {
                                 <div className="mb-4">
                                     <div className="form-control">
                                         <select
-                                            aria-readonly={readonly}
+                                            disabled={readonly}
                                             {...register('medio', {
                                                 required: true,
                                                 minLength: {
@@ -162,11 +162,16 @@ const Inscription: NextPage<Inscription> = ({ readonly, filesOpts }) => {
                                         />
                                     </div>
                                     <FileUpload
-                                        optionalParams={filesOpts?.filter(f => {
-                                            const file =
-                                                f.type === 'razonSocial'
-                                            return file
-                                        })}
+                                        optionalParams={
+                                            filesOpts?.length > 0
+                                                ? filesOpts?.filter(f => {
+                                                      const file =
+                                                          f.type ===
+                                                          'razonSocial'
+                                                      return file
+                                                  })
+                                                : filesOpts
+                                        }
                                         readonly={readonly}
                                         placeholder="Contrato Social"
                                         extensions={['jpg', 'pdf', 'jpeg']}
@@ -183,6 +188,7 @@ const Inscription: NextPage<Inscription> = ({ readonly, filesOpts }) => {
                                             {...register('cuit', {
                                                 required: true
                                             })}
+                                            readOnly={readonly}
                                             placeholder="Cuit"
                                             className={`input input-bordered ${
                                                 errors.cuit &&
@@ -214,6 +220,7 @@ const Inscription: NextPage<Inscription> = ({ readonly, filesOpts }) => {
                                             {...register('iibb', {
                                                 required: true
                                             })}
+                                            readOnly={readonly}
                                             className={`input input-bordered ${
                                                 errors.iibb &&
                                                 dirtyFields.iibb &&
@@ -241,6 +248,7 @@ const Inscription: NextPage<Inscription> = ({ readonly, filesOpts }) => {
                                                 state.datosEmpresa
                                                     .domicilioLegal
                                             }
+                                            readOnly={readonly}
                                             {...register('domicilioLegal', {
                                                 required: true
                                             })}
@@ -259,6 +267,7 @@ const Inscription: NextPage<Inscription> = ({ readonly, filesOpts }) => {
                                     <div className="mb-4">
                                         <div className="form-control">
                                             <select
+                                                disabled={readonly}
                                                 {...register(
                                                     'condicionAfipDestinatario',
                                                     {
@@ -306,6 +315,7 @@ const Inscription: NextPage<Inscription> = ({ readonly, filesOpts }) => {
                                                         .destinatarioFactura
                                                         .nombreComercial
                                                 }
+                                                readOnly={readonly}
                                                 {...register(
                                                     'nombreComercialDestinatario',
                                                     {
@@ -337,6 +347,7 @@ const Inscription: NextPage<Inscription> = ({ readonly, filesOpts }) => {
                                                         required: true
                                                     }
                                                 )}
+                                                readOnly={readonly}
                                                 placeholder="Cuit"
                                                 className={`input input-bordered ${
                                                     errors.cuitDestinatario &&
@@ -351,7 +362,7 @@ const Inscription: NextPage<Inscription> = ({ readonly, filesOpts }) => {
                                                 f => {
                                                     const file =
                                                         f.type ===
-                                                        'cuitDestinatario'
+                                                        'destinatarioFactura.cuit'
                                                     return file
                                                 }
                                             )}

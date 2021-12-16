@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import type { NextPage } from 'next'
 import { firebaseManager } from '../../services/firebase.services'
 import { SignUpStore } from '../../store/sigup.store'
@@ -21,22 +21,41 @@ const FileUpload: NextPage<FileUpload> = ({
     extensions,
     type,
     readonly = false,
-    optionalParams = undefined
+    optionalParams = []
 }) => {
     const state = SignUpStore.useState(s => s)
     /*Manage blob*/
     const [file, setFile] = useState<any>({})
     const [blob, setBlob] = useState<any>()
     /*File info set in state*/
-    const [fileInfo, setFileInfo] = useState<FileInfo>()
+    const [fileInfo, setFileInfo] = useState<any>()
     const [preview, setPreview] = useState(false)
+    const [deleted, setDeleted] = useState(false)
+    useEffect(() => {
+        if (optionalParams.length > 0 && !deleted) {
+            setFileInfo({
+                extension: optionalParams[0].extension,
+                size: optionalParams[0].size,
+                fileName: optionalParams[0].name
+            })
+        }
+    }, [optionalParams])
     const previewFile = async () => {
-        const blob = URL.createObjectURL(file.get('file'))
+        let blob
+        console.log(fileInfo)
+        if (optionalParams.length > 0) {
+            const url = await firebaseManager.getFileUrl(
+                optionalParams[0].fullPath
+            )
+            blob = url
+        } else {
+            blob = URL.createObjectURL(file.get('file'))
+        }
         setBlob(blob)
         setPreview(!preview)
     }
     const deleteFile = () => {
-        if (fileInfo?.fileName) {
+        if (fileInfo?.fileName || optionalParams.length > 0) {
             if (preview) {
                 setPreview(false)
                 setBlob({})
@@ -46,6 +65,7 @@ const FileUpload: NextPage<FileUpload> = ({
             firebaseManager
                 .deleteFile(fileInfo?.fileName)
                 .then(snapshot => {
+                    setDeleted(true)
                     SignUpStore.update(s => {
                         switch (type) {
                             case 'cuitDestinatario':
@@ -159,13 +179,6 @@ const FileUpload: NextPage<FileUpload> = ({
                     className="hidden"
                 />
             </label>
-            {optionalParams && (
-                <>
-                    <span>{optionalParams[0]?.name}</span>
-                    <span>{optionalParams[0]?.extension}</span>
-                    <span>{optionalParams[0]?.size}</span>
-                </>
-            )}
             {fileInfo?.fileName && (
                 <>
                     <span>{fileInfo?.fileName}</span>

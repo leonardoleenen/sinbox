@@ -16,13 +16,19 @@ const InscriptionPage: NextPage = () => {
         ;(async () => {
             if (id) {
                 const company = await businessService.getCompany(id.toString())
-                firebaseManager.getFilesByProvider(company).then((res: any) => {
-                    setFiles(res)
-                })
-                SignUpStore.update(s => {
-                    s.datosEmpresa = company
-                    s.loading = false
-                })
+                if(!company){
+                    console.error('No id provided')
+                    router.push('/')
+                }else{
+                    firebaseManager.getFilesByProvider(company).then((res: any) => {
+                        setFiles(res)
+                    })
+                    SignUpStore.update(s => {
+                        s.datosEmpresa = company
+                        s.loading = false
+                    })
+                }
+                
             }
         })()
     }, [id])

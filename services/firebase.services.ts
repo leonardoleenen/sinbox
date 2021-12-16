@@ -5,7 +5,8 @@ import {
     ref,
     uploadBytes,
     deleteObject,
-    getMetadata
+    getMetadata,
+    getDownloadURL
 } from 'firebase/storage'
 import '@firebase/firestore'
 import _ from 'lodash'
@@ -38,20 +39,37 @@ class FirebaseManager {
         const listRef = ref(this.storage, `${fileName}`)
         return getMetadata(listRef)
     }
+    async getFileUrl(fullPath: string) {
+        return getDownloadURL(ref(this.storage, fullPath))
+    }
     async getFilesByProvider(provider: any) {
         const arrayFiles = []
         for (const i in provider) {
             if (_.has(provider[i], 'constancia')) {
                 const constancia = provider[i].constancia
                 if (constancia !== '') {
-                    const { size, contentType, name } = await this.getFile(
-                        constancia
-                    )
+                    const { size, contentType, name, fullPath } =
+                        await this.getFile(constancia)
                     arrayFiles.push({
                         type: i.toString(),
                         name: name,
                         size,
-                        extension: contentType?.split('/')[1]
+                        extension: contentType?.split('/')[1],
+                        fullPath
+                    })
+                }
+            }
+            if (_.has(provider[i].cuit, 'constancia')) {
+                const constancia = provider[i].cuit.constancia
+                if (constancia !== '') {
+                    const { size, contentType, name, fullPath } =
+                        await this.getFile(constancia)
+                    arrayFiles.push({
+                        type: `${i.toString()}.cuit`,
+                        name: name,
+                        size,
+                        extension: contentType?.split('/')[1],
+                        fullPath
                     })
                 }
             }
