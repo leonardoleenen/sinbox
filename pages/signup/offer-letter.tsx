@@ -32,12 +32,13 @@ const Page: NextPage = () => {
         SignUpStore.update(s => {
             s.loading = true
         })
+        console.log(state.user)
         await businessService.saveCompany(
             {
                 ...state.datosEmpresa,
                 representante: {
                     email: state.email,
-                    id: state.user.uid,
+                    id: state.user.uid || state.user.id,
                     nombreApellido: state.userCn,
                     telefono: state.datosEmpresa.representante.telefono
                 },
@@ -45,7 +46,7 @@ const Page: NextPage = () => {
             },
             {
                 iat: 1234,
-                id: state.user.uid,
+                id: state.user.uid || state.user.id,
                 identityProvider: state.user.providerId,
                 role: 'PROVIDER',
                 name: state.userCn,

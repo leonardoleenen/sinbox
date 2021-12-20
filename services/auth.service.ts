@@ -10,6 +10,10 @@ export const setToken = (token: string) => {
     localStorage.setItem('sinbox:token', token)
 }
 
+export const setCredentials = (publicKey: string) => {
+    localStorage.setItem('sinbox:key', publicKey)
+}
+
 export const userAlreadyExist = async (id: string) => {
     const docRef = doc(firebaseManager.getDB(), 'users', id)
     const docSnap = await getDoc(docRef)

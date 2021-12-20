@@ -12,6 +12,7 @@ import { firebaseManager } from './firebase.services'
 import { nanoid } from 'nanoid'
 class BusinessService {
     async saveCompany(data: Company, user: User, id?: string) {
+        console.log(data)
         await setDoc(doc(firebaseManager.getDB(), 'users', user.id), user)
         if (id) {
             await setDoc(doc(firebaseManager.getDB(), 'provider', id), data)

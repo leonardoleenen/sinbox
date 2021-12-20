@@ -50,7 +50,7 @@ const Page: NextPage = props => {
                                         {...register('nombreApellido', {
                                             required: true
                                         })}
-                                        value={state.userCn}
+                                        defaultValue={state.userCn}
                                         placeholder="Nombre y Apellido Completo"
                                         className={`input input-bordered ${
                                             errors.nombreApellido &&
@@ -72,7 +72,7 @@ const Page: NextPage = props => {
                                                 message: 'Email incorrecto'
                                             }
                                         })}
-                                        value={state.email}
+                                        defaultValue={state.email}
                                         placeholder="Email de contacto"
                                         className={`input input-bordered ${
                                             errors.email &&

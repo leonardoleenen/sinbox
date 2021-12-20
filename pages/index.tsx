@@ -15,6 +15,7 @@ import { SignUpStore } from '../store/sigup.store'
 import Loader from '../components/loader'
 import Link from 'next/link'
 import { businessService } from '../services/business.service'
+import { nanoid } from 'nanoid'
 
 const Home: NextPage = () => {
     const router = useRouter()
@@ -42,7 +43,6 @@ const Home: NextPage = () => {
                     router.push('/registro/modulo1')
                     return
                 }
-
                 SignUpStore.update(s => {
                     s.user = user
                     s.userCn = user.displayName as string
@@ -74,7 +74,58 @@ const Home: NextPage = () => {
                 // ...
             })
     }
-
+    const signInToken = async () => {
+        const user_id = nanoid()
+        const credentialsUserId = Uint8Array.from(user_id, c => c.charCodeAt(0))
+        //TODO In production may change id (.env)
+        const publicKeyCredentialCreationOptions: any = {
+            challenge: Uint8Array.from('...', c => c.charCodeAt(0)),
+            rp: {
+                name: 'Sinbox',
+                id: 'localhost'
+            },
+            user: {
+                id: credentialsUserId,
+                name: '',
+                displayName: ''
+            },
+            authenticatorSelection: {
+                authenticatorAttachment: 'platform'
+            },
+            pubKeyCredParams: [{ alg: -7, type: 'public-key' }],
+            timeout: 60000,
+            attestation: 'direct'
+        }
+        try {
+            const credentials = await navigator.credentials.create({
+                publicKey: publicKeyCredentialCreationOptions
+            })
+            console.log(credentials)
+            if (credentials?.id) {
+                const userExist = await userAlreadyExist(credentials.id)
+                SignUpStore.update(s => {
+                    s.user = { id: credentials.id, providerId: 'webauthn' }
+                    s.userCn = ''
+                    s.email = ''
+                })
+                if (!userExist) router.push('/signup')
+                else {
+                    const company = await businessService.getCompanyControlled(
+                        credentials.id
+                    )
+                    SignUpStore.update(s => {
+                        s.companyInReview = company
+                    })
+                    if (company.status === 'APPROVED')
+                        router.push('/inbox/welcome')
+                    if (company.status === 'PENDING')
+                        router.push('/signup/wait-for-approval')
+                }
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
     useEffect(() => {
         setToken(token as string)
         //router.push('/inbox')
@@ -137,7 +188,10 @@ const Home: NextPage = () => {
                             />
                             <span>Ingresar con Google</span>
                         </button>
-                        <button className="flex items-center px-4 py-3 mt-3 w-full text-xs text-blueGray-500 font-semibold leading-none border hover:bg-blueGray-50 rounded">
+                        <button
+                            onClick={signInToken}
+                            className="flex items-center px-4 py-3 mt-3 w-full text-xs text-blueGray-500 font-semibold leading-none border hover:bg-blueGray-50 rounded"
+                        >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 className="h-6 w-6 mr-10"
