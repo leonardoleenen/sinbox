@@ -26,13 +26,16 @@ interface Assertion {
 }
 class WebAuthn {
     constructor() {
-        //Checks that Webauthn is available
-        if (window.PublicKeyCredential) {
-            PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable()
-                .then(available => {
-                    if (available) console.log('Supported, PA available')
-                })
-                .catch(err => console.error('Not supported PA'))
+        const isBrowser = () => typeof window !== 'undefined'
+        if (isBrowser()) {
+            //Checks that Webauthn is available
+            if (window.PublicKeyCredential) {
+                PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable()
+                    .then(available => {
+                        if (available) console.log('Supported, PA available')
+                    })
+                    .catch(err => console.error('Not supported PA'))
+            }
         }
     }
     /**
@@ -48,49 +51,53 @@ class WebAuthn {
     async createCredentials(user: User, opts?: Opts) {
         const user_id = nanoid()
         const credentialsUserId = Uint8Array.from(user_id, c => c.charCodeAt(0))
-        const publicKeyCredentialCreationOptions: any = {
-            challenge: this.getChallenge(),
-            rp: {
-                name: 'Sinbox',
-                id: window.location.hostname || 'localhost'
-            },
-            user: {
-                id: credentialsUserId,
-                name: user.name,
-                displayName: user.displayName
-            },
-            authenticatorSelection: {
-                authenticatorAttachment: opts?.authenticatorType || 'platform'
-            },
-            pubKeyCredParams: [{ alg: -7, type: 'public-key' }]
-        }
-        try {
-            const cred: any = await navigator.credentials.create({
-                publicKey: publicKeyCredentialCreationOptions
-            })
-            //TODO: Register credentials object in server
-            const credentials = {
-                id: cred?.id,
-                rawId: base64url.encode(cred.rawId),
-                type: cred?.type,
-                response: {}
+        const isBrowser = () => typeof window !== 'undefined'
+        if (isBrowser()) {
+            const publicKeyCredentialCreationOptions: any = {
+                challenge: this.getChallenge(),
+                rp: {
+                    name: 'Sinbox',
+                    id: window.location.hostname || 'localhost'
+                },
+                user: {
+                    id: credentialsUserId,
+                    name: user.name,
+                    displayName: user.displayName
+                },
+                authenticatorSelection: {
+                    authenticatorAttachment:
+                        opts?.authenticatorType || 'platform'
+                },
+                pubKeyCredParams: [{ alg: -7, type: 'public-key' }]
             }
-            if (cred.response) {
-                const clientDataJSON = base64url.encode(
-                    cred.response.clientDataJSON
-                )
-                const attestationObject = base64url.encode(
-                    cred.response.attestationObject
-                )
-                credentials.response = {
-                    clientDataJSON,
-                    attestationObject
+            try {
+                const cred: any = await navigator.credentials.create({
+                    publicKey: publicKeyCredentialCreationOptions
+                })
+                //TODO: Register credentials object in server
+                const credentials = {
+                    id: cred?.id,
+                    rawId: base64url.encode(cred.rawId),
+                    type: cred?.type,
+                    response: {}
                 }
+                if (cred.response) {
+                    const clientDataJSON = base64url.encode(
+                        cred.response.clientDataJSON
+                    )
+                    const attestationObject = base64url.encode(
+                        cred.response.attestationObject
+                    )
+                    credentials.response = {
+                        clientDataJSON,
+                        attestationObject
+                    }
+                }
+                localStorage.setItem('credentialId', credentials.id)
+                return credentials
+            } catch (error) {
+                console.log(error)
             }
-            localStorage.setItem('credentialId', credentials.id)
-            return credentials
-        } catch (error) {
-            console.log(error)
         }
     }
     /**
