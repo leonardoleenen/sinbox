@@ -1,21 +1,17 @@
 import type { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import {
     setToken,
     tokenDecode,
     userAlreadyExist
 } from '../services/auth.service'
-import styles from '../styles/Home.module.css'
 import { useRouter } from 'next/router'
 import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
 import { firebaseManager } from '../services/firebase.services'
 import { SignUpStore } from '../store/sigup.store'
 import Loader from '../components/loader'
-import Link from 'next/link'
 import { businessService } from '../services/business.service'
-import { nanoid } from 'nanoid'
+import { webAuthn } from '../services/webauthn.service'
 
 const Home: NextPage = () => {
     const router = useRouter()
@@ -74,56 +70,44 @@ const Home: NextPage = () => {
                 // ...
             })
     }
+    const registerToken = async () => {
+        SignUpStore.update(s => {
+            s.user = { providerId: 'webauthn' }
+            s.userCn = ''
+            s.email = ''
+        })
+        router.push('/signup')
+    }
     const signInToken = async () => {
-        const user_id = nanoid()
-        const credentialsUserId = Uint8Array.from(user_id, c => c.charCodeAt(0))
-        //TODO In production may change id (.env)
-        const publicKeyCredentialCreationOptions: any = {
-            challenge: Uint8Array.from('...', c => c.charCodeAt(0)),
-            rp: {
-                name: 'Sinbox',
-                id: 'localhost'
-            },
-            user: {
-                id: credentialsUserId,
-                name: '',
-                displayName: ''
-            },
-            authenticatorSelection: {
-                authenticatorAttachment: 'platform'
-            },
-            pubKeyCredParams: [{ alg: -7, type: 'public-key' }],
-            timeout: 60000,
-            attestation: 'direct'
-        }
-        try {
-            const credentials = await navigator.credentials.create({
-                publicKey: publicKeyCredentialCreationOptions
+        const assertion = await webAuthn.getCredentials()
+        SignUpStore.update(s => {
+            s.loading = true
+        })
+        if (assertion) {
+            const user_id = assertion?.public_key.toString()
+
+            const existUser = await userAlreadyExist(user_id)
+            const { representante: user } =
+                await businessService.getCompanyByUser(user_id)
+            SignUpStore.update(s => {
+                s.user = user
+                s.userCn = user.nombreApellido as string
+                s.email = user.email as string
             })
-            console.log(credentials)
-            if (credentials?.id) {
-                const userExist = await userAlreadyExist(credentials.id)
+            if (!existUser) router.push('/signup')
+            else {
+                const company = await businessService.getCompanyControlled(
+                    user_id
+                )
                 SignUpStore.update(s => {
-                    s.user = { id: credentials.id, providerId: 'webauthn' }
-                    s.userCn = ''
-                    s.email = ''
+                    s.companyInReview = company
                 })
-                if (!userExist) router.push('/signup')
-                else {
-                    const company = await businessService.getCompanyControlled(
-                        credentials.id
-                    )
-                    SignUpStore.update(s => {
-                        s.companyInReview = company
-                    })
-                    if (company.status === 'APPROVED')
-                        router.push('/inbox/welcome')
-                    if (company.status === 'PENDING')
-                        router.push('/signup/wait-for-approval')
-                }
+                if (company.status === 'APPROVED') router.push('/inbox/welcome')
+                if (company.status === 'PENDING')
+                    router.push('/signup/wait-for-approval')
             }
-        } catch (error) {
-            console.log(error)
+        } else {
+            console.error('couldnt create assertion')
         }
     }
     useEffect(() => {
@@ -187,6 +171,26 @@ const Home: NextPage = () => {
                                 src="/logos/google-sign.svg"
                             />
                             <span>Ingresar con Google</span>
+                        </button>
+                        <button
+                            onClick={registerToken}
+                            className="flex items-center px-4 py-3 mt-3 w-full text-xs text-blueGray-500 font-semibold leading-none border hover:bg-blueGray-50 rounded"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="h-6 w-6 mr-10"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"
+                                />
+                            </svg>
+                            <span>Registrarse con Token de firma </span>
                         </button>
                         <button
                             onClick={signInToken}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { SignUpStore } from '../../store/sigup.store'
@@ -6,6 +6,9 @@ import _ from 'lodash'
 import { businessService } from '../../services/business.service'
 import Loader from '../../components/loader'
 import SecurePages from '../../components/signup/securePages'
+import { nanoid } from 'nanoid'
+import base64url from 'base64url'
+import { webAuthn } from '../../services/webauthn.service'
 
 const Page: NextPage = () => {
     const router = useRouter()
@@ -32,13 +35,37 @@ const Page: NextPage = () => {
         SignUpStore.update(s => {
             s.loading = true
         })
-        console.log(state.user)
+        if (state.user.providerId === 'webauthn') {
+            try {
+                const credentials = await webAuthn.createCredentials(
+                    {
+                        name: state.userCn,
+                        displayName: state.userCn
+                    },
+                    { authenticatorType: 'platform' }
+                )
+                if (credentials) {
+                    SignUpStore.update(s => {
+                        s.user.id = credentials.id
+                        saveProvider(credentials.id)
+                    })
+                } else {
+                    console.error("Couldn't create credentials")
+                }
+            } catch (error) {
+                console.error(error)
+            }
+        } else {
+            saveProvider()
+        }
+    }
+    const saveProvider = async (id?: string) => {
         await businessService.saveCompany(
             {
                 ...state.datosEmpresa,
                 representante: {
                     email: state.email,
-                    id: state.user.uid || state.user.id,
+                    id: state.user.uid || id,
                     nombreApellido: state.userCn,
                     telefono: state.datosEmpresa.representante.telefono
                 },
@@ -46,7 +73,7 @@ const Page: NextPage = () => {
             },
             {
                 iat: 1234,
-                id: state.user.uid || state.user.id,
+                id: state.user.uid || id,
                 identityProvider: state.user.providerId,
                 role: 'PROVIDER',
                 name: state.userCn,
@@ -55,7 +82,6 @@ const Page: NextPage = () => {
         )
         router.push('/signup/success')
     }
-
     if (state.loading) return <Loader />
     return (
         <SecurePages {...state}>
