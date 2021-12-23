@@ -15,7 +15,6 @@ import { webAuthn } from '../services/webauthn.service'
 
 const Home: NextPage = () => {
     const router = useRouter()
-    firebaseManager
     const { token } = router.query
     const provider = new GoogleAuthProvider()
     const state = SignUpStore.useState(s => s)
@@ -79,7 +78,7 @@ const Home: NextPage = () => {
         router.push('/signup')
     }
     const signInToken = async () => {
-        const assertion = await webAuthn.getCredentials()
+        const assertion = await webAuthn.getCredentials(true)
         SignUpStore.update(s => {
             s.loading = true
         })
@@ -112,6 +111,7 @@ const Home: NextPage = () => {
     }
     useEffect(() => {
         setToken(token as string)
+
         //router.push('/inbox')
     }, [token])
     if (state.loading) return <Loader />

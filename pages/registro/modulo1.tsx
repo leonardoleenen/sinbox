@@ -3,6 +3,7 @@ import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { SignUpStore } from '../../store/sigup.store'
 import { businessService } from '../../services/business.service'
+import { webAuthn, Assertion } from '../../services/webauthn.service'
 
 const Page: NextPage = () => {
     const router = useRouter()
@@ -17,6 +18,33 @@ const Page: NextPage = () => {
             plano: string
         }>
     }>()
+    const signWebAuthn = async () => {
+        //!! DATA THAT MUST BE PASSED IN ORDER TO GENERATE PUBLIC KEY
+        /*Options: Obtain from state | this is a placeholder*/
+        const test = {
+            name: 'Alex',
+            displayName: 'Fiorenza'
+        }
+        //!! OBJECT OF FORM TO PASS TO CHALLENGE
+        const challengeTest = {
+            testField: 'Morpheo',
+            testField2: 'Neo',
+            testField3: 'Trinity'
+        }
+        const credentials = await webAuthn.createCredentials(
+            test,
+            {
+                storeCredentials: false
+            },
+            challengeTest
+        )
+        if (credentials) {
+            //Contains response.signature
+            const assertion = await webAuthn.getCredentials(false, credentials)
+            console.log(assertion)
+        }
+    }
+
     return (
         <div>
             <section className="py-20 flex h-screen ">
@@ -705,7 +733,10 @@ const Page: NextPage = () => {
                                                     ></textarea>
                                                 </div>
                                                 <div className="form-control w-full ">
-                                                    <button className="btn btn-primary mt-8">
+                                                    <button
+                                                        onClick={signWebAuthn}
+                                                        className="btn btn-primary mt-8"
+                                                    >
                                                         Firma del escribano
                                                     </button>
                                                 </div>
