@@ -1,6 +1,8 @@
 import type { NextPage } from 'next'
 import { useEffect } from 'react'
 import {
+    getInvite,
+    registerBackendUser,
     setToken,
     tokenDecode,
     userAlreadyExist
@@ -17,8 +19,18 @@ const Home: NextPage = () => {
     const router = useRouter()
     firebaseManager
     const { token } = router.query
+    const { invite } = router.query
     const provider = new GoogleAuthProvider()
     const state = SignUpStore.useState(s => s)
+
+    const handleInvite = async (user: any) => {
+        const inviteObj = {
+            id: invite,
+            ...(await getInvite(invite as string))
+        }
+        await registerBackendUser(inviteObj, user)
+    }
+
     const signWithGoogle = () => {
         const auth = getAuth()
         signInWithPopup(auth, provider)
@@ -34,6 +46,10 @@ const Home: NextPage = () => {
                 const user = result.user
                 const existUser = await userAlreadyExist(user.uid)
 
+                if (invite) {
+                    await handleInvite(result.user)
+                    router.push('/inbox')
+                }
                 //Hardcode to REMOVE!!! Only for Registro santa fe
                 if (user.uid === 'fHIZaRqhMOO2ennE4on7dCCV1gv2') {
                     router.push('/registro/modulo1')
@@ -44,8 +60,7 @@ const Home: NextPage = () => {
                     s.userCn = user.displayName as string
                     s.email = user.email as string
                 })
-                if (!existUser) router.push('/signup')
-                else {
+                if (existUser) {
                     const company = await businessService.getCompanyControlled(
                         user.uid
                     )
@@ -56,8 +71,9 @@ const Home: NextPage = () => {
                         router.push('/inbox/welcome')
                     if (company.status === 'PENDING')
                         router.push('/signup/wait-for-approval')
+                } else {
+                    router.push('/signup')
                 }
-                // ...
             })
             .catch(error => {
                 // Handle Errors here.
