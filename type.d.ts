@@ -46,3 +46,18 @@ type TariffOffer = {
     medio: string
     precio: number
 }
+
+type LegalForm = {
+    id: any
+    metadata: {
+        type: string
+        friendlyName: string
+    }
+    payload: any
+    status: 'NEW' | 'APPROVED'
+
+    creator: {
+        createdAt: number
+        createdBy: any
+    }
+}

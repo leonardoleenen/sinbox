@@ -61,6 +61,21 @@ class BusinessService {
         )
         return getDocs(q)
     }
+
+    async saveLegalForm(form: LegalForm) {
+        const _id = nanoid(10)
+        if (form.id) {
+            await setDoc(
+                doc(firebaseManager.getDB(), 'legalForm', form.id),
+                form
+            )
+        } else {
+            await setDoc(doc(firebaseManager.getDB(), 'legalForm', _id), {
+                ...form,
+                id: _id
+            })
+        }
+    }
 }
 
 export const businessService = new BusinessService()

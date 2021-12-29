@@ -18,6 +18,25 @@ const Page: NextPage = () => {
             plano: string
         }>
     }>()
+
+    const save = () => {
+        businessService.saveLegalForm({
+            id: null,
+            metadata: {
+                type: 'REGISTRO SANTA FE',
+                friendlyName: 'Registro propiedad Santa Fe'
+            },
+            payload: {
+                name: 'blalba'
+            },
+            status: 'NEW',
+            creator: {
+                createdAt: new Date().getTime(),
+                createdBy: null
+            }
+        })
+    }
+
     const signWebAuthn = async () => {
         //!! DATA THAT MUST BE PASSED IN ORDER TO GENERATE PUBLIC KEY
         /*Options: Obtain from state | this is a placeholder*/
@@ -105,37 +124,6 @@ const Page: NextPage = () => {
                                                 />
                                             </div>
                                         </div>
-
-                                        <div className="mb-8 flex ">
-                                            <div className="form-control">
-                                                <button className="btn btn-outline btn-sm">
-                                                    Agregar
-                                                </button>
-                                            </div>
-                                        </div>
-
-                                        <div className="mb-4 ">
-                                            <div className="overflow-x-auto">
-                                                <table className="table w-full table-compact">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Lote/s</th>
-                                                            <th>Manzana</th>
-                                                            <th>
-                                                                Plano N /año
-                                                            </th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <th>1</th>
-                                                            <td></td>
-                                                            <td></td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
 
@@ -209,35 +197,6 @@ const Page: NextPage = () => {
                                                         placeholder="Numero"
                                                         className="input input-bordered"
                                                     />
-                                                </div>
-                                            </div>
-
-                                            <div className="mb-8 flex ">
-                                                <div className="form-control">
-                                                    <button className="btn btn-outline btn-sm">
-                                                        Agregar
-                                                    </button>
-                                                </div>
-                                            </div>
-
-                                            <div className="mb-4 ">
-                                                <div className="overflow-x-auto">
-                                                    <table className="table w-full">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Tomo</th>
-                                                                <th>Folio</th>
-                                                                <th>Numero</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <th>1</th>
-                                                                <td></td>
-                                                                <td></td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
                                                 </div>
                                             </div>
                                         </div>
@@ -734,7 +693,7 @@ const Page: NextPage = () => {
                                                 </div>
                                                 <div className="form-control w-full ">
                                                     <button
-                                                        onClick={signWebAuthn}
+                                                        onClick={save}
                                                         className="btn btn-primary mt-8"
                                                     >
                                                         Firma del escribano
