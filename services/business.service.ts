@@ -62,6 +62,11 @@ class BusinessService {
         return getDocs(q)
     }
 
+    async getLegalFormForInbox() {
+        const q = query(collection(firebaseManager.getDB(), 'legalForm'))
+        return getDocs(q)
+    }
+
     async saveLegalForm(form: LegalForm) {
         const _id = nanoid(10)
         if (form.id) {

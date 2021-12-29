@@ -6,6 +6,7 @@ import Header from '../../components/header'
 import { businessService } from '../../services/business.service'
 import { InboxStore } from '../../store/inbox.store'
 import _ from 'lodash'
+import moment from 'moment'
 
 const Page: NextPage = () => {
     const router = useRouter()
@@ -13,17 +14,12 @@ const Page: NextPage = () => {
     const [companyId, setCompanyId] = useState<string>()
     const [showCompanyData, setShowCompanyData] = useState(false)
     useEffect(() => {
-        businessService.getProviderPendingToApprove().then(qs => {
+        businessService.getLegalFormForInbox().then(qs => {
             InboxStore.update(s => {
-                s.providersToApprove = qs.docs.map(d => d.data()) as any
+                s.legalForms = qs.docs.map(d => d.data()) as any
             })
         })
     }, [])
-
-    const selectCompany = async (cuit: string) => {
-        setCompanyId(await businessService.getCompanyIdByCuit(cuit))
-        setShowCompanyData(true)
-    }
 
     const DataCompanyModal = () => {
         return (
@@ -54,27 +50,26 @@ const Page: NextPage = () => {
                             <tr>
                                 <th></th>
                                 <th>Tipo</th>
-                                <th>Grupo Economico</th>
+                                <th>Referencia</th>
                                 <th>Fecha Solicitud</th>
                                 <th>Presentado por</th>
                                 <th>Accion</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {state.providersToApprove.map((e, i) => (
+                            {state.legalForms.map((lf: LegalForm, i) => (
                                 <tr key={`form${i + 1}`}>
                                     <th>{i + 1}</th>
-                                    <td>Alta proveedor prensa</td>
-                                    <td>{e.grupoEconomico}</td>
-                                    <td>01/12/2021</td>
-                                    <td>{e.representante.nombreApellido}</td>
+                                    <td>{lf.metadata.friendlyName}</td>
+                                    <td>{lf.metadata.refForm}</td>
                                     <td>
-                                        <select
-                                            onChange={() =>
-                                                selectCompany(e.cuit.value)
-                                            }
-                                            className="select select-bordered w-full max-w-xs"
-                                        >
+                                        {moment(lf.creator.createdAt).format(
+                                            'DD/MM/YYYY HH:mm'
+                                        )}
+                                    </td>
+                                    <td>Desconocido</td>
+                                    <td>
+                                        <select className="select select-bordered w-full max-w-xs">
                                             <option>Elija una accion</option>
                                             <option>Revisar </option>
                                             <option>Revisar y aprobar</option>
@@ -83,51 +78,6 @@ const Page: NextPage = () => {
                                     </td>
                                 </tr>
                             ))}
-                            <tr>
-                                <th>2</th>
-                                <td>Alta proveedor prensa</td>
-                                <td>FM Radio Santa Fe</td>
-                                <td>01/12/2021</td>
-                                <td>Francico Alvarez</td>
-                                <td>
-                                    <select className="select select-bordered w-full max-w-xs">
-                                        <option>Elija una accion</option>
-                                        <option>Revisar </option>
-                                        <option>Revisar y aprobar</option>
-                                        <option>Revisar y rechazar</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>3</th>
-                                <td>Alta proveedor prensa</td>
-                                <td>AM Radio Santa Fe</td>
-                                <td>01/12/2021</td>
-                                <td>Patricio Molina</td>
-                                <td>
-                                    <select className="select select-bordered w-full max-w-xs">
-                                        <option>Elija una accion</option>
-                                        <option>Revisar </option>
-                                        <option>Revisar y aprobar</option>
-                                        <option>Revisar y rechazar</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>4</th>
-                                <td>Certificación servicios Prensa</td>
-                                <td>AM Radio Santa Fe</td>
-                                <td>03/12/2021</td>
-                                <td>Patricio Molina</td>
-                                <td>
-                                    <select className="select select-bordered w-full max-w-xs">
-                                        <option>Elija una accion</option>
-                                        <option>Revisar </option>
-                                        <option>Revisar y aprobar</option>
-                                        <option>Revisar y rechazar</option>
-                                    </select>
-                                </td>
-                            </tr>
                         </tbody>
                     </table>
                 </div>

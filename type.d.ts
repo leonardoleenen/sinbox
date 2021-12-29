@@ -52,6 +52,7 @@ type LegalForm = {
     metadata: {
         type: string
         friendlyName: string
+        refForm: string
     }
     payload: any
     status: 'NEW' | 'APPROVED'

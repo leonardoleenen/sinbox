@@ -24,7 +24,8 @@ const Page: NextPage = () => {
             id: null,
             metadata: {
                 type: 'REGISTRO SANTA FE',
-                friendlyName: 'Registro propiedad Santa Fe'
+                friendlyName: 'Registro propiedad Santa Fe',
+                refForm: 'Calle Boedo 999 - Lomas'
             },
             payload: {
                 name: 'blalba'
@@ -32,7 +33,9 @@ const Page: NextPage = () => {
             status: 'NEW',
             creator: {
                 createdAt: new Date().getTime(),
-                createdBy: null
+                createdBy: {
+                    cn: 'Leonardo Leenen'
+                }
             }
         })
     }
