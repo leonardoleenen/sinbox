@@ -1,16 +1,18 @@
 import { async } from '@firebase/util'
 import base64url from 'base64url'
 import { nanoid } from 'nanoid'
-interface User {
+
+interface Data {
     id?: string
     public_key?: string
     name: string
     displayName: string
 }
 interface Opts {
-    authenticatorType: 'platform' | 'cross-platform'
+    authenticatorType?: 'platform' | 'cross-platform'
+    storeCredentials?: boolean
 }
-interface Assertion {
+export interface Assertion {
     public_key: string
     clientDataObj: {
         type: string
@@ -44,25 +46,26 @@ class WebAuthn {
      * alongside an object op type response which have some buffers
      * <p>
      *
-     * @param  User  an object that MUST be pased in order to generate credentials
-     * @param  opts  optional params such as the type of auth
+     * @param  Data  an object that MUST be pased in order to generate credentials
+     * @param  opts  optional params such as the type of auth and a boolean to store credentials
+     * @param  challengeJSON  optional boolean param to pass to challenge
      * @return       The whole credentials object
      */
-    async createCredentials(user: User, opts?: Opts) {
+    async createCredentials(data: Data, opts?: Opts, challengeJSON?: object) {
         const user_id = nanoid()
         const credentialsUserId = Uint8Array.from(user_id, c => c.charCodeAt(0))
         const isBrowser = () => typeof window !== 'undefined'
         if (isBrowser()) {
             const publicKeyCredentialCreationOptions: any = {
-                challenge: this.getChallenge(),
+                challenge: this.getChallenge(challengeJSON),
                 rp: {
                     name: 'Sinbox',
                     id: window.location.hostname || 'localhost'
                 },
                 user: {
                     id: credentialsUserId,
-                    name: user.name,
-                    displayName: user.displayName
+                    name: data.name,
+                    displayName: data.displayName
                 },
                 authenticatorSelection: {
                     authenticatorAttachment:
@@ -93,7 +96,9 @@ class WebAuthn {
                         attestationObject
                     }
                 }
-                localStorage.setItem('credentialId', credentials.id)
+                if (opts?.storeCredentials) {
+                    localStorage.setItem('credentialId', credentials.id)
+                }
                 return credentials
             } catch (error) {
                 console.log(error)
@@ -102,16 +107,33 @@ class WebAuthn {
     }
     /**
      * Returns an object of type Assertion containting
-     * the public key, clientDataJSON decoded and  an object op type response which have some buffers
+     * the public key, clientDataJSON decoded and  an object of type response which have some buffers
      * <p>
      *
-     * @return       The returned object of type Assertion is the response of navigator.credentials.get()
+     * @param useStoredCredentials param to pass to indicate if has to use stored credentials in localstorage
+     * @param credentials use passed credentials instead of local storage saved
+     * @return The returned object of type Assertion is the response of navigator.credentials.get()
      */
-    async getCredentials() {
+    async getCredentials(
+        useStoredCredentials: boolean,
+        credentials?: any
+    ): Promise<Assertion | void> {
         const credentials_id = localStorage.getItem('credentialId')
-        if (credentials_id) {
-            const publicKey: PublicKeyCredentialRequestOptions = {
-                challenge: this.getChallenge(),
+        const publicKey: PublicKeyCredentialRequestOptions = {
+            challenge: this.getChallenge()
+        }
+        if (!useStoredCredentials && credentials) {
+            Object.assign(publicKey, {
+                allowCredentials: [
+                    {
+                        type: 'public-key',
+                        id: Buffer.from(credentials.id, 'base64'),
+                        transports: ['internal']
+                    }
+                ]
+            })
+        } else if (credentials_id && useStoredCredentials) {
+            Object.assign(publicKey, {
                 allowCredentials: [
                     {
                         type: 'public-key',
@@ -119,39 +141,43 @@ class WebAuthn {
                         transports: ['internal']
                     }
                 ]
-            }
-            try {
-                const assertionResponse: any = await navigator.credentials.get({
-                    publicKey: publicKey
-                })
-
-                const public_key = assertionResponse?.id.toString()
-                const utf8Decoder = new TextDecoder('utf-8')
-                const decodedClientData = utf8Decoder.decode(
-                    assertionResponse.response.clientDataJSON
-                )
-                const clientDataObj = JSON.parse(decodedClientData)
-                const assertion: Assertion = {
-                    public_key,
-                    clientDataObj,
-                    response: {
-                        authenticatorData:
-                            assertionResponse.response.authenticatorData,
-                        signature: assertionResponse.response.signature,
-                        userHandle: assertionResponse.response.userHandle
-                    }
-                }
-                return assertion
-            } catch (error) {
-                console.error(error)
-            }
+            })
         } else {
             console.error('There is no credentials')
         }
+        try {
+            const assertionResponse: any = await navigator.credentials.get({
+                publicKey: publicKey
+            })
+
+            const public_key = assertionResponse?.id.toString()
+            const utf8Decoder = new TextDecoder('utf-8')
+            const decodedClientData = utf8Decoder.decode(
+                assertionResponse.response.clientDataJSON
+            )
+            const clientDataObj = JSON.parse(decodedClientData)
+            const assertion: Assertion = {
+                public_key,
+                clientDataObj,
+                response: {
+                    authenticatorData:
+                        assertionResponse.response.authenticatorData,
+                    signature: assertionResponse.response.signature,
+                    userHandle: assertionResponse.response.userHandle
+                }
+            }
+            return assertion
+        } catch (error) {
+            console.error(error)
+        }
     }
-    getChallenge() {
-        //TODO:  Retrieve challenge from backend
-        return Uint8Array.from('...', c => c.charCodeAt(0))
+    getChallenge(challengeJSON?: object) {
+        if (challengeJSON) {
+            const stringifiedJSON = JSON.stringify(challengeJSON)
+            return Uint8Array.from(stringifiedJSON, c => c.charCodeAt(0))
+        } else {
+            return Uint8Array.from('...', c => c.charCodeAt(0))
+        }
     }
 }
 
