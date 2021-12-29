@@ -8,6 +8,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@react-pdf/renderer": "^2.0.21",
     "@tailwindcss/typography": "^0.4.1",
     "@typescript-eslint/eslint-plugin": "^5.3.0",
     "autoprefixer": "^10.4.0",
