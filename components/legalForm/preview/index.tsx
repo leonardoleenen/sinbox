@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { getToken, tokenDecode } from '../../../services/auth.service'
 import { businessService } from '../../../services/business.service'
 import { webAuthn, Assertion } from '../../../services/webauthn.service'
 
@@ -11,6 +12,21 @@ interface Props {
 
 const Component = (props: Props): JSX.Element => {
     const [inProcess, setInProcess] = useState(false)
+    const [user, setUser] = useState<User>()
+
+    useEffect(() => {
+        setUser(tokenDecode(getToken() as string))
+    }, [])
+
+    function arrayBufferToBase64(buffer: any) {
+        let binary = ''
+        const bytes = new Uint8Array(buffer)
+        const len = bytes.byteLength
+        for (let i = 0; i < len; i++) {
+            binary += String.fromCharCode(bytes[i])
+        }
+        return window.btoa(binary)
+    }
 
     const sign = async () => {
         setInProcess(true)
@@ -33,10 +49,18 @@ const Component = (props: Props): JSX.Element => {
         )
         if (credentials) {
             //Contains response.signature
-            const assertion = await webAuthn.getCredentials(false, credentials)
+            const assertion: any = await webAuthn.getCredentials(
+                false,
+                credentials
+            )
+
             await businessService.setLegalFormStatus(
                 props.legalForm,
-                props.actionType as any
+                props.actionType as any,
+                {
+                    signedBy: user as User,
+                    signture: arrayBufferToBase64(assertion.response.signature)
+                }
             )
             setInProcess(false)
         }

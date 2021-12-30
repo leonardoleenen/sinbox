@@ -60,6 +60,7 @@ type LegalForm = {
     creator: {
         createdAt: number
         createdBy: any
+        signature: string
     }
 }
 

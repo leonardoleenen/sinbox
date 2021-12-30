@@ -20,7 +20,17 @@ const Page: NextPage = () => {
         }>
     }>()
 
-    const save = () => {
+    function arrayBufferToBase64(buffer: any) {
+        let binary = ''
+        const bytes = new Uint8Array(buffer)
+        const len = bytes.byteLength
+        for (let i = 0; i < len; i++) {
+            binary += String.fromCharCode(bytes[i])
+        }
+        return window.btoa(binary)
+    }
+
+    const save = (signature: string) => {
         businessService.saveLegalForm({
             id: null,
             metadata: {
@@ -34,7 +44,8 @@ const Page: NextPage = () => {
             status: 'NEW',
             creator: {
                 createdAt: new Date().getTime(),
-                createdBy: tokenDecode(getToken() as string)
+                createdBy: tokenDecode(getToken() as string),
+                signature
             }
         })
     }
@@ -61,8 +72,12 @@ const Page: NextPage = () => {
         )
         if (credentials) {
             //Contains response.signature
-            const assertion = await webAuthn.getCredentials(false, credentials)
-            console.log(assertion)
+            const assertion: any = await webAuthn.getCredentials(
+                false,
+                credentials
+            )
+            await save(arrayBufferToBase64(assertion.response.signature))
+            router.push('/registro/success')
         }
     }
 
@@ -811,7 +826,7 @@ const Page: NextPage = () => {
                                                 </div>
                                                 <div className="form-control w-full ">
                                                     <button
-                                                        onClick={save}
+                                                        onClick={signWebAuthn}
                                                         className="btn btn-primary mt-8"
                                                     >
                                                         Firma del escribano

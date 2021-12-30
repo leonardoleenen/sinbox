@@ -72,10 +72,18 @@ class BusinessService {
 
     async setLegalFormStatus(
         form: LegalForm,
-        status: 'CHECKED' | 'APPROVED' | 'REJECTED'
+        status: 'CHECKED' | 'APPROVED' | 'REJECTED' | 'NEW',
+        signature: {
+            signedBy: User
+            signture: string
+        }
     ) {
         await setDoc(doc(firebaseManager.getDB(), 'legalForm', form.id), {
             ...form,
+            signature: {
+                signedAt: new Date().getTime(),
+                ...signature
+            },
             status
         })
     }

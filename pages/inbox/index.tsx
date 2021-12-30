@@ -86,7 +86,7 @@ const Page: NextPage = () => {
                                                 lf.creator.createdAt
                                             ).format('DD/MM/YYYY HH:mm')}
                                         </td>
-                                        <td>{lf.creator.createdBy.cn}</td>
+                                        <td>{lf.creator.createdBy.name}</td>
                                         <td>
                                             <select
                                                 onChange={(e: any) =>

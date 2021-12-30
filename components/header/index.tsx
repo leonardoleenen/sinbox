@@ -1,7 +1,14 @@
 /* eslint-disable @next/next/no-html-link-for-pages */
+import { useRouter } from 'next/router'
 import React from 'react'
+import { logout } from '../../services/auth.service'
 
 const Component = (): JSX.Element => {
+    const router = useRouter()
+    const closeSession = () => {
+        logout()
+        router.push('/')
+    }
     return (
         <section>
             <div className="container px-4 mx-auto">
@@ -47,12 +54,12 @@ const Component = (): JSX.Element => {
                         </li>
                     </ul>
                     <div className="hidden lg:block">
-                        <a
-                            className="mr-2 inline-block px-4 py-3 text-xs font-semibold leading-none border rounded hover:text-red-700 border-red-200 hover:border-red-300 text-red-600"
-                            href="#"
+                        <div
+                            className="cursor-pointer mr-2 inline-block px-4 py-3 text-xs font-semibold leading-none border rounded hover:text-red-700 border-red-200 hover:border-red-300 text-red-600"
+                            onClick={closeSession}
                         >
                             Salir
-                        </a>
+                        </div>
                     </div>
                 </nav>
             </div>

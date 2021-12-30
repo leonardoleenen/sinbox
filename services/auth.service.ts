@@ -73,3 +73,7 @@ export const getRouteAfterLogin = () => {
     )
         return '/inbox'
 }
+
+export const logout = () => {
+    localStorage.clear()
+}
