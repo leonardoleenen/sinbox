@@ -1,14 +1,21 @@
 /* eslint-disable @next/next/no-html-link-for-pages */
 import { useRouter } from 'next/router'
-import React from 'react'
-import { logout } from '../../services/auth.service'
+import React, { useEffect, useState } from 'react'
+import { getToken, logout, tokenDecode } from '../../services/auth.service'
 
 const Component = (): JSX.Element => {
     const router = useRouter()
+    const [user, setUser] = useState<User>()
+
+    useEffect(() => {
+        setUser(tokenDecode(getToken() as string))
+    }, [])
     const closeSession = () => {
         logout()
         router.push('/')
     }
+
+    if (!user) return <></>
     return (
         <section>
             <div className="container px-4 mx-auto">
@@ -37,9 +44,17 @@ const Component = (): JSX.Element => {
                         <li>
                             <a
                                 className="text-sm text-blueGray-400 hover:text-blueGray-500"
-                                href="/inbox/welcom"
+                                href="/inbox"
                             >
                                 Inbox
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                className="text-sm text-blueGray-400 hover:text-blueGray-500"
+                                href="/outbox"
+                            >
+                                outbox
                             </a>
                         </li>
 
@@ -51,6 +66,11 @@ const Component = (): JSX.Element => {
                             >
                                 Preguntas Frecuentes
                             </a>
+                        </li>
+                        <li>
+                            <div className="text-sm text-blueGray-400 hover:text-blueGray-500">
+                                {`${user.name} - ${user.role} `}
+                            </div>
                         </li>
                     </ul>
                     <div className="hidden lg:block">

@@ -19,6 +19,7 @@ const Page: NextPage = () => {
     const [legalFormToSign, setLegalFormToSign] = useState<any>(null)
     const [actionType, setActionType] = useState<any>('CHECK')
     const [user, setUser] = useState<User>()
+
     const loadData = () => {
         businessService.getLegalFormForInbox().then(qs => {
             InboxStore.update(s => {
@@ -26,9 +27,11 @@ const Page: NextPage = () => {
             })
         })
     }
+
     useEffect(() => {
         loadData()
-        setUser(tokenDecode(getToken() as string))
+        const u = tokenDecode(getToken() as string)
+        setUser(u)
     }, [])
 
     const DataCompanyModal = () => {
@@ -43,13 +46,66 @@ const Page: NextPage = () => {
         )
     }
 
+    const filterForms = (form: LegalForm) => {
+        if (user?.role === 'CERT RECEPTIONIST' && form.status === 'APPROVED')
+            return true
+        if (user?.role === 'CERT SUPERVISOR' && form.status === 'TO CLOSE')
+            return true
+
+        if (user?.role === 'RECEPTIONIST' && form.status === 'NEW') return true
+
+        if (user?.role === 'SUPERVISOR' && form.status === 'CHECK') return true
+
+        return false
+    }
+
     const onActionChange = (e: any, index: number) => {
+        if (
+            e.target.value === 'CHECK' &&
+            state.legalForms[index].status === 'APPROVED'
+        ) {
+            router.push(`/registro/modulo1/?id=${state.legalForms[index].id}`)
+            return
+        }
+
         state.legalForms[index]
         setActionType(e.target.value)
         setLegalFormToSign(state.legalForms[index])
         setShowToPreview(true)
+
+        /* if (e.target.value === 'AFORAR')
+            alert(
+                `Tramite aforado con  el número: ${parseInt(
+                    Math.random() * (10000 - 100) + 100
+                )}`
+            )*/
     }
 
+    const actionAllowed = (action: string, form: LegalForm) => {
+        if (action === 'CHECK' && form.aforo && form.status === 'NEW')
+            return true
+        if (
+            action === 'CHECK' &&
+            form.status === 'APPROVED' &&
+            user?.role === 'CERT RECEPTIONIST'
+        )
+            return true
+
+        if (
+            (action === 'CHECK AND APPROVE' || action === 'CHECK AND REJECT') &&
+            (user?.role === 'CERT SUPERVISOR' || user?.role === 'SUPERVISOR')
+        )
+            return true
+
+        if (
+            action === 'AFORAR' &&
+            user?.role === 'RECEPTIONIST' &&
+            !form.aforo &&
+            form.status === 'NEW'
+        )
+            return true
+        return false
+    }
     if (showCompanyData) return <DataCompanyModal />
 
     const InboxContent = () => {
@@ -76,48 +132,65 @@ const Page: NextPage = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {state.legalForms.map((lf: LegalForm, i) => (
-                                    <tr key={`form${i + 1}`}>
-                                        <th>{i + 1}</th>
-                                        <td>{lf.metadata.friendlyName}</td>
-                                        <td>{lf.metadata.refForm}</td>
-                                        <td>
-                                            {moment(
-                                                lf.creator.createdAt
-                                            ).format('DD/MM/YYYY HH:mm')}
-                                        </td>
-                                        <td>{lf.creator.createdBy.name}</td>
-                                        <td>
-                                            <select
-                                                onChange={(e: any) =>
-                                                    onActionChange(e, i)
-                                                }
-                                                className="select select-bordered w-full max-w-xs"
-                                            >
-                                                <option>
-                                                    Elija una accion
-                                                </option>
-                                                {lf.status === 'NEW' && (
-                                                    <option value="CHECK">
-                                                        Revisar
+                                {state.legalForms
+                                    .filter(filterForms)
+                                    .map((lf: LegalForm, i) => (
+                                        <tr key={`form${i + 1}`}>
+                                            <th>{i + 1}</th>
+                                            <td>{lf.metadata.friendlyName}</td>
+                                            <td>{lf.metadata.refForm}</td>
+                                            <td>
+                                                {moment(
+                                                    lf.creator.createdAt
+                                                ).format('DD/MM/YYYY HH:mm')}
+                                            </td>
+                                            <td>{lf.creator.createdBy.name}</td>
+                                            <td>
+                                                <select
+                                                    onChange={(e: any) =>
+                                                        onActionChange(e, i)
+                                                    }
+                                                    className="select select-bordered w-full max-w-xs"
+                                                >
+                                                    <option>
+                                                        Elija una accion
                                                     </option>
-                                                )}
-                                                {user?.role ===
-                                                    'SUPERVISOR' && (
-                                                    <option value="CHECK AND APPROVE">
-                                                        Revisar y aprobar
-                                                    </option>
-                                                )}
-                                                {user?.role ===
-                                                    'SUPERVISOR' && (
-                                                    <option value="CHECK AND REJECT">
-                                                        Revisar y rechazar
-                                                    </option>
-                                                )}
-                                            </select>
-                                        </td>
-                                    </tr>
-                                ))}
+                                                    {actionAllowed(
+                                                        'AFORAR',
+                                                        lf
+                                                    ) && (
+                                                        <option value="AFORAR">
+                                                            Aforar
+                                                        </option>
+                                                    )}
+                                                    {actionAllowed(
+                                                        'CHECK',
+                                                        lf
+                                                    ) && (
+                                                        <option value="CHECK">
+                                                            Revisar
+                                                        </option>
+                                                    )}
+                                                    {actionAllowed(
+                                                        'CHECK AND APPROVE',
+                                                        lf
+                                                    ) && (
+                                                        <option value="CHECK AND APPROVE">
+                                                            Revisar y aprobar
+                                                        </option>
+                                                    )}
+                                                    {actionAllowed(
+                                                        'CHECK AND REJECT',
+                                                        lf
+                                                    ) && (
+                                                        <option value="CHECK AND REJECT">
+                                                            Revisar y rechazar
+                                                        </option>
+                                                    )}
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    ))}
                             </tbody>
                         </table>
                     </div>

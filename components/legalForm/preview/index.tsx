@@ -7,7 +7,12 @@ interface Props {
     className?: string
     legalForm: LegalForm
     onClose: any
-    actionType: 'CHECK' | 'CHECK AND APPROVE' | 'CHECK AND REJECT'
+    actionType:
+        | 'CHECK'
+        | 'CHECK AND APPROVE'
+        | 'CHECK AND REJECT'
+        | 'AFORAR'
+        | 'READONLY'
 }
 
 const Component = (props: Props): JSX.Element => {
@@ -26,6 +31,26 @@ const Component = (props: Props): JSX.Element => {
             binary += String.fromCharCode(bytes[i])
         }
         return window.btoa(binary)
+    }
+
+    const aforar = async () => {
+        setInProcess(true)
+        await businessService.aforar(
+            props.legalForm,
+            parseInt((Math.random() * (10000 - 100) + 100).toString())
+        )
+        setInProcess(false)
+        props.onClose()
+    }
+
+    const getNextStatus = () => {
+        if (props.legalForm.status === 'NEW') return 'CHECK'
+        if (props.legalForm.status === 'CHECK') return 'APPROVED'
+        if (props.legalForm.status === 'APPROVED') return 'TO CLOSE'
+
+        if (props.legalForm.status === 'TO CLOSE') return 'CLOSED'
+
+        return 'NEW'
     }
 
     const sign = async () => {
@@ -56,7 +81,7 @@ const Component = (props: Props): JSX.Element => {
 
             await businessService.setLegalFormStatus(
                 props.legalForm,
-                props.actionType as any,
+                getNextStatus() as any,
                 {
                     signedBy: user as User,
                     signature: arrayBufferToBase64(assertion.response.signature)
@@ -77,9 +102,16 @@ const Component = (props: Props): JSX.Element => {
                     >
                         Volver
                     </button>
-                    <button onClick={sign} className="btn btn-primary">
-                        Firmar
-                    </button>
+                    {props.actionType !== 'READONLY' && (
+                        <button
+                            onClick={
+                                props.actionType === 'AFORAR' ? aforar : sign
+                            }
+                            className="btn btn-primary"
+                        >
+                            {props.actionType}
+                        </button>
+                    )}
                 </div>
             </div>
             {inProcess ? (

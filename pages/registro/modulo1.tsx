@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { SignUpStore } from '../../store/sigup.store'
@@ -10,8 +10,22 @@ const Page: NextPage = () => {
     const router = useRouter()
     const state = SignUpStore.useState(s => s)
     const [loading, setLoading] = useState(false)
+    const { id } = router.query
+    const [legalForm, setLegalForm] = useState<any>()
     const [actoMonto, setActoMonto] = useState('')
+    const [user, setUser] = useState<User>()
+    const [mode, setMode] = useState<'NEW' | 'EDIT CERT' | 'READONLY'>('NEW')
 
+    useEffect(() => {
+        if (id) {
+            const u = tokenDecode(getToken() as string)
+            setUser(u)
+            if (u.role === 'CERT RECEPTIONIST') setMode('EDIT CERT')
+            businessService
+                .getLegalForm(id as string)
+                .then(result => setLegalForm(result))
+        }
+    }, [id])
     const [registroPropiedad, setRegistroPropiedad] = useState<{
         acto: string
         lote: Array<{
@@ -51,6 +65,14 @@ const Page: NextPage = () => {
         })
     }
 
+    const complete = async () => {
+        await businessService.saveLegalForm({
+            ...legalForm,
+            status: 'TO CLOSE'
+        })
+        await signWebAuthn()
+    }
+
     const signWebAuthn = async () => {
         //!! DATA THAT MUST BE PASSED IN ORDER TO GENERATE PUBLIC KEY
         /*Options: Obtain from state | this is a placeholder*/
@@ -77,8 +99,13 @@ const Page: NextPage = () => {
                 false,
                 credentials
             )
-            await save(arrayBufferToBase64(assertion.response.signature))
-            router.push('/registro/success')
+
+            if (user && user.role === 'CERT RECEPTIONIST')
+                return router.push('/inbox')
+            else {
+                await save(arrayBufferToBase64(assertion.response.signature))
+                router.push('/registro/success')
+            }
         }
     }
 
@@ -105,6 +132,7 @@ const Page: NextPage = () => {
                                         <div className="mb-4">
                                             <div className="form-control">
                                                 <input
+                                                    disabled={mode !== 'NEW'}
                                                     value={actoMonto}
                                                     onChange={e =>
                                                         setActoMonto(
@@ -831,14 +859,19 @@ const Page: NextPage = () => {
                                                         placeholder="Otros Datos, enmiendas,etc"
                                                     ></textarea>
                                                 </div>
-                                                <div className="form-control w-full ">
-                                                    <button
-                                                        onClick={signWebAuthn}
-                                                        className="btn btn-primary mt-8"
-                                                    >
-                                                        Firma del escribano
-                                                    </button>
-                                                </div>
+
+                                                {mode === 'NEW' && (
+                                                    <div className="form-control w-full ">
+                                                        <button
+                                                            onClick={
+                                                                signWebAuthn
+                                                            }
+                                                            className="btn btn-primary mt-8"
+                                                        >
+                                                            Firma del escribano
+                                                        </button>
+                                                    </div>
+                                                )}
                                             </div>
                                         </div>
                                     </div>
@@ -858,7 +891,9 @@ const Page: NextPage = () => {
                                                 <div className="form-control w-full">
                                                     <textarea
                                                         className="textarea h-24 textarea-bordered"
-                                                        disabled
+                                                        disabled={
+                                                            mode !== 'EDIT CERT'
+                                                        }
                                                         placeholder="Otros Datos, enmiendas,etc"
                                                     ></textarea>
                                                 </div>
@@ -1177,16 +1212,22 @@ const Page: NextPage = () => {
                                                         className="input input-bordered"
                                                     />
                                                 </div>
-                                                <div className="form-control mt-3 ">
-                                                    <button
-                                                        className="btn btn-disabled"
-                                                        role="button"
-                                                        aria-disabled="true"
-                                                    >
-                                                        Firmar funcionario del
-                                                        registro
-                                                    </button>
-                                                </div>
+                                                {mode === 'EDIT CERT' &&
+                                                    legalForm && (
+                                                        <div className="form-control mt-3 ">
+                                                            <button
+                                                                onClick={
+                                                                    complete
+                                                                }
+                                                                className="btn"
+                                                                role="button"
+                                                            >
+                                                                Firmar
+                                                                funcionario del
+                                                                registro
+                                                            </button>
+                                                        </div>
+                                                    )}
                                                 <div></div>
                                             </div>
                                         </div>

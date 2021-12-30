@@ -63,9 +63,14 @@ class BusinessService {
     }
 
     async getLegalFormForInbox() {
+        const q = query(collection(firebaseManager.getDB(), 'legalForm'))
+        return getDocs(q)
+    }
+
+    async getLegalFormForOutBox() {
         const q = query(
             collection(firebaseManager.getDB(), 'legalForm'),
-            where('status', 'in', ['CHECK', 'NEW'])
+            where('status', '==', 'CLOSED')
         )
         return getDocs(q)
     }
@@ -91,6 +96,13 @@ class BusinessService {
                 ...signature
             },
             status
+        })
+    }
+
+    async aforar(form: LegalForm, aforo: number) {
+        await setDoc(doc(firebaseManager.getDB(), 'legalForm', form.id), {
+            ...form,
+            aforo
         })
     }
 

@@ -115,7 +115,7 @@ const Home: NextPage = () => {
                         <span className="text-sm text-blueGray-400">
                             Ingreso
                         </span>
-                        <h4 className="mb-6 text-3xl">Prensa y medios </h4>
+                        <h4 className="mb-6 text-3xl">Santa Fé </h4>
                         <div className="flex mb-4 px-4 bg-blueGray-50 rounded">
                             <input
                                 type="text"

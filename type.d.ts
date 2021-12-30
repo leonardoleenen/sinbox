@@ -3,7 +3,14 @@ type User = {
     iat: number
     id: string
     identityProvider: string
-    role: 'PROVIDER' | 'BACKOFFICE' | 'ESCRIBANO' | 'SUPERVISOR'
+    role:
+        | 'PROVIDER'
+        | 'BACKOFFICE'
+        | 'ESCRIBANO'
+        | 'SUPERVISOR'
+        | 'RECEPTIONIST'
+        | 'CERT RECEPTIONIST'
+        | 'CERT SUPERVISOR'
     controllerCompanyCuit?: string
 }
 
@@ -55,7 +62,7 @@ type LegalForm = {
         refForm: string
     }
     payload: any
-    status: 'NEW' | 'APPROVED'
+    status: 'NEW' | 'APPROVED' | 'TO CLOSE' | 'CLOSED' | 'CHECK'
 
     creator: {
         createdAt: number
@@ -67,6 +74,7 @@ type LegalForm = {
         signedBy: User
         signature: string
     }
+    aforo?: string
 }
 
 type UserInvite = {

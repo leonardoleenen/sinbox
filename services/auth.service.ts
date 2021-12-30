@@ -69,7 +69,10 @@ export const getRouteAfterLogin = () => {
 
     if (
         tokenDecode(getToken() as string).role === 'SUPERVISOR' ||
-        tokenDecode(getToken() as string).role === 'BACKOFFICE'
+        tokenDecode(getToken() as string).role === 'BACKOFFICE' ||
+        tokenDecode(getToken() as string).role === 'RECEPTIONIST' ||
+        tokenDecode(getToken() as string).role === 'CERT RECEPTIONIST' ||
+        tokenDecode(getToken() as string).role === 'CERT SUPERVISOR'
     )
         return '/inbox'
 }

@@ -373,8 +373,13 @@ E0Z37LqDt3WnPQmxLsXurJFEaRSejRkMo/8AIAH1/wAG/wDp17+P7648/wB669Pyf//Z"
                     <View style={styles.sectionContentTEXTColumn}>
                         <View style={styles.sectionHeaderNoFlex}>
                             <Text style={styles.sectionH1}>
-                                MODULO Nº 1<br />
-                                DOMINIO
+                                MODULO Nº 1: DOMINIO
+                                <br />
+                                {`Aforo ${
+                                    legalForm.aforo
+                                        ? legalForm.aforo
+                                        : '(Nro de aforo pendiente)'
+                                }`}
                                 <br />
                             </Text>
                             <Text style={styles.sectionH3}>
