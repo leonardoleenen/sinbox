@@ -63,6 +63,7 @@ const Component = (props: Props): JSX.Element => {
                 }
             )
             setInProcess(false)
+            props.onClose()
         }
     }
 

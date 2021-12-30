@@ -75,5 +75,5 @@ export const getRouteAfterLogin = () => {
 }
 
 export const logout = () => {
-    localStorage.clear()
+    localStorage.removeItem('sinbox:token')
 }

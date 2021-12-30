@@ -95,52 +95,7 @@ const Home: NextPage = () => {
                 // ...
             })
     }
-    const registerToken = async () => {
-        SignUpStore.update(s => {
-            s.user = { providerId: 'webauthn' }
-            s.userCn = ''
-            s.email = ''
-        })
-        router.push('/signup')
-    }
-    const signInToken = async () => {
-        const assertion = await webAuthn.getCredentials(true)
-        SignUpStore.update(s => {
-            s.loading = true
-        })
-        if (assertion) {
-            const user_id = assertion?.public_key.toString()
 
-            const existUser = await userAlreadyExist(user_id)
-            const { representante: user } =
-                await businessService.getCompanyByUser(user_id)
-            SignUpStore.update(s => {
-                s.user = user
-                s.userCn = user.nombreApellido as string
-                s.email = user.email as string
-            })
-            if (!existUser) router.push('/signup')
-            else {
-                const company = await businessService.getCompanyControlled(
-                    user_id
-                )
-                SignUpStore.update(s => {
-                    s.companyInReview = company
-                })
-                if (company.status === 'APPROVED') router.push('/inbox/welcome')
-                if (company.status === 'PENDING')
-                    router.push('/signup/wait-for-approval')
-            }
-        } else {
-            console.error('couldnt create assertion')
-        }
-    }
-    useEffect(() => {
-        setToken(token as string)
-
-        //router.push('/inbox')
-    }, [token])
-    if (state.loading) return <Loader />
     return (
         <section className="py-12 bg-blue-600 flex h-screen items-center">
             <div className="container px-4 mx-auto">
@@ -198,7 +153,7 @@ const Home: NextPage = () => {
                             />
                             <span>Ingresar con Google</span>
                         </button>
-                        <button
+                        {/* <button
                             onClick={registerToken}
                             className="flex items-center px-4 py-3 mt-3 w-full text-xs text-blueGray-500 font-semibold leading-none border hover:bg-blueGray-50 rounded"
                         >
@@ -237,7 +192,7 @@ const Home: NextPage = () => {
                                 />
                             </svg>
                             <span>Ingresar con Token de firma </span>
-                        </button>
+                        </button> */}
                     </div>
                     <div>
                         <p className="text-xs text-blue-200 text-center">

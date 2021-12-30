@@ -10,6 +10,7 @@ const Page: NextPage = () => {
     const router = useRouter()
     const state = SignUpStore.useState(s => s)
     const [loading, setLoading] = useState(false)
+    const [actoMonto, setActoMonto] = useState('')
 
     const [registroPropiedad, setRegistroPropiedad] = useState<{
         acto: string
@@ -36,7 +37,7 @@ const Page: NextPage = () => {
             metadata: {
                 type: 'REGISTRO SANTA FE',
                 friendlyName: 'Registro propiedad Santa Fe',
-                refForm: 'Calle Boedo 999 - Lomas'
+                refForm: actoMonto
             },
             payload: {
                 name: 'blalba'
@@ -104,6 +105,12 @@ const Page: NextPage = () => {
                                         <div className="mb-4">
                                             <div className="form-control">
                                                 <input
+                                                    value={actoMonto}
+                                                    onChange={e =>
+                                                        setActoMonto(
+                                                            e.target.value
+                                                        )
+                                                    }
                                                     type="text"
                                                     placeholder="Acto y monto"
                                                     className="input input-bordered"
