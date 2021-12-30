@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
+import { businessService } from '../../../services/business.service'
 import { webAuthn, Assertion } from '../../../services/webauthn.service'
 
 interface Props {
     className?: string
-    legalForm?: LegalForm
+    legalForm: LegalForm
     onClose: any
     actionType: 'CHECK' | 'CHECK AND APPROVE' | 'CHECK AND REJECT'
 }
@@ -33,6 +34,10 @@ const Component = (props: Props): JSX.Element => {
         if (credentials) {
             //Contains response.signature
             const assertion = await webAuthn.getCredentials(false, credentials)
+            await businessService.setLegalFormStatus(
+                props.legalForm,
+                props.actionType as any
+            )
             setInProcess(false)
         }
     }

@@ -63,8 +63,21 @@ class BusinessService {
     }
 
     async getLegalFormForInbox() {
-        const q = query(collection(firebaseManager.getDB(), 'legalForm'))
+        const q = query(
+            collection(firebaseManager.getDB(), 'legalForm'),
+            where('status', 'in', ['CHECKED', 'NEW'])
+        )
         return getDocs(q)
+    }
+
+    async setLegalFormStatus(
+        form: LegalForm,
+        status: 'CHECKED' | 'APPROVED' | 'REJECTED'
+    ) {
+        await setDoc(doc(firebaseManager.getDB(), 'legalForm', form.id), {
+            ...form,
+            status
+        })
     }
 
     async saveLegalForm(form: LegalForm) {

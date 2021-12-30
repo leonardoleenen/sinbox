@@ -15,13 +15,18 @@ const Page: NextPage = () => {
     const [companyId, setCompanyId] = useState<string>()
     const [showCompanyData, setShowCompanyData] = useState(false)
     const [showToPreview, setShowToPreview] = useState(false)
+    const [legalFormToSign, setLegalFormToSign] = useState<any>(null)
     const [actionType, setActionType] = useState<any>('CHECK')
-    useEffect(() => {
+
+    const loadData = () => {
         businessService.getLegalFormForInbox().then(qs => {
             InboxStore.update(s => {
                 s.legalForms = qs.docs.map(d => d.data()) as any
             })
         })
+    }
+    useEffect(() => {
+        loadData()
     }, [])
 
     const DataCompanyModal = () => {
@@ -36,8 +41,10 @@ const Page: NextPage = () => {
         )
     }
 
-    const onActionChange = (e: any) => {
+    const onActionChange = (e: any, index: number) => {
+        state.legalForms[index]
         setActionType(e.target.value)
+        setLegalFormToSign(state.legalForms[index])
         setShowToPreview(true)
     }
 
@@ -80,7 +87,9 @@ const Page: NextPage = () => {
                                         <td>Desconocido</td>
                                         <td>
                                             <select
-                                                onChange={onActionChange}
+                                                onChange={(e: any) =>
+                                                    onActionChange(e, i)
+                                                }
                                                 className="select select-bordered w-full max-w-xs"
                                             >
                                                 <option>
@@ -111,8 +120,12 @@ const Page: NextPage = () => {
         <div>
             {showToPreview ? (
                 <LegalFormPreview
-                    onClose={() => setShowToPreview(false)}
+                    onClose={() => {
+                        setShowToPreview(false)
+                        loadData()
+                    }}
                     actionType={actionType}
+                    legalForm={legalFormToSign}
                 />
             ) : (
                 <InboxContent />
