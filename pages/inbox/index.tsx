@@ -84,7 +84,7 @@ const Page: NextPage = () => {
                                                 lf.creator.createdAt
                                             ).format('DD/MM/YYYY HH:mm')}
                                         </td>
-                                        <td>Desconocido</td>
+                                        <td>{lf.creator.createdBy.cn}</td>
                                         <td>
                                             <select
                                                 onChange={(e: any) =>
@@ -95,9 +95,11 @@ const Page: NextPage = () => {
                                                 <option>
                                                     Elija una accion
                                                 </option>
-                                                <option value="CHECK">
-                                                    Revisar
-                                                </option>
+                                                {lf.status === 'NEW' && (
+                                                    <option value="CHECK">
+                                                        Revisar
+                                                    </option>
+                                                )}
                                                 <option value="CHECK AND APPROVE">
                                                     Revisar y aprobar
                                                 </option>

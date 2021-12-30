@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import { SignUpStore } from '../../store/sigup.store'
 import { businessService } from '../../services/business.service'
 import { webAuthn, Assertion } from '../../services/webauthn.service'
+import { getToken, tokenDecode } from '../../services/auth.service'
 
 const Page: NextPage = () => {
     const router = useRouter()
@@ -33,9 +34,7 @@ const Page: NextPage = () => {
             status: 'NEW',
             creator: {
                 createdAt: new Date().getTime(),
-                createdBy: {
-                    cn: 'Leonardo Leenen'
-                }
+                createdBy: tokenDecode(getToken() as string)
             }
         })
     }

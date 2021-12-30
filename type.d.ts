@@ -3,7 +3,7 @@ type User = {
     iat: number
     id: string
     identityProvider: string
-    role: 'PROVIDER' | 'BACKOFFICE'
+    role: 'PROVIDER' | 'BACKOFFICE' | 'ESCRIBANO' | 'SUPERVISOR'
     controllerCompanyCuit?: string
 }
 
@@ -61,4 +61,11 @@ type LegalForm = {
         createdAt: number
         createdBy: any
     }
+}
+
+type UserInvite = {
+    id: string
+    email: string
+    issuedAt: number
+    role: string
 }

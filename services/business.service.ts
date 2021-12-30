@@ -65,7 +65,7 @@ class BusinessService {
     async getLegalFormForInbox() {
         const q = query(
             collection(firebaseManager.getDB(), 'legalForm'),
-            where('status', 'in', ['CHECKED', 'NEW'])
+            where('status', 'in', ['CHECK', 'NEW'])
         )
         return getDocs(q)
     }

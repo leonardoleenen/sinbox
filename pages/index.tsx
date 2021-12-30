@@ -1,7 +1,9 @@
 import type { NextPage } from 'next'
 import { useEffect } from 'react'
 import {
+    generateToken,
     getInvite,
+    getRouteAfterLogin,
     registerBackendUser,
     setToken,
     tokenDecode,
@@ -27,7 +29,9 @@ const Home: NextPage = () => {
             id: invite,
             ...(await getInvite(invite as string))
         }
-        await registerBackendUser(inviteObj, user)
+        const newUser = await registerBackendUser(inviteObj, user)
+        setToken(generateToken(newUser as User))
+        router.push(getRouteAfterLogin() as string)
     }
 
     const signWithGoogle = () => {
@@ -47,13 +51,12 @@ const Home: NextPage = () => {
 
                 if (invite) {
                     await handleInvite(result.user)
-                    router.push('/inbox')
                 }
-                //Hardcode to REMOVE!!! Only for Registro santa fe
+                /*
                 if (user.uid === 'fHIZaRqhMOO2ennE4on7dCCV1gv2') {
                     router.push('/registro/modulo1')
                     return
-                }
+                }*/
                 SignUpStore.update(s => {
                     s.user = user
                     s.userCn = user.displayName as string
@@ -63,15 +66,22 @@ const Home: NextPage = () => {
                     const company = await businessService.getCompanyControlled(
                         user.uid
                     )
-                    SignUpStore.update(s => {
-                        s.companyInReview = company
-                    })
-                    if (company.status === 'APPROVED')
-                        router.push('/inbox/welcome')
-                    if (company.status === 'PENDING')
-                        router.push('/signup/wait-for-approval')
+
+                    setToken(generateToken(existUser as User))
+
+                    if (company) {
+                        SignUpStore.update(s => {
+                            s.companyInReview = company
+                        })
+                        if (company.status === 'APPROVED')
+                            router.push('/inbox/welcome')
+                        if (company.status === 'PENDING')
+                            router.push('/signup/wait-for-approval')
+                    } else {
+                        router.push(getRouteAfterLogin() as string)
+                    }
                 } else {
-                    router.push('/signup')
+                    router.push(getRouteAfterLogin() as string)
                 }
             })
             .catch(error => {
