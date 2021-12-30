@@ -8,6 +8,7 @@ import { InboxStore } from '../../store/inbox.store'
 import _ from 'lodash'
 import moment from 'moment'
 import LegalFormPreview from '../../components/legalForm/preview'
+import { getToken, tokenDecode } from '../../services/auth.service'
 
 const Page: NextPage = () => {
     const router = useRouter()
@@ -17,7 +18,7 @@ const Page: NextPage = () => {
     const [showToPreview, setShowToPreview] = useState(false)
     const [legalFormToSign, setLegalFormToSign] = useState<any>(null)
     const [actionType, setActionType] = useState<any>('CHECK')
-
+    const [user, setUser] = useState<User>()
     const loadData = () => {
         businessService.getLegalFormForInbox().then(qs => {
             InboxStore.update(s => {
@@ -27,6 +28,7 @@ const Page: NextPage = () => {
     }
     useEffect(() => {
         loadData()
+        setUser(tokenDecode(getToken() as string))
     }, [])
 
     const DataCompanyModal = () => {
@@ -100,12 +102,18 @@ const Page: NextPage = () => {
                                                         Revisar
                                                     </option>
                                                 )}
-                                                <option value="CHECK AND APPROVE">
-                                                    Revisar y aprobar
-                                                </option>
-                                                <option value="CHECK AND REJECT">
-                                                    Revisar y rechazar
-                                                </option>
+                                                {user?.role ===
+                                                    'SUPERVISOR' && (
+                                                    <option value="CHECK AND APPROVE">
+                                                        Revisar y aprobar
+                                                    </option>
+                                                )}
+                                                {user?.role ===
+                                                    'SUPERVISOR' && (
+                                                    <option value="CHECK AND REJECT">
+                                                        Revisar y rechazar
+                                                    </option>
+                                                )}
                                             </select>
                                         </td>
                                     </tr>
@@ -118,6 +126,7 @@ const Page: NextPage = () => {
         )
     }
 
+    if (!user) return <>Waiting for user</>
     return (
         <div>
             {showToPreview ? (
