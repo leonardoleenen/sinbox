@@ -70,12 +70,18 @@ class BusinessService {
         return getDocs(q)
     }
 
+    async getLegalForm(id: string) {
+        const docRef = doc(firebaseManager.getDB(), 'legalForm', id)
+        const docSnap = await getDoc(docRef)
+        return docSnap.data() as LegalForm
+    }
+
     async setLegalFormStatus(
         form: LegalForm,
         status: 'CHECKED' | 'APPROVED' | 'REJECTED' | 'NEW',
         signature: {
             signedBy: User
-            signture: string
+            signature: string
         }
     ) {
         await setDoc(doc(firebaseManager.getDB(), 'legalForm', form.id), {

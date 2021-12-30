@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Page,
     Text,
@@ -11,9 +11,10 @@ import {
     Font
 } from '@react-pdf/renderer'
 import moment from 'moment'
-
+import type { NextPage } from 'next'
 import _ from 'lodash'
-import { debug } from 'console'
+import { useRouter } from 'next/router'
+import { businessService } from '../../services/business.service'
 
 //Font.register({ family: 'Roboto', src: source });
 
@@ -274,7 +275,26 @@ const styles = StyleSheet.create({
 })
 
 // Create Document Component
-export default () => {
+const PagePDF: NextPage = () => {
+    const router = useRouter()
+    const { id } = router.query
+    const [legalForm, setLegalForm] = useState<LegalForm>()
+
+    useEffect(() => {
+        if (id) {
+            businessService
+                .getLegalForm(id as string)
+                .then(result => setLegalForm(result))
+        }
+    }, [id])
+
+    if (!legalForm)
+        return (
+            <div className="flex h-screen w-screen justify-center items-center">
+                <div>Loading Document, please wait...</div>
+            </div>
+        )
+
     return (
         <Document>
             <Page size="A4" style={styles.page}>
@@ -803,9 +823,13 @@ E0Z37LqDt3WnPQmxLsXurJFEaRSejRkMo/8AIAH1/wAG/wDp17+P7648/wB669Pyf//Z"
                     </View>
                 </View>
 
-                <View style={styles.sectionFirma}>
-                    <Text style={styles.sectionFooterBold}>
-                        SIGNATURE: FIRMA ELECTRONICA
+                <View style={styles.sectionFooter}>
+                    <Text style={styles.sectionEtiqueta}>
+                        {`Signed By: ${
+                            legalForm.creator.createdBy.name
+                        } at: ${moment(legalForm.creator.createdAt).format(
+                            'DD/MM/YYYY HH:mm:ss'
+                        )} - ${legalForm.creator.signature}`}
                     </Text>
                 </View>
                 <View style={styles.sectionFooter}>
@@ -1055,10 +1079,17 @@ E0Z37LqDt3WnPQmxLsXurJFEaRSejRkMo/8AIAH1/wAG/wDp17+P7648/wB669Pyf//Z"
                 </View>
                 <View style={styles.sectionFirma}>
                     <Text style={styles.sectionFooterBold}>
-                        SIGNATURE: FIRMA ELECTRONICA
+                        {legalForm.signature &&
+                            `Por el registro: ${
+                                legalForm.signature?.signedBy.name
+                            } el ${moment(legalForm.signature?.signedAt).format(
+                                'DD-MM-YYYY HH:mm:ss'
+                            )} - ${legalForm.signature?.signature}`}
                     </Text>
                 </View>
             </Page>
         </Document>
     )
 }
+
+export default PagePDF

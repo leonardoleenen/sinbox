@@ -59,7 +59,7 @@ const Component = (props: Props): JSX.Element => {
                 props.actionType as any,
                 {
                     signedBy: user as User,
-                    signture: arrayBufferToBase64(assertion.response.signature)
+                    signature: arrayBufferToBase64(assertion.response.signature)
                 }
             )
             setInProcess(false)
@@ -86,7 +86,7 @@ const Component = (props: Props): JSX.Element => {
             ) : (
                 <div>
                     <iframe
-                        src="/registro/modulo_1_PDF"
+                        src={`/registro/modulo_1_PDF/?id=${props.legalForm.id}`}
                         className="p-8 w-full h-screen"
                     />
                 </div>

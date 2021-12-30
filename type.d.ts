@@ -62,6 +62,11 @@ type LegalForm = {
         createdBy: any
         signature: string
     }
+    signature?: {
+        signedAt: number
+        signedBy: User
+        signature: string
+    }
 }
 
 type UserInvite = {
