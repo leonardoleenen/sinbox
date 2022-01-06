@@ -64,6 +64,8 @@ export const getInvites = async () => {
 }
 
 export const getRouteAfterLogin = () => {
+    if (!tokenDecode(getToken() as string)) return '/signup'
+
     if (tokenDecode(getToken() as string).role === 'ESCRIBANO')
         return '/registro/modulo1'
 

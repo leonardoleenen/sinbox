@@ -52,11 +52,7 @@ const Home: NextPage = () => {
                 if (invite) {
                     await handleInvite(result.user)
                 }
-                /*
-                if (user.uid === 'fHIZaRqhMOO2ennE4on7dCCV1gv2') {
-                    router.push('/registro/modulo1')
-                    return
-                }*/
+
                 SignUpStore.update(s => {
                     s.user = user
                     s.userCn = user.displayName as string
