@@ -37,6 +37,18 @@ const Page: NextPage = () => {
                         <button className="btn btn-primary">Buscar</button>
                     </div>
                 </div>
+
+                <div className="bg-gray-200 w-full flex rounded mt-4">
+                    <div className="flex m-4">
+                        <div>Importe en OPP: </div>
+                        <div className="ml-2"> $20,000,000</div>
+                    </div>
+
+                    <div className="flex m-4 ml-24">
+                        <div>Importe en OP: </div>
+                        <div className="ml-2"> $1,000,000</div>
+                    </div>
+                </div>
                 <Calendar />
                 <div className="flex p-4 justify-center pt-8">
                     <button className="btn btn-primary">Guardar</button>

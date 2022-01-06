@@ -130,7 +130,23 @@ const Component = (props: Props): JSX.Element => {
                                         <span className="text-gray-500">1</span>
                                     </div>
                                     <div className="bottom flex-grow h-30 py-1 w-full cursor-pointer">
-                                        <div className="event bg-purple-400 text-white rounded p-1 text-sm mb-1">
+                                        <div className="event bg-purple-400 text-white rounded p-1 text-sm mb-1 flex">
+                                            <span>
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    className="h-4 w-4 mx-2"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                    stroke="currentColor"
+                                                >
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        strokeWidth={2}
+                                                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                                                    />
+                                                </svg>
+                                            </span>
                                             <span className="event-name">
                                                 Radio 10
                                             </span>
@@ -139,7 +155,23 @@ const Component = (props: Props): JSX.Element => {
                                                 - 12 Min
                                             </span>
                                         </div>
-                                        <div className="event bg-green-400 text-white rounded p-1 text-sm mb-1">
+                                        <div className="event bg-green-400 text-white rounded p-1 text-sm mb-1 flex">
+                                            <span>
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    className="h-4 w-4 mx-2"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                    stroke="currentColor"
+                                                >
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        strokeWidth={2}
+                                                        d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"
+                                                    />
+                                                </svg>
+                                            </span>
                                             <span className="event-name">
                                                 Radio 10
                                             </span>
