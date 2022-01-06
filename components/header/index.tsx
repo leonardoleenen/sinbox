@@ -59,6 +59,18 @@ const Component = (): JSX.Element => {
                                     Outbox
                                 </a>
                             </li>
+
+                            <li
+                                className={
+                                    state.activePage === 'PLANNING'
+                                        ? 'bordered'
+                                        : ''
+                                }
+                            >
+                                <a onClick={() => goTo('PLANNING', 'planning')}>
+                                    Planning
+                                </a>
+                            </li>
                         </ul>
 
                         <div className="dropdown dropdown-end">
