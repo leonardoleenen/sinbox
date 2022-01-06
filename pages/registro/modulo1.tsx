@@ -1,14 +1,31 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { SignUpStore } from '../../store/sigup.store'
 import { businessService } from '../../services/business.service'
+import { webAuthn, Assertion } from '../../services/webauthn.service'
+import { getToken, tokenDecode } from '../../services/auth.service'
 
 const Page: NextPage = () => {
     const router = useRouter()
     const state = SignUpStore.useState(s => s)
     const [loading, setLoading] = useState(false)
+    const { id } = router.query
+    const [legalForm, setLegalForm] = useState<any>()
+    const [actoMonto, setActoMonto] = useState('')
+    const [user, setUser] = useState<User>()
+    const [mode, setMode] = useState<'NEW' | 'EDIT CERT' | 'READONLY'>('NEW')
 
+    useEffect(() => {
+        if (id) {
+            const u = tokenDecode(getToken() as string)
+            setUser(u)
+            if (u.role === 'CERT RECEPTIONIST') setMode('EDIT CERT')
+            businessService
+                .getLegalForm(id as string)
+                .then(result => setLegalForm(result))
+        }
+    }, [id])
     const [registroPropiedad, setRegistroPropiedad] = useState<{
         acto: string
         lote: Array<{
@@ -17,6 +34,81 @@ const Page: NextPage = () => {
             plano: string
         }>
     }>()
+
+    function arrayBufferToBase64(buffer: any) {
+        let binary = ''
+        const bytes = new Uint8Array(buffer)
+        const len = bytes.byteLength
+        for (let i = 0; i < len; i++) {
+            binary += String.fromCharCode(bytes[i])
+        }
+        return window.btoa(binary)
+    }
+
+    const save = (signature: string) => {
+        businessService.saveLegalForm({
+            id: null,
+            metadata: {
+                type: 'REGISTRO SANTA FE',
+                friendlyName: 'Registro propiedad Santa Fe',
+                refForm: actoMonto
+            },
+            payload: {
+                name: 'blalba'
+            },
+            status: 'NEW',
+            creator: {
+                createdAt: new Date().getTime(),
+                createdBy: tokenDecode(getToken() as string),
+                signature
+            }
+        })
+    }
+
+    const complete = async () => {
+        await businessService.saveLegalForm({
+            ...legalForm,
+            status: 'TO CLOSE'
+        })
+        await signWebAuthn()
+    }
+
+    const signWebAuthn = async () => {
+        //!! DATA THAT MUST BE PASSED IN ORDER TO GENERATE PUBLIC KEY
+        /*Options: Obtain from state | this is a placeholder*/
+        const test = {
+            name: 'Alex',
+            displayName: 'Fiorenza'
+        }
+        //!! OBJECT OF FORM TO PASS TO CHALLENGE
+        const challengeTest = {
+            testField: 'Morpheo',
+            testField2: 'Neo',
+            testField3: 'Trinity'
+        }
+        const credentials = await webAuthn.createCredentials(
+            test,
+            {
+                storeCredentials: false
+            },
+            challengeTest
+        )
+        if (credentials) {
+            //Contains response.signature
+            const assertion: any = await webAuthn.getCredentials(
+                false,
+                credentials
+            )
+
+            if (user && user.role === 'CERT RECEPTIONIST')
+                return router.push('/inbox')
+            else {
+                await save(arrayBufferToBase64(assertion.response.signature))
+                router.push('/registro/success')
+            }
+        }
+    }
+
     return (
         <div>
             <section className="py-20 flex h-screen ">
@@ -40,6 +132,13 @@ const Page: NextPage = () => {
                                         <div className="mb-4">
                                             <div className="form-control">
                                                 <input
+                                                    disabled={mode !== 'NEW'}
+                                                    value={actoMonto}
+                                                    onChange={e =>
+                                                        setActoMonto(
+                                                            e.target.value
+                                                        )
+                                                    }
                                                     type="text"
                                                     placeholder="Acto y monto"
                                                     className="input input-bordered"
@@ -52,8 +151,7 @@ const Page: NextPage = () => {
                                                 mayor area inscripta,determinar:
                                             </span>
                                         </div>
-
-                                        <div className="mb-2 flex ">
+                                        <div className="mb-4 flex">
                                             <div className="form-control w-full">
                                                 <input
                                                     type="text"
@@ -61,18 +159,26 @@ const Page: NextPage = () => {
                                                     className="input input-bordered"
                                                 />
                                             </div>
-
-                                            <div className="form-control ml-4 w-full ">
+                                            <div className="form-control w-full ml-4">
                                                 <input
                                                     type="text"
                                                     placeholder="Manzana"
                                                     className="input input-bordered"
                                                 />
                                             </div>
-                                            <div className="form-control ml-4 w-full ">
+                                        </div>
+                                        <div className="mb-4 flex">
+                                            <div className="form-control w-full">
                                                 <input
                                                     type="text"
                                                     placeholder="Plano"
+                                                    className="input input-bordered"
+                                                />
+                                            </div>
+                                            <div className="form-control w-full ml-4">
+                                                <input
+                                                    type="text"
+                                                    placeholder="Año"
                                                     className="input input-bordered"
                                                 />
                                             </div>
@@ -93,9 +199,8 @@ const Page: NextPage = () => {
                                                         <tr>
                                                             <th>Lote/s</th>
                                                             <th>Manzana</th>
-                                                            <th>
-                                                                Plano N /año
-                                                            </th>
+                                                            <th> Plano N </th>
+                                                            <th> Año</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -231,27 +336,36 @@ const Page: NextPage = () => {
                                                         className="input input-bordered"
                                                     />
                                                 </div>
-                                                <div className="form-control w-full ml-4">
+                                            </div>
+
+                                            <div className="mb-4 flex">
+                                                <div className="form-control w-full ">
                                                     <input
                                                         type="text"
                                                         placeholder="Zona"
                                                         className="input input-bordered"
                                                     />
                                                 </div>
-                                            </div>
-
-                                            <div className="mb-4 flex">
-                                                <div className="form-control w-full">
+                                                <div className="form-control w-full ml-4">
                                                     <input
                                                         type="text"
                                                         placeholder="Localidad"
                                                         className="input input-bordered"
                                                     />
                                                 </div>
+                                            </div>
+                                            <div className="mb-4 flex">
+                                                <div className="form-control w-full">
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Calle"
+                                                        className="input input-bordered"
+                                                    />
+                                                </div>
                                                 <div className="form-control w-full ml-4">
                                                     <input
                                                         type="text"
-                                                        placeholder="Calle y Nro"
+                                                        placeholder="numero"
                                                         className="input input-bordered"
                                                     />
                                                 </div>
@@ -275,17 +389,10 @@ const Page: NextPage = () => {
                                                     />
                                                 </div>
 
-                                                <div className="form-control ml-4 w-full ">
+                                                <div className="form-control ml-4 w-full ml-4 ">
                                                     <input
                                                         type="text"
                                                         placeholder="Manzana"
-                                                        className="input input-bordered"
-                                                    />
-                                                </div>
-                                                <div className="form-control ml-4 w-full ">
-                                                    <input
-                                                        type="text"
-                                                        placeholder="Superficie"
                                                         className="input input-bordered"
                                                     />
                                                 </div>
@@ -294,7 +401,25 @@ const Page: NextPage = () => {
                                                 <div className="form-control w-full">
                                                     <input
                                                         type="text"
-                                                        placeholder="Plano nro / año"
+                                                        placeholder="Superficie"
+                                                        className="input input-bordered"
+                                                    />
+                                                </div>
+
+                                                <div className="form-control ml-4 w-full ">
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Plano"
+                                                        className="input input-bordered"
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            <div className="mb-4 flex ">
+                                                <div className="form-control w-full">
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Año"
                                                         className="input input-bordered"
                                                     />
                                                 </div>
@@ -306,9 +431,7 @@ const Page: NextPage = () => {
                                                         className="input input-bordered"
                                                     />
                                                 </div>
-                                                <div className="form-control ml-4 w-full "></div>
                                             </div>
-
                                             <div className="max-w-md mb-8 mx-auto">
                                                 <span className="text-sm text-blueGray-400">
                                                     Rumbos, medidas lineales y
@@ -350,7 +473,39 @@ const Page: NextPage = () => {
                                                     />
                                                 </div>
                                             </div>
+                                            <div className="mb-4 flex">
+                                                <div className="form-control w-full">
+                                                    <input
+                                                        type="text"
+                                                        placeholder="NO "
+                                                        className="input input-bordered"
+                                                    />
+                                                </div>
+                                                <div className="form-control w-full ml-4">
+                                                    <input
+                                                        type="text"
+                                                        placeholder="NE"
+                                                        className="input input-bordered"
+                                                    />
+                                                </div>
+                                            </div>
 
+                                            <div className="mb-4 flex">
+                                                <div className="form-control w-full">
+                                                    <input
+                                                        type="text"
+                                                        placeholder="SO "
+                                                        className="input input-bordered"
+                                                    />
+                                                </div>
+                                                <div className="form-control w-full ml-4">
+                                                    <input
+                                                        type="text"
+                                                        placeholder="SE"
+                                                        className="input input-bordered"
+                                                    />
+                                                </div>
+                                            </div>
                                             <div className="max-w-md mb-8 mx-auto">
                                                 <span className="text-sm text-blueGray-400">
                                                     Cuando es propiedad
@@ -704,11 +859,19 @@ const Page: NextPage = () => {
                                                         placeholder="Otros Datos, enmiendas,etc"
                                                     ></textarea>
                                                 </div>
-                                                <div className="form-control w-full ">
-                                                    <button className="btn btn-primary mt-8">
-                                                        Firma del escribano
-                                                    </button>
-                                                </div>
+
+                                                {mode === 'NEW' && (
+                                                    <div className="form-control w-full ">
+                                                        <button
+                                                            onClick={
+                                                                signWebAuthn
+                                                            }
+                                                            className="btn btn-primary mt-8"
+                                                        >
+                                                            Firma del escribano
+                                                        </button>
+                                                    </div>
+                                                )}
                                             </div>
                                         </div>
                                     </div>
@@ -728,7 +891,9 @@ const Page: NextPage = () => {
                                                 <div className="form-control w-full">
                                                     <textarea
                                                         className="textarea h-24 textarea-bordered"
-                                                        disabled
+                                                        disabled={
+                                                            mode !== 'EDIT CERT'
+                                                        }
                                                         placeholder="Otros Datos, enmiendas,etc"
                                                     ></textarea>
                                                 </div>
@@ -1047,16 +1212,22 @@ const Page: NextPage = () => {
                                                         className="input input-bordered"
                                                     />
                                                 </div>
-                                                <div className="form-control mt-3 ">
-                                                    <button
-                                                        className="btn btn-disabled"
-                                                        role="button"
-                                                        aria-disabled="true"
-                                                    >
-                                                        Firmar funcionario del
-                                                        registro
-                                                    </button>
-                                                </div>
+                                                {mode === 'EDIT CERT' &&
+                                                    legalForm && (
+                                                        <div className="form-control mt-3 ">
+                                                            <button
+                                                                onClick={
+                                                                    complete
+                                                                }
+                                                                className="btn"
+                                                                role="button"
+                                                            >
+                                                                Firmar
+                                                                funcionario del
+                                                                registro
+                                                            </button>
+                                                        </div>
+                                                    )}
                                                 <div></div>
                                             </div>
                                         </div>

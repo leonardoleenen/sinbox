@@ -1,158 +1,117 @@
 /* eslint-disable @next/next/no-html-link-for-pages */
-import React from 'react'
+import _ from 'lodash'
+import { useRouter } from 'next/router'
+import React, { useEffect, useState } from 'react'
+import { getToken, logout, tokenDecode } from '../../services/auth.service'
+import { HeaderStore } from '../../store/header.store'
 
 const Component = (): JSX.Element => {
+    const router = useRouter()
+    const [user, setUser] = useState<User>()
+    const state = HeaderStore.useState(s => s)
+
+    useEffect(() => {
+        setUser(tokenDecode(getToken() as string))
+    }, [])
+    const closeSession = () => {
+        logout()
+        router.push('/')
+    }
+
+    if (!user) return <></>
+
+    const goTo = (action: string, route: string) => {
+        HeaderStore.update(s => {
+            s.activePage = action as any
+        })
+
+        router.push(route)
+    }
+
     return (
         <section>
-            <div className="container px-4 mx-auto">
-                <nav className="flex items-center py-6">
-                    <a className="text-3xl font-semibold leading-none" href="#">
-                        <img
-                            className="h-10"
-                            src="logos/inbox-mail.png"
-                            alt=""
-                            width="auto"
-                        />
-                    </a>
-                    <div className="lg:hidden ml-auto">
-                        <button className="navbar-burger flex items-center py-2 px-3 text-blue-600 hover:text-blue-700 rounded border border-blue-200 hover:border-blue-300">
-                            <svg
-                                className="fill-current h-4 w-4"
-                                viewBox="0 0 20 20"
-                                xmlns="http://www.w3.org/2000/svg"
+            <div className="navbar ">
+                <div className="flex-1 px-2 lg:flex-none">
+                    <a className="text-lg font-bold">Sinbox</a>
+                </div>
+                <div className="flex justify-end flex-1 px-2">
+                    <div className="flex items-stretch">
+                        <ul className="menu items-stretch px-3  bg-base-100 horizontal ">
+                            <li
+                                className={
+                                    state.activePage === 'INBOX'
+                                        ? 'bordered'
+                                        : ''
+                                }
                             >
-                                <title>Mobile menu</title>
-                                <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
-                            </svg>
-                        </button>
-                    </div>
-                    <ul className="hidden lg:flex items-center space-x-12 ml-auto mr-12">
-                        <li>
-                            <a
-                                className="text-sm text-blueGray-400 hover:text-blueGray-500"
-                                href="/inbox/welcom"
-                            >
-                                Inbox
-                            </a>
-                        </li>
-
-                        <li>
-                            <a
-                                className="text-sm text-blueGray-400 hover:text-blueGray-500"
-                                href="/inbox/faq"
-                                data-removed="true"
-                            >
-                                Preguntas Frecuentes
-                            </a>
-                        </li>
-                    </ul>
-                    <div className="hidden lg:block">
-                        <a
-                            className="mr-2 inline-block px-4 py-3 text-xs font-semibold leading-none border rounded hover:text-red-700 border-red-200 hover:border-red-300 text-red-600"
-                            href="#"
-                        >
-                            Salir
-                        </a>
-                    </div>
-                </nav>
-            </div>
-            <div className="hidden navbar-menu fixed top-0 left-0 bottom-0 w-5/6 max-w-sm z-50">
-                <div className="navbar-backdrop fixed inset-0 bg-blueGray-800 opacity-25"></div>
-                <nav className="relative flex flex-col py-6 px-6 w-full h-full bg-white border-r overflow-y-auto">
-                    <div className="flex items-center mb-8">
-                        <a
-                            className="mr-auto text-3xl font-semibold leading-none"
-                            href="#"
-                        >
-                            <img
-                                className="h-10"
-                                src="logos/inbox-mail.png"
-                                alt=""
-                                width="auto"
-                            />
-                        </a>
-                        <button className="navbar-close">
-                            <svg
-                                className="h-6 w-6 text-blueGray-400 cursor-pointer hover:text-blueGray-500"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="2"
-                                    d="M6 18L18 6M6 6l12 12"
-                                ></path>
-                            </svg>
-                        </button>
-                    </div>
-                    <div>
-                        <ul>
-                            <li className="mb-1">
-                                <a
-                                    className="block p-4 text-sm text-blueGray-500 hover:bg-blue-50 hover:text-blue-600"
-                                    href="/inbox"
-                                >
+                                <a onClick={() => goTo('INBOX', 'inbox')}>
                                     Inbox
                                 </a>
                             </li>
+                            <li
+                                className={
+                                    state.activePage === 'OUTBOX'
+                                        ? 'bordered'
+                                        : ''
+                                }
+                            >
+                                <a onClick={() => goTo('OUTBOX', 'outbox')}>
+                                    Outbox
+                                </a>
+                            </li>
 
-                            <li className="mb-1">
-                                <a
-                                    className="block p-4 text-sm text-blueGray-500 hover:bg-blue-50 hover:text-blue-600"
-                                    href="/inbox/faq"
-                                >
-                                    Preguntas frecuentes
+                            <li
+                                className={
+                                    state.activePage === 'PLANNING'
+                                        ? 'bordered'
+                                        : ''
+                                }
+                            >
+                                <a onClick={() => goTo('PLANNING', 'planning')}>
+                                    Planning
                                 </a>
                             </li>
                         </ul>
-                        <div className="mt-4 pt-6 border-t border-blueGray-100">
-                            <a
-                                className="block px-4 py-3 mb-3 text-xs text-center font-semibold leading-none bg-blue-600 hover:bg-blue-700 text-white rounded"
-                                href="#"
+
+                        <div className="dropdown dropdown-end">
+                            <div className="flex items-center">
+                                <div
+                                    className="btn btn-ghost rounded-btn"
+                                    tabIndex={0}
+                                >
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="h-6 w-6"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                                        />
+                                    </svg>
+                                </div>
+                            </div>
+                            <ul
+                                tabIndex={0}
+                                className="p-2 shadow menu dropdown-content bg-base-100 rounded-box w-52"
                             >
-                                Sign Up
-                            </a>
-                            <a
-                                className="block px-4 py-3 mb-2 text-xs text-center text-blue-600 hover:text-blue-700 font-semibold leading-none border border-blue-200 hover:border-blue-300 rounded"
-                                href="#"
-                            >
-                                Log In
-                            </a>
+                                <li>
+                                    <a>{`${user.name}`}</a>
+                                </li>
+                                <li>
+                                    <a>{user.role}</a>
+                                </li>
+                                <li>
+                                    <a onClick={() => closeSession()}>Salir</a>
+                                </li>
+                            </ul>
                         </div>
                     </div>
-                    <div className="mt-auto">
-                        <p className="my-4 text-xs text-blueGray-400">
-                            <span>Get in Touch</span>
-                            <a
-                                className="text-blue-600 hover:text-blue-600 underline"
-                                href="#"
-                            >
-                                info@example.com
-                            </a>
-                        </p>
-                        <a className="inline-block px-1" href="#">
-                            <img
-                                src="metis-assets/icons/facebook-blue.svg"
-                                alt=""
-                            />
-                        </a>
-                        <a className="inline-block px-1" href="#">
-                            <img
-                                src="metis-assets/icons/twitter-blue.svg"
-                                alt=""
-                            />
-                        </a>
-                        <a className="inline-block px-1" href="#">
-                            <img
-                                src="metis-assets/icons/instagram-blue.svg"
-                                alt=""
-                            />
-                        </a>
-                    </div>
-                </nav>
+                </div>
             </div>
         </section>
     )

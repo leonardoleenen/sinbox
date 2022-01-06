@@ -66,11 +66,7 @@ const Page: NextPage = props => {
                                     <input
                                         type="text"
                                         {...register('email', {
-                                            required: true,
-                                            pattern: {
-                                                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                                                message: 'Email incorrecto'
-                                            }
+                                            required: true
                                         })}
                                         defaultValue={state.email}
                                         placeholder="Email de contacto"

@@ -12,7 +12,6 @@ import { firebaseManager } from './firebase.services'
 import { nanoid } from 'nanoid'
 class BusinessService {
     async saveCompany(data: Company, user: User, id?: string) {
-        console.log(data)
         await setDoc(doc(firebaseManager.getDB(), 'users', user.id), user)
         if (id) {
             await setDoc(doc(firebaseManager.getDB(), 'provider', id), data)
@@ -61,6 +60,65 @@ class BusinessService {
             where('status', '==', 'PENDING')
         )
         return getDocs(q)
+    }
+
+    async getLegalFormForInbox() {
+        const q = query(collection(firebaseManager.getDB(), 'legalForm'))
+        return getDocs(q)
+    }
+
+    async getLegalFormForOutBox() {
+        const q = query(
+            collection(firebaseManager.getDB(), 'legalForm'),
+            where('status', '==', 'CLOSED')
+        )
+        return getDocs(q)
+    }
+
+    async getLegalForm(id: string) {
+        const docRef = doc(firebaseManager.getDB(), 'legalForm', id)
+        const docSnap = await getDoc(docRef)
+        return docSnap.data() as LegalForm
+    }
+
+    async setLegalFormStatus(
+        form: LegalForm,
+        status: 'CHECKED' | 'APPROVED' | 'REJECTED' | 'NEW',
+        signature: {
+            signedBy: User
+            signature: string
+        }
+    ) {
+        await setDoc(doc(firebaseManager.getDB(), 'legalForm', form.id), {
+            ...form,
+            signature: {
+                signedAt: new Date().getTime(),
+                ...signature
+            },
+            status
+        })
+    }
+
+    async aforar(form: LegalForm, aforo: number) {
+        await setDoc(doc(firebaseManager.getDB(), 'legalForm', form.id), {
+            ...form,
+            aforo
+        })
+    }
+
+    async saveLegalForm(form: LegalForm) {
+        const _id = nanoid(10)
+        if (form.id) {
+            await setDoc(
+                doc(firebaseManager.getDB(), 'legalForm', form.id),
+                form
+            )
+        } else {
+            await setDoc(doc(firebaseManager.getDB(), 'legalForm', _id), {
+                ...form,
+                id: _id
+            })
+        }
     }
 }
 

@@ -3,7 +3,14 @@ type User = {
     iat: number
     id: string
     identityProvider: string
-    role: 'PROVIDER' | 'BACKOFFICE'
+    role:
+        | 'PROVIDER'
+        | 'BACKOFFICE'
+        | 'ESCRIBANO'
+        | 'SUPERVISOR'
+        | 'RECEPTIONIST'
+        | 'CERT RECEPTIONIST'
+        | 'CERT SUPERVISOR'
     controllerCompanyCuit?: string
 }
 
@@ -45,4 +52,34 @@ type TariffOffer = {
     nombreComercial: string
     medio: string
     precio: number
+}
+
+type LegalForm = {
+    id: any
+    metadata: {
+        type: string
+        friendlyName: string
+        refForm: string
+    }
+    payload: any
+    status: 'NEW' | 'APPROVED' | 'TO CLOSE' | 'CLOSED' | 'CHECK'
+
+    creator: {
+        createdAt: number
+        createdBy: any
+        signature: string
+    }
+    signature?: {
+        signedAt: number
+        signedBy: User
+        signature: string
+    }
+    aforo?: string
+}
+
+type UserInvite = {
+    id: string
+    email: string
+    issuedAt: number
+    role: string
 }
