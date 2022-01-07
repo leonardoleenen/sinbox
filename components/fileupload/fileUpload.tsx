@@ -3,11 +3,12 @@ import type { NextPage } from 'next'
 import { firebaseManager } from '../../services/firebase.services'
 import { SignUpStore } from '../../store/sigup.store'
 interface FileUpload {
-    placeholder: string
+    placeholder?: string
     extensions: Array<string>
     type: string
     readonly?: boolean
     optionalParams?: any
+    showFullScreen?: boolean
 }
 
 interface FileInfo {
@@ -21,11 +22,117 @@ const FileUpload: NextPage<FileUpload> = ({
     extensions,
     type,
     readonly = false,
-    optionalParams = []
+    optionalParams = [],
+    showFullScreen = false
 }) => {
+    const FullScreenComponent = () => {
+        if (preview)
+            return (
+                <div className="indicator w-full">
+                    <div
+                        className="indicator-item bg-white p-2 rounded-full cursor-pointer border"
+                        onClick={async () => {
+                            await deleteFile()
+                        }}
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-6 w-6"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="red"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                            />
+                        </svg>
+                    </div>
+
+                    <iframe className="h-screen w-full" src={`${blob}`} />
+                </div>
+            )
+        return (
+            <div className="hero min-h-screen bg-base-200">
+                <div className="text-center hero-content">
+                    <div className="max-w-md">
+                        <h1 className="mb-5 text-5xl font-bold">
+                            Archivo adjunto
+                        </h1>
+                        <p className="mb-5">
+                            Por favor, haga click en Subir Archivo para poder
+                            adjuntar el archivo pdf al expediente
+                        </p>
+                        <label
+                            className="w-64 flex flex-col items-center px-4 py-3 bg-white rounded-md shadow-md tracking-wide uppercase
+                                cursor-pointer
+                                hover:bg-purple-600 hover:text-white
+                                text-purple-600
+                                ease-linear
+                                transition-all
+                                duration-150
+                                border border-blue"
+                        >
+                            Subir archivo
+                            <input
+                                type="file"
+                                readOnly={readonly}
+                                onChange={async e => {
+                                    await onChangeHandler(e)
+                                    await previewFile()
+                                }}
+                                className="hidden"
+                            />
+                        </label>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
+    const FileInputComponent = () => {
+        return (
+            <div className="form-control ml-4">
+                <label
+                    className="w-64 flex flex-col items-center px-4 py-3 bg-white rounded-md shadow-md tracking-wide uppercase
+            cursor-pointer
+            hover:bg-purple-600 hover:text-white
+            text-purple-600
+            ease-linear
+            transition-all
+            duration-150
+            border border-blue
+                                                "
+                >
+                    <span className="text-base leading-normal">
+                        {placeholder}
+                    </span>
+
+                    <input
+                        type="file"
+                        readOnly={readonly}
+                        onChange={onChangeHandler}
+                        className="hidden"
+                    />
+                </label>
+                {fileInfo?.fileName && (
+                    <>
+                        <span>{fileInfo?.fileName}</span>
+                        <span onClick={previewFile}>Preview</span>
+                        <span onClick={deleteFile}>Delete</span>
+                    </>
+                )}
+                {preview && (
+                    <iframe className="h-screen w-full" src={`${blob}`} />
+                )}
+            </div>
+        )
+    }
     const state = SignUpStore.useState(s => s)
     /*Manage blob*/
-    const [file, setFile] = useState<any>({})
+    const [file, setFile] = useState<any>(null)
     const [blob, setBlob] = useState<any>()
     /*File info set in state*/
     const [fileInfo, setFileInfo] = useState<any>()
@@ -40,9 +147,9 @@ const FileUpload: NextPage<FileUpload> = ({
             })
         }
     }, [optionalParams])
+
     const previewFile = async () => {
         let blob
-        console.log(fileInfo)
         if (optionalParams.length > 0) {
             const url = await firebaseManager.getFileUrl(
                 optionalParams[0].fullPath
@@ -54,7 +161,7 @@ const FileUpload: NextPage<FileUpload> = ({
         setBlob(blob)
         setPreview(!preview)
     }
-    const deleteFile = () => {
+    const deleteFile = async () => {
         if (fileInfo?.fileName || optionalParams.length > 0) {
             if (preview) {
                 setPreview(false)
@@ -62,7 +169,7 @@ const FileUpload: NextPage<FileUpload> = ({
             }
             setFile({})
             setFileInfo(undefined)
-            firebaseManager
+            await firebaseManager
                 .deleteFile(fileInfo?.fileName)
                 .then(snapshot => {
                     setDeleted(true)
@@ -82,7 +189,6 @@ const FileUpload: NextPage<FileUpload> = ({
                                 s.datosEmpresa.razonSocial.constancia = ''
                                 break
                             default:
-                                console.error('Incorrect type')
                                 break
                         }
                     })
@@ -158,36 +264,7 @@ const FileUpload: NextPage<FileUpload> = ({
         }
     }
     return (
-        <div className="form-control ml-4">
-            <label
-                className="w-64 flex flex-col items-center px-4 py-3 bg-white rounded-md shadow-md tracking-wide uppercase
-                cursor-pointer
-                hover:bg-purple-600 hover:text-white
-                text-purple-600
-                ease-linear
-                transition-all
-                duration-150
-                border border-blue
-                                                    "
-            >
-                <span className="text-base leading-normal">{placeholder}</span>
-
-                <input
-                    type="file"
-                    readOnly={readonly}
-                    onChange={onChangeHandler}
-                    className="hidden"
-                />
-            </label>
-            {fileInfo?.fileName && (
-                <>
-                    <span>{fileInfo?.fileName}</span>
-                    <span onClick={previewFile}>Preview</span>
-                    <span onClick={deleteFile}>Delete</span>
-                </>
-            )}
-            {preview && <iframe className="h-screen w-full" src={`${blob}`} />}
-        </div>
+        <>{showFullScreen ? <FullScreenComponent /> : <FileInputComponent />}</>
     )
 }
 

@@ -106,6 +106,15 @@ const Component = (): JSX.Element => {
                                     <a>{user.role}</a>
                                 </li>
                                 <li>
+                                    <a
+                                        onClick={() =>
+                                            router.push('/settings/workflow')
+                                        }
+                                    >
+                                        Workflow
+                                    </a>
+                                </li>
+                                <li>
                                     <a onClick={() => closeSession()}>Salir</a>
                                 </li>
                             </ul>
