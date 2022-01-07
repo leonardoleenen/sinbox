@@ -4,12 +4,15 @@ import Container from '../../../components/container'
 import FileUpload from '../../../components/fileupload/fileUpload'
 import { useRouter } from 'next/router'
 import { workflowService } from '../../../services/workflow.service'
+import { nanoid } from 'nanoid'
+import { getToken, tokenDecode } from '../../../services/auth.service'
 const Page: NextPage = () => {
     const router = useRouter()
 
     const wkfId = router.query.wkfId as string
     const step = router.query.step as any
-
+    const processId = router.query.processId as string
+    const [referencia, setReferencia] = useState('')
     const [spec, setSpec] = useState<WorkflowSpec>()
 
     useEffect(() => {
@@ -19,7 +22,24 @@ const Page: NextPage = () => {
             })
     }, [wkfId])
 
-    const send = () => {}
+    const send = () => {
+        if (!processId)
+            workflowService.createProcess(
+                spec as WorkflowSpec,
+                {
+                    id: nanoid(10),
+                    payload: {
+                        text: 'Ejemplo'
+                    },
+                    ref: referencia,
+                    spec: spec?.steps[0].fileToFill as FileSpec,
+                    url: 'http://localhost',
+                    filledAt: new Date().getTime(),
+                    filledBy: tokenDecode(getToken() as string)
+                },
+                spec?.steps[0] as Step
+            )
+    }
 
     return (
         <Container>
@@ -45,6 +65,10 @@ const Page: NextPage = () => {
                         <span className="label-text">Referencia</span>
                     </label>
                     <input
+                        value={referencia}
+                        onChange={e => {
+                            setReferencia(e.target.value)
+                        }}
                         type="text"
                         placeholder="Por favor, ingrese un texto de referencia"
                         className="input"

@@ -7,6 +7,7 @@ const Page: NextPage = () => {
     useEffect(() => {
         workflowService.getList().then(result => setList(result))
     }, [])
+
     return (
         <div>
             <Container>

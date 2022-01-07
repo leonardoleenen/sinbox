@@ -92,16 +92,18 @@ type FileSpec = {
 
 type FileInstance = {
     id: string
-    payload: string
+    payload: any
     spec: FileSpec
+    ref: string
     url: string
     filledAt: number
     filledBy: User
 }
 
 type ActionSpec = {
-    id: 'SEND' | 'SIGN AND SEND'
+    id: 'SEND' | 'SIGN AND SEND' | 'SIGN AND FINISH'
     name: string
+    ended: boolean
 }
 
 type WorkflowProcess = {
@@ -123,6 +125,7 @@ type Step = {
     action: ActionSpec
     requireSignature: boolean
     next: Step
+    index: number
 }
 
 type WorkflowSpec = {
