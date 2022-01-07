@@ -17,6 +17,13 @@ const Page: NextPage = () => {
                 <div className="bg-gray-200 w-full flex rounded">
                     <select className="select select-bordered w-full max-w-xs m-4 ">
                         <option disabled="disabled" selected="selected">
+                            Provincia
+                        </option>
+                        <option>Buenos Aires</option>
+                        <option>Santa Fe</option>
+                    </select>
+                    <select className="select select-bordered w-full max-w-xs m-4 ">
+                        <option disabled="disabled" selected="selected">
                             Elija el grupo economico
                         </option>
                         <option>telekinesis</option>
@@ -51,9 +58,11 @@ const Page: NextPage = () => {
                 </div>
                 <Calendar />
                 <div className="flex p-4 justify-center pt-8">
-                    <button className="btn btn-primary">Guardar</button>
+                    <button className="btn btn-primary">
+                        Guardar estimación
+                    </button>
                     <button className="ml-4 btn btn-secondary btn-outline">
-                        Finalizar planificación
+                        Generar O.P.Ps
                     </button>
                 </div>
             </Container>

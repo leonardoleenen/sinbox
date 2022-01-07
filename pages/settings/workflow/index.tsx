@@ -11,6 +11,12 @@ const Page: NextPage = () => {
     return (
         <div>
             <Container>
+                <div className="my-6">
+                    <h2 className="text-2xl mb-2 leading-tight font-bold font-heading">
+                        Workflow registrados
+                    </h2>
+                </div>
+
                 <table className="table w-full table-zebra">
                     <thead>
                         <tr>
