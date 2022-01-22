@@ -29,50 +29,13 @@ const Component = (): JSX.Element => {
     }
 
     return (
-        <section>
+        <section className="bg-neutral text-white">
             <div className="navbar ">
                 <div className="flex-1 px-2 lg:flex-none">
                     <a className="text-lg font-bold">Sinbox</a>
                 </div>
-                <div className="flex justify-end flex-1 px-2">
+                <div className="flex justify-end flex-1 px-2 py-2">
                     <div className="flex items-stretch">
-                        <ul className="menu items-stretch px-3  bg-base-100 horizontal ">
-                            <li
-                                className={
-                                    state.activePage === 'INBOX'
-                                        ? 'bordered'
-                                        : ''
-                                }
-                            >
-                                <a onClick={() => goTo('INBOX', 'inbox')}>
-                                    Inbox
-                                </a>
-                            </li>
-                            <li
-                                className={
-                                    state.activePage === 'OUTBOX'
-                                        ? 'bordered'
-                                        : ''
-                                }
-                            >
-                                <a onClick={() => goTo('OUTBOX', 'outbox')}>
-                                    Outbox
-                                </a>
-                            </li>
-
-                            <li
-                                className={
-                                    state.activePage === 'PLANNING'
-                                        ? 'bordered'
-                                        : ''
-                                }
-                            >
-                                <a onClick={() => goTo('PLANNING', 'planning')}>
-                                    Planning
-                                </a>
-                            </li>
-                        </ul>
-
                         <div className="dropdown dropdown-end">
                             <div className="flex items-center">
                                 <div
