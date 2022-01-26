@@ -20,7 +20,7 @@ const Component = (props: Props): JSX.Element => {
     }) => {
         return (
             <div
-                className={`cursor-pointer ml-4 ${props.className}`}
+                className={`cursor-pointer ml-4  ${props.className}`}
                 onClick={() => goTo(props.navigateTo)}
             >
                 {props.name}
@@ -29,7 +29,7 @@ const Component = (props: Props): JSX.Element => {
     }
 
     return (
-        <div className="flex">
+        <div className="flex bg-gray-100">
             <div className="drawer-side  text-white bg-neutral">
                 <label htmlFor="my-drawer" className="drawer-overlay"></label>
                 <ul className="menu py-3 ">
@@ -84,7 +84,7 @@ const Component = (props: Props): JSX.Element => {
                     </li>
                 </ul>
             </div>
-            <div className="mx-4 mt-4 h-screen">{props.children}</div>
+            <div className="mx-4 mt-4 h-screen w-full">{props.children}</div>
         </div>
     )
 }

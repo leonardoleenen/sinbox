@@ -24,6 +24,11 @@ class Workflow {
         return docSnap.data() as WorkflowSpec
     }
 
+    async getForms(): Promise<Array<WorkFlowForm>> {
+        const q = query(collection(firebaseManager.getDB(), 'workflowForm'))
+        return await (await getDocs(q)).docs.map(d => d.data() as WorkFlowForm)
+    }
+
     async createProcess(
         workflowSpec: WorkflowSpec,
         fileInstance: FileInstance,

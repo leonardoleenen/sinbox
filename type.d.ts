@@ -134,3 +134,15 @@ type WorkflowSpec = {
     steps: Array<Step>
     status: 'ENABLED' | 'DISABLED'
 }
+
+type WorkFlowForm = {
+    id: string
+    description: string
+    title: string
+    subTitle?: string
+    spec: {
+        schema: any
+        ui: schema
+    }
+    data?: any
+}
