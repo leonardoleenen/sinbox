@@ -11,6 +11,7 @@ import {
 import { firebaseManager } from './firebase.services'
 import { nanoid } from 'nanoid'
 import { getToken, tokenDecode } from './auth.service'
+import { ruleEngine } from './rule.engine.service'
 
 class Workflow {
     async getList(): Promise<Array<WorkflowSpec>> {
@@ -21,7 +22,9 @@ class Workflow {
     async getSpec(id: string): Promise<WorkflowSpec> {
         const docRef = doc(firebaseManager.getDB(), 'workflowSpec', id)
         const docSnap = await getDoc(docRef)
-        return docSnap.data() as WorkflowSpec
+        return {
+            ...docSnap.data()
+        } as WorkflowSpec
     }
 
     async getForms(): Promise<Array<WorkFlowForm>> {

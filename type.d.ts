@@ -131,7 +131,7 @@ type Step = {
 type WorkflowSpec = {
     id: string
     ref: string
-    steps: Array<Step>
+    ruleAsset: RuleAsset
     status: 'ENABLED' | 'DISABLED'
 }
 
@@ -145,4 +145,14 @@ type WorkFlowForm = {
         ui: schema
     }
     data?: any
+}
+
+type ProcessInstance = {
+    worflowSpec: WorkflowSpec
+}
+
+type RuleAsset = {
+    id: string
+    description: string
+    spec: string
 }
