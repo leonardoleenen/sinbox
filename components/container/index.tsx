@@ -84,7 +84,7 @@ const Component = (props: Props): JSX.Element => {
                     </li>
                 </ul>
             </div>
-            <div className="mx-4 mt-4 h-screen w-full">{props.children}</div>
+            <div className="mx-8 mt-4 h-screen w-full">{props.children}</div>
         </div>
     )
 }
