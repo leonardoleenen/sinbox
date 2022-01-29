@@ -111,11 +111,61 @@ class Workflow {
         return (await (await getDoc(docRef)).data()) as WorkflowProcess
     }
 
+    async validateProcessForUser(process: WorkflowProcess) {
+        const _wfSpec = process.spec
+
+        const user = tokenDecode(getToken() as string)
+        const ruleResult = await ruleEngine.execute(_wfSpec.ruleAsset as any, {
+            signal: process.currentStep,
+            role: user.role
+        })
+
+        return ruleResult[0].result ? true : false
+    }
+
+    async getActionFromProcess(process: WorkflowProcess) {
+        const _wfSpec = process.spec
+
+        const user = tokenDecode(getToken() as string)
+        const ruleResult = await ruleEngine.execute(_wfSpec.ruleAsset as any, {
+            signal: process.currentStep,
+            role: user.role
+        })
+
+        return ruleResult[0].result.willBeRequiredDescription
+    }
+
+    async parseProcess(p: WorkflowProcess) {
+        const actionLiteral = await this.getActionFromProcess(p)
+
+        return {
+            ...p,
+            descriptionCurrentStep: actionLiteral
+        } as WorkflowProcess
+    }
+
     async getActiveProcess() {
         const q = query(collection(firebaseManager.getDB(), 'process'))
-        return await (
-            await getDocs(q)
-        ).docs.map(d => d.data() as WorkflowProcess)
+
+        const processes: Array<WorkflowProcess> = (await getDocs(q)).docs.map(
+            d => d.data() as WorkflowProcess
+        )
+
+        const filteredProcesses = []
+
+        for (const p in processes) {
+            if (await this.validateProcessForUser(processes[p])) {
+                filteredProcesses.push(processes[p])
+            }
+        }
+
+        console.log(filteredProcesses)
+        const result = []
+        for (const d in filteredProcesses) {
+            result.push(await this.parseProcess(filteredProcesses[d]))
+        }
+
+        return result
     }
 }
 

@@ -112,6 +112,7 @@ type WorkflowProcess = {
     creator: User
     createdAt: number
     currentStep: string
+    descriptionCurrentStep?: string
     processComplete: boolean
     evidence?: Array<Evidence>
 }

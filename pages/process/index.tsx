@@ -15,12 +15,6 @@ const Page: NextPage = () => {
         workflowService.getActiveProcess().then(result => setList(result))
     }, [])
 
-    const gotToProcess = (process: WorkflowProcess) => {
-        router.push(
-            `/forms/simpleFiles?wkfId=${process.spec.id}&step=${process.nextStep.index}&processId=${process.id}`
-        )
-    }
-
     return (
         <div>
             <Header />
@@ -41,7 +35,7 @@ const Page: NextPage = () => {
                                     <th>Referencia</th>
                                     <th>Fecha Solicitud</th>
                                     <th>Presentado por</th>
-                                    <th>Accion</th>
+                                    <th>Tarea a realizar</th>
                                 </tr>
                             </thead>
 
@@ -49,8 +43,8 @@ const Page: NextPage = () => {
                                 {list.map((wp: WorkflowProcess, i) => (
                                     <tr key={`form${i + 1}`}>
                                         <th>{i + 1}</th>
-                                        <td>{wp.spec.ref}</td>
-                                        <td>{_.last(wp.steps)?.file.ref}</td>
+                                        <td>{wp.evidence[0].form.title}</td>
+                                        <td>{'Falta referenia'}</td>
                                         <td>
                                             {moment(wp.createdAt).format(
                                                 'DD/MM/YYYY HH:mm'
@@ -59,10 +53,14 @@ const Page: NextPage = () => {
                                         <td>{wp.creator.name}</td>
                                         <td>
                                             <button
-                                                onClick={() => gotToProcess(wp)}
-                                                className="btn btn-success btn-sm"
+                                                onClick={() =>
+                                                    router.push(
+                                                        `/process/${wp.id}`
+                                                    )
+                                                }
+                                                className="btn btn-sm"
                                             >
-                                                {wp.nextStep.action.name}
+                                                {wp.descriptionCurrentStep}
                                             </button>
                                         </td>
                                     </tr>

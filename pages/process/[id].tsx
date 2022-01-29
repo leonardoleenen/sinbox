@@ -63,13 +63,15 @@ const Page: NextPage = () => {
         })()
     }, [process])
 
-    const workflowNextStep = () => {
-        workflowService.moveNext(
+    const workflowNextStep = async () => {
+        await workflowService.moveNext(
             process as WorkflowProcess,
             isFinalStep,
             dataForm,
             formSpec as WorkFlowForm
         )
+
+        router.push('/process')
     }
 
     if (!formSpec) return <div>loading</div>
