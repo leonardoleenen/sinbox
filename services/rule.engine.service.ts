@@ -28,7 +28,13 @@ class RuleEngine {
                     }
                 ]
             })
-            .then(result => result.data.decisionResults)
+            .then((result: any) => result.data.decisionResults)
+    }
+
+    async get(id: string): Promise<RuleAsset> {
+        const docRef = doc(firebaseManager.getDB(), 'ruleAssets', id)
+        const docSnap = await getDoc(docRef)
+        return docSnap.data() as RuleAsset
     }
 }
 

@@ -9,34 +9,50 @@ import { getToken, tokenDecode } from '../../services/auth.service'
 
 const Page: NextPage = () => {
     const router = useRouter()
+    const { id } = router.query
 
-    const { wfid, processId } = router.query
+    const [process, setProcess] = useState<WorkflowProcess>()
     const [formSpec, setFormSpec] = useState<WorkFlowForm>()
     const [rule, setRule] = useState<any>()
+    const [isFinalStep, setIsFinalStep] = useState(false)
     const data: any = {}
-
-    const [wfSpec, setWfSpec] = useState<WorkflowSpec | null>(null)
 
     useEffect(() => {
         ;(async () => {
-            if (!wfid) return
+            if (!id) return
+            const _process = await workflowService.getProcess(id as string)
+            setProcess(_process)
+        })()
+    }, [id])
 
-            const _wfSpec = await workflowService.getSpec(wfid as string)
-            setWfSpec(_wfSpec)
+    useEffect(() => {
+        ;(async () => {
+            if (!process) return
+            const _wfSpec = process.spec
+
             const user = tokenDecode(getToken() as string)
             const ruleResult = await ruleEngine.execute(
                 _wfSpec.ruleAsset as any,
                 {
-                    signal: 'START',
+                    signal: process.currentStep,
                     role: user.role
                 }
             )
 
             setRule(ruleResult[0].result)
 
+            if (!ruleResult[0].result) {
+                router.push('/403')
+                return
+            }
             const formSpecResult = await workflowService.getFormSpec(
                 ruleResult[0].result.formToShow
             )
+
+            console.log(ruleResult)
+
+            ruleResult[0].result.isFinalStep &&
+                setIsFinalStep(ruleResult[0].result.isFinalStep)
 
             setFormSpec({
                 ...formSpecResult,
@@ -46,13 +62,13 @@ const Page: NextPage = () => {
                 }
             })
         })()
-    }, [wfid])
-
-    if (!formSpec) return <div>loading</div>
+    }, [process])
 
     const workflowNextStep = () => {
-        workflowService.createProcess(wfSpec as WorkflowSpec)
+        workflowService.moveNext(process as WorkflowProcess, isFinalStep)
     }
+
+    if (!formSpec) return <div>loading</div>
 
     return (
         <div>

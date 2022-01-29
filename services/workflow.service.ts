@@ -22,6 +22,7 @@ class Workflow {
     async getSpec(id: string): Promise<WorkflowSpec> {
         const docRef = doc(firebaseManager.getDB(), 'workflowSpec', id)
         const docSnap = await getDoc(docRef)
+
         return {
             ...docSnap.data()
         } as WorkflowSpec
@@ -32,28 +33,54 @@ class Workflow {
         return await (await getDocs(q)).docs.map(d => d.data() as WorkFlowForm)
     }
 
-    async createProcess(
-        workflowSpec: WorkflowSpec,
-        fileInstance: FileInstance,
-        currentStep: Step
-    ) {
+    async getFormSpec(id: string): Promise<WorkFlowForm> {
+        const docRef = doc(firebaseManager.getDB(), 'workflowForm', id)
+        const docSnap = await getDoc(docRef)
+
+        return docSnap.data() as WorkFlowForm
+    }
+
+    async createProcess(workflowSpec: WorkflowSpec) {
         const id = nanoid(10)
+        const ruleResult = await ruleEngine.execute(
+            workflowSpec.ruleAssetStep,
+            {
+                role: tokenDecode(getToken() as string).role,
+                currentAction: 'START'
+            }
+        )
+
         const wkfProcess: WorkflowProcess = {
             id,
             spec: workflowSpec,
             creator: tokenDecode(getToken() as string),
             createdAt: new Date().getTime(),
-            nextStep: currentStep.next,
-            steps: [
-                {
-                    file: fileInstance,
-                    date: new Date().getTime()
-                }
-            ],
+            currentStep: ruleResult[0].result,
             processComplete: false
         }
 
         await setDoc(doc(firebaseManager.getDB(), 'process', id), wkfProcess)
+    }
+
+    async moveNext(process: WorkflowProcess, isFinalStep: boolean) {
+        const ruleResult = await ruleEngine.execute(
+            process.spec.ruleAssetStep,
+            {
+                role: tokenDecode(getToken() as string).role,
+                currentAction: process.currentStep
+            }
+        )
+
+        await setDoc(doc(firebaseManager.getDB(), 'process', process.id), {
+            ...process,
+            currentStep: ruleResult[0].result,
+            processComplete: isFinalStep
+        })
+    }
+
+    async getProcess(id: string): Promise<WorkflowProcess> {
+        const docRef = doc(firebaseManager.getDB(), 'process', id)
+        return (await (await getDoc(docRef)).data()) as WorkflowProcess
     }
 
     async getActiveProcess() {

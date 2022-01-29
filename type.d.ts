@@ -111,11 +111,7 @@ type WorkflowProcess = {
     spec: WorkflowSpec
     creator: User
     createdAt: number
-    nextStep: Step
-    steps: Array<{
-        file: FileInstance
-        date: number
-    }>
+    currentStep: string
     processComplete: boolean
 }
 
@@ -132,6 +128,7 @@ type WorkflowSpec = {
     id: string
     ref: string
     ruleAsset: RuleAsset
+    ruleAssetStep: string
     status: 'ENABLED' | 'DISABLED'
 }
 
@@ -142,13 +139,15 @@ type WorkFlowForm = {
     subTitle?: string
     spec: {
         schema: any
-        ui: schema
+        uischema: schema
     }
     data?: any
 }
 
 type ProcessInstance = {
     worflowSpec: WorkflowSpec
+    id: string
+    currentStep: string
 }
 
 type RuleAsset = {

@@ -9,8 +9,8 @@ const Page: NextPage = () => {
     const uischema = person.uischema
     const initialData = person.data
 
+    console.log(uischema)
     const [data, setData] = useState(initialData)
-    console.log(data)
     return (
         <div className="App">
             <JsonForms
