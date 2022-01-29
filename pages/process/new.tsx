@@ -13,7 +13,7 @@ const Page: NextPage = () => {
     const { wfid, processId } = router.query
     const [formSpec, setFormSpec] = useState<WorkFlowForm>()
     const [rule, setRule] = useState<any>()
-    const data: any = {}
+    const [dataForm, setDataForm] = useState({})
 
     const [wfSpec, setWfSpec] = useState<WorkflowSpec | null>(null)
 
@@ -34,6 +34,11 @@ const Page: NextPage = () => {
 
             setRule(ruleResult[0].result)
 
+            if (!ruleResult[0].result) {
+                router.push('/403')
+                return
+            }
+
             const formSpecResult = await workflowService.getFormSpec(
                 ruleResult[0].result.formToShow
             )
@@ -51,7 +56,11 @@ const Page: NextPage = () => {
     if (!formSpec) return <div>loading</div>
 
     const workflowNextStep = () => {
-        workflowService.createProcess(wfSpec as WorkflowSpec)
+        workflowService.createProcess(
+            wfSpec as WorkflowSpec,
+            dataForm,
+            formSpec
+        )
     }
 
     return (
@@ -65,10 +74,12 @@ const Page: NextPage = () => {
                 <JsonForms
                     schema={formSpec.spec.schema.object}
                     uischema={formSpec.spec.uischema.object}
-                    data={data}
+                    data={dataForm}
                     renderers={materialRenderers}
                     cells={materialCells}
-                    onChange={({ data, _errors }) => console.log(data)}
+                    onChange={({ data }) => {
+                        setDataForm(data)
+                    }}
                 />
             </div>
         </div>

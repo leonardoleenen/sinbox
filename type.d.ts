@@ -113,15 +113,15 @@ type WorkflowProcess = {
     createdAt: number
     currentStep: string
     processComplete: boolean
+    evidence?: Array<Evidence>
 }
 
-type Step = {
-    role: string
-    fileToFill: FileSpec
-    action: ActionSpec
-    requireSignature: boolean
-    next: Step
-    index: number
+type Evidence = {
+    data: any
+    form: WorkFlowForm
+    date: number
+    user: User
+    action: string
 }
 
 type WorkflowSpec = {

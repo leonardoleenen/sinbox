@@ -15,7 +15,8 @@ const Page: NextPage = () => {
     const [formSpec, setFormSpec] = useState<WorkFlowForm>()
     const [rule, setRule] = useState<any>()
     const [isFinalStep, setIsFinalStep] = useState(false)
-    const data: any = {}
+    const [dataForm, setDataForm] = useState({})
+    const [evidenceIndex, setEvidenceIndex] = useState(-1)
 
     useEffect(() => {
         ;(async () => {
@@ -49,8 +50,6 @@ const Page: NextPage = () => {
                 ruleResult[0].result.formToShow
             )
 
-            console.log(ruleResult)
-
             ruleResult[0].result.isFinalStep &&
                 setIsFinalStep(ruleResult[0].result.isFinalStep)
 
@@ -65,7 +64,12 @@ const Page: NextPage = () => {
     }, [process])
 
     const workflowNextStep = () => {
-        workflowService.moveNext(process as WorkflowProcess, isFinalStep)
+        workflowService.moveNext(
+            process as WorkflowProcess,
+            isFinalStep,
+            dataForm,
+            formSpec as WorkFlowForm
+        )
     }
 
     if (!formSpec) return <div>loading</div>
@@ -77,15 +81,57 @@ const Page: NextPage = () => {
                     {rule.willBeRequiredDescription}
                 </button>
             </div>
-            <div className="p-16">
-                <JsonForms
-                    schema={formSpec.spec.schema.object}
-                    uischema={formSpec.spec.uischema.object}
-                    data={data}
-                    renderers={materialRenderers}
-                    cells={materialCells}
-                    onChange={({ data, _errors }) => console.log(data)}
-                />
+            <div className="flex">
+                <aside>
+                    <ul className=" steps steps-vertical">
+                        {process?.evidence?.map((e, index: number) => (
+                            <li
+                                onClick={() => setEvidenceIndex(index)}
+                                data-content={
+                                    index === evidenceIndex ? '★' : index + 1
+                                }
+                                key={`evidence${index}`}
+                                className="step step-info cursor-pointer"
+                            >
+                                {e.action}
+                            </li>
+                        ))}
+                        <li
+                            onClick={e => {
+                                setEvidenceIndex(-1)
+                                setDataForm({})
+                            }}
+                            className="step cursor-pointer"
+                        >
+                            {process?.currentStep}
+                        </li>
+                    </ul>
+                </aside>
+                <div className="p-16 w-full">
+                    <JsonForms
+                        schema={
+                            evidenceIndex === -1
+                                ? formSpec.spec.schema.object
+                                : process?.evidence[evidenceIndex].form.spec
+                                      .schema.object
+                        }
+                        uischema={
+                            evidenceIndex === -1
+                                ? formSpec.spec.uischema.object
+                                : process?.evidence[evidenceIndex].form.spec
+                                      .uischema.object
+                        }
+                        data={
+                            evidenceIndex === -1
+                                ? dataForm
+                                : process?.evidence[evidenceIndex].data
+                        }
+                        renderers={materialRenderers}
+                        cells={materialCells}
+                        readonly={evidenceIndex !== -1}
+                        onChange={({ data }) => setDataForm(data)}
+                    />
+                </div>
             </div>
         </div>
     )

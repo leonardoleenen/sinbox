@@ -40,7 +40,11 @@ class Workflow {
         return docSnap.data() as WorkFlowForm
     }
 
-    async createProcess(workflowSpec: WorkflowSpec) {
+    async createProcess(
+        workflowSpec: WorkflowSpec,
+        data: any,
+        formSpec: WorkFlowForm
+    ) {
         const id = nanoid(10)
         const ruleResult = await ruleEngine.execute(
             workflowSpec.ruleAssetStep,
@@ -56,13 +60,27 @@ class Workflow {
             creator: tokenDecode(getToken() as string),
             createdAt: new Date().getTime(),
             currentStep: ruleResult[0].result,
-            processComplete: false
+            processComplete: false,
+            evidence: [
+                {
+                    data,
+                    form: formSpec,
+                    date: new Date().getTime(),
+                    user: tokenDecode(getToken() as string),
+                    action: 'START'
+                }
+            ]
         }
 
         await setDoc(doc(firebaseManager.getDB(), 'process', id), wkfProcess)
     }
 
-    async moveNext(process: WorkflowProcess, isFinalStep: boolean) {
+    async moveNext(
+        process: WorkflowProcess,
+        isFinalStep: boolean,
+        data: any,
+        formSpec: WorkFlowForm
+    ) {
         const ruleResult = await ruleEngine.execute(
             process.spec.ruleAssetStep,
             {
@@ -74,6 +92,16 @@ class Workflow {
         await setDoc(doc(firebaseManager.getDB(), 'process', process.id), {
             ...process,
             currentStep: ruleResult[0].result,
+            evidence: [
+                ...(process.evidence as []),
+                {
+                    data,
+                    form: formSpec,
+                    date: new Date().getTime(),
+                    user: tokenDecode(getToken() as string),
+                    action: process.currentStep
+                }
+            ],
             processComplete: isFinalStep
         })
     }
