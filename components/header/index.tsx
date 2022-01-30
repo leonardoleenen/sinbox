@@ -29,12 +29,12 @@ const Component = (): JSX.Element => {
     }
 
     return (
-        <section className="bg-neutral text-white">
+        <section style={{ backgroundColor: 'rgb(30,41,59)' }}>
             <div className="navbar ">
                 <div className="flex-1 px-2 lg:flex-none">
-                    <a className="text-lg font-bold">Sinbox</a>
+                    <a className="text-lg text-white font-bold">Sinbox</a>
                 </div>
-                <div className="flex justify-end flex-1 px-2 py-2">
+                <div className="flex justify-end flex-1 px-2 py-2 text-sm">
                     <div className="flex items-stretch">
                         <div className="dropdown dropdown-end">
                             <div className="flex items-center">
@@ -47,12 +47,12 @@ const Component = (): JSX.Element => {
                                         className="h-6 w-6"
                                         fill="none"
                                         viewBox="0 0 24 24"
-                                        stroke="currentColor"
+                                        stroke="white"
                                     >
                                         <path
                                             strokeLinecap="round"
                                             strokeLinejoin="round"
-                                            strokeWidth={2}
+                                            strokeWidth={1}
                                             d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
                                         />
                                     </svg>
@@ -68,15 +68,7 @@ const Component = (): JSX.Element => {
                                 <li>
                                     <a>{user.role}</a>
                                 </li>
-                                <li>
-                                    <a
-                                        onClick={() =>
-                                            router.push('/settings/workflow')
-                                        }
-                                    >
-                                        Workflow
-                                    </a>
-                                </li>
+
                                 <li>
                                     <a onClick={() => closeSession()}>Salir</a>
                                 </li>

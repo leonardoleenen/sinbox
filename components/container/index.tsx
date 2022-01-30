@@ -29,8 +29,11 @@ const Component = (props: Props): JSX.Element => {
     }
 
     return (
-        <div className="flex bg-gray-100">
-            <div className="drawer-side  text-white bg-neutral">
+        <div className="flex">
+            <div
+                className="drawer-side  bg-neutral text-gray-300 "
+                style={{ width: '400px', backgroundColor: 'rgb(30,41,59)' }}
+            >
                 <label htmlFor="my-drawer" className="drawer-overlay"></label>
                 <ul className="menu py-3 ">
                     <li>
@@ -84,7 +87,9 @@ const Component = (props: Props): JSX.Element => {
                     </li>
                 </ul>
             </div>
-            <div className="mx-8 mt-4 h-screen w-full">{props.children}</div>
+            <div className=" text-gray-700  px-8 pt-4 h-screen w-full bg-gray-100">
+                {props.children}
+            </div>
         </div>
     )
 }
