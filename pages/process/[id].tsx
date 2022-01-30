@@ -7,6 +7,8 @@ import { materialRenderers, materialCells } from '@jsonforms/material-renderers'
 import { JsonForms } from '@jsonforms/react'
 import { getToken, tokenDecode } from '../../services/auth.service'
 import ClearContainer from '../../components/container/clear'
+import Loading from '../../components/loader'
+
 const Page: NextPage = () => {
     const router = useRouter()
     const { id } = router.query
@@ -74,7 +76,7 @@ const Page: NextPage = () => {
         router.push('/process')
     }
 
-    if (!formSpec) return <div>loading</div>
+    if (!formSpec) return <Loading />
 
     return (
         <ClearContainer
@@ -98,8 +100,8 @@ const Page: NextPage = () => {
             }
         >
             <div className="flex">
-                <aside>
-                    <ul className=" steps steps-vertical">
+                <div className="w-64 bg-gray-100 mr-4 shadow rounded-lg">
+                    <ul className=" steps steps-vertical px-4">
                         {process?.evidence?.map((e, index: number) => (
                             <li
                                 onClick={() => setEvidenceIndex(index)}
@@ -122,8 +124,8 @@ const Page: NextPage = () => {
                             {process?.currentStep}
                         </li>
                     </ul>
-                </aside>
-                <div className="p-16 w-full">
+                </div>
+                <div className="w-full">
                     <JsonForms
                         schema={
                             evidenceIndex === -1

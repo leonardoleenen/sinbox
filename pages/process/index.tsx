@@ -8,8 +8,9 @@ import moment from 'moment'
 import { useRouter } from 'next/router'
 import InternalContainer from '../../components/container/internal'
 import MainContainer from '../../components/container/main'
+import Loading from '../../components/loader'
 const Page: NextPage = () => {
-    const [list, setList] = useState<Array<WorkflowProcess>>([])
+    const [list, setList] = useState<Array<WorkflowProcess>>()
     const router = useRouter()
 
     useEffect(() => {
@@ -20,52 +21,62 @@ const Page: NextPage = () => {
         <MainContainer>
             <Header />
             <Container>
-                <InternalContainer title="Procesos Activos">
-                    <div>
-                        <div className="overflow-x-auto">
-                            <table className="table w-full table-zebra">
-                                <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th>Tipo</th>
-                                        <th>Referencia</th>
-                                        <th>Fecha Solicitud</th>
-                                        <th>Presentado por</th>
-                                        <th>Tarea a realizar</th>
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-                                    {list.map((wp: WorkflowProcess, i) => (
-                                        <tr key={`form${i + 1}`}>
-                                            <th>{i + 1}</th>
-                                            <td>{wp.evidence[0].form.title}</td>
-                                            <td>{'Falta referenia'}</td>
-                                            <td>
-                                                {moment(wp.createdAt).format(
-                                                    'DD/MM/YYYY HH:mm'
-                                                )}
-                                            </td>
-                                            <td>{wp.creator.name}</td>
-                                            <td>
-                                                <button
-                                                    onClick={() =>
-                                                        router.push(
-                                                            `/process/${wp.id}`
-                                                        )
-                                                    }
-                                                    className="btn btn-sm"
-                                                >
-                                                    {wp.descriptionCurrentStep}
-                                                </button>
-                                            </td>
+                {!list ? (
+                    <Loading />
+                ) : (
+                    <InternalContainer title="Procesos Activos">
+                        <div>
+                            <div className="overflow-x-auto">
+                                <table className="table w-full table-zebra">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Tipo</th>
+                                            <th>Referencia</th>
+                                            <th>Fecha Solicitud</th>
+                                            <th>Presentado por</th>
+                                            <th>Tarea a realizar</th>
                                         </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                                    </thead>
+
+                                    <tbody>
+                                        {list.map((wp: WorkflowProcess, i) => (
+                                            <tr key={`form${i + 1}`}>
+                                                <th>{i + 1}</th>
+                                                <td>
+                                                    {wp.evidence[0].form.title}
+                                                </td>
+                                                <td>{'Falta referenia'}</td>
+                                                <td>
+                                                    {moment(
+                                                        wp.createdAt
+                                                    ).format(
+                                                        'DD/MM/YYYY HH:mm'
+                                                    )}
+                                                </td>
+                                                <td>{wp.creator.name}</td>
+                                                <td>
+                                                    <button
+                                                        onClick={() =>
+                                                            router.push(
+                                                                `/process/${wp.id}`
+                                                            )
+                                                        }
+                                                        className="btn btn-sm"
+                                                    >
+                                                        {
+                                                            wp.descriptionCurrentStep
+                                                        }
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                    </div>
-                </InternalContainer>
+                    </InternalContainer>
+                )}
             </Container>
         </MainContainer>
     )
