@@ -1,23 +1,25 @@
 import React from 'react'
 
 interface Props {
-    children: Array<JSX.Element>
-    className?: string
+    children: JSX.Element
     title: string
+    actions: JSX.Element
 }
 
 const Component = (props: Props): JSX.Element => {
     return (
-        <div className={` flex justify-center w-full ${props.className}`}>
-            <div className="max-w-screen-2xl">
+        <div className="bg-gray-100 h-screen p-16">
+            <div className="flex justify-between items-center">
                 <div className="my-6">
                     <h2 className="text-2xl mb-2 leading-tight font-bold font-heading">
                         {props.title}
                     </h2>
                 </div>
-                <div className="p-8 bg-white shadow-lg rounded-lg">
-                    {props.children}
-                </div>
+                <div>{props.actions}</div>
+            </div>
+
+            <div className="p-8 bg-white rounded-lg shadow-lg">
+                {props.children}
             </div>
         </div>
     )

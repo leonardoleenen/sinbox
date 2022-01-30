@@ -6,7 +6,7 @@ import { ruleEngine } from '../../services/rule.engine.service'
 import { materialRenderers, materialCells } from '@jsonforms/material-renderers'
 import { JsonForms } from '@jsonforms/react'
 import { getToken, tokenDecode } from '../../services/auth.service'
-
+import ClearContainer from '../../components/container/clear'
 const Page: NextPage = () => {
     const router = useRouter()
     const { id } = router.query
@@ -77,12 +77,26 @@ const Page: NextPage = () => {
     if (!formSpec) return <div>loading</div>
 
     return (
-        <div>
-            <div className="flex">
-                <button onClick={workflowNextStep} className="btn btn-primary">
-                    {rule.willBeRequiredDescription}
-                </button>
-            </div>
+        <ClearContainer
+            title={formSpec.title}
+            actions={
+                <div className="flex">
+                    <button
+                        onClick={() => router.push('/process')}
+                        className="btn btn-error mr-8 "
+                    >
+                        Cancelar
+                    </button>
+
+                    <button
+                        onClick={workflowNextStep}
+                        className="btn btn-primary "
+                    >
+                        {rule.willBeRequiredDescription}
+                    </button>
+                </div>
+            }
+        >
             <div className="flex">
                 <aside>
                     <ul className=" steps steps-vertical">
@@ -135,7 +149,7 @@ const Page: NextPage = () => {
                     />
                 </div>
             </div>
-        </div>
+        </ClearContainer>
     )
 }
 
