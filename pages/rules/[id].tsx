@@ -12,7 +12,6 @@ import Loading from '../../components/loader'
 import { useRouter } from 'next/router'
 import { ruleEngine } from '../../services/rule.engine.service'
 import ClearContainer from '../../components/container/clear'
-import { nanoid } from 'nanoid'
 
 const xmlEmpty = `<?xml version="1.0" encoding="UTF-8"?>
         <definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" id="definitions_1ed52c1" name="definitions" namespace="http://camunda.org/schema/1.0/dmn" exporter="dmn-js (https://demo.bpmn.io/dmn)" exporterVersion="11.0.2">
@@ -24,26 +23,28 @@ const xmlEmpty = `<?xml version="1.0" encoding="UTF-8"?>
 
 const Page: NextPage = () => {
     const [modeler, setModeler] = useState()
-    const [rule, setRule] = useState<RuleAsset>({
-        id: nanoid(10),
-        description: 'Sin Titulo',
-        spec: xmlEmpty
-    })
-
+    const [rule, setRule] = useState<RuleAsset>()
     const router = useRouter()
     const [isSaving, setIsSaving] = useState(false)
     const { id } = router.query
     useEffect(() => {
         ;(async () => {
+            if (!id) return
+
+            const _rule = await ruleEngine.get(id as string)
+
+            const xml = _rule.spec
+
             const DmnEditor = require('@kogito-tooling/kie-editors-standalone/dist/dmn')
             const editor = DmnEditor.open({
                 container: document.getElementById('dmn-editor-container'),
-                initialContent: Promise.resolve(''),
+                initialContent: Promise.resolve(xml),
                 readOnly: false
             })
             setModeler(editor)
+            setRule(_rule)
         })()
-    }, [])
+    }, [id])
 
     const save = async () => {
         const { xml } = await modeler.getContent()

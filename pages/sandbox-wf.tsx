@@ -9,9 +9,8 @@ const Page: NextPage = () => {
                 className="btn btn-primary"
                 onClick={e => {
                     ruleEngine
-                        .execute('gD13J4431VScjhSEWHvS', {
-                            role: 'ESCRIBANO',
-                            signal: 'INIT'
+                        .execute('pep', {
+                            EsVerdadero: true
                         })
                         .then(result => console.log(result))
                 }}

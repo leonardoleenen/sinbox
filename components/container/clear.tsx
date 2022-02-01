@@ -4,14 +4,22 @@ interface Props {
     children: JSX.Element
     title: string
     actions: JSX.Element
+    onChangeTitle?: any
+    className: string
 }
 
 const Component = (props: Props): JSX.Element => {
     return (
-        <div className="bg-gray-100 h-screen p-16">
+        <div className={`bg-gray-100 h-screen p-16 ${props.className}`}>
             <div className="flex justify-between items-center">
-                <div className="my-6">
-                    <h2 className="text-2xl mb-2 leading-tight font-bold font-heading">
+                <div
+                    onBlur={e => props.onChangeTitle(e.target.innerText)}
+                    className="my-6 text-2xl leading-tight font-bold font-heading"
+                >
+                    <h2
+                        className=" mb-2"
+                        contentEditable={props.onChangeTitle !== undefined}
+                    >
                         {props.title}
                     </h2>
                 </div>

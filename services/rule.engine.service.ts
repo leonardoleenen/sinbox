@@ -36,6 +36,14 @@ class RuleEngine {
         const docSnap = await getDoc(docRef)
         return docSnap.data() as RuleAsset
     }
+    async getAll(): Promise<Array<RuleAsset>> {
+        const q = query(collection(firebaseManager.getDB(), 'ruleAssets'))
+        return (await getDocs(q)).docs.map(d => d.data() as RuleAsset)
+    }
+
+    async save(rule: RuleAsset) {
+        await setDoc(doc(firebaseManager.getDB(), 'ruleAssets', rule.id), rule)
+    }
 }
 
 export const ruleEngine = new RuleEngine()
