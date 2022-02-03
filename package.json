@@ -12,6 +12,7 @@
     "@emotion/styled": "^11.6.0",
     "@hbtgmbh/dmn-eval-js": "^1.5.0",
     "@jsonforms/core": "^2.5.2",
+    "@jsonforms/editor": "^2.0.2",
     "@jsonforms/examples": "^2.5.2",
     "@jsonforms/material-renderers": "^2.5.2",
     "@jsonforms/react": "^2.5.2",
@@ -40,6 +41,7 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-hook-form": "^7.21.0",
+    "react-json-view": "^1.21.3",
     "sass": "^1.43.4",
     "tailwindcss": "^2.2.19"
   },

@@ -59,23 +59,9 @@ const Home: NextPage = () => {
                     s.email = user.email as string
                 })
                 if (existUser) {
-                    const company = await businessService.getCompanyControlled(
-                        user.uid
-                    )
-
                     setToken(generateToken(existUser as User))
 
-                    if (company) {
-                        SignUpStore.update(s => {
-                            s.companyInReview = company
-                        })
-                        if (company.status === 'APPROVED')
-                            router.push('/inbox/welcome')
-                        if (company.status === 'PENDING')
-                            router.push('/signup/wait-for-approval')
-                    } else {
-                        router.push(getRouteAfterLogin() as string)
-                    }
+                    router.push('/process')
                 } else {
                     router.push(getRouteAfterLogin() as string)
                 }

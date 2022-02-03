@@ -6,6 +6,9 @@ import { ruleEngine } from '../../services/rule.engine.service'
 import { materialRenderers, materialCells } from '@jsonforms/material-renderers'
 import { JsonForms } from '@jsonforms/react'
 import { getToken, tokenDecode } from '../../services/auth.service'
+import ClearContainer from '../../components/container/clear'
+import Loading from '../../components/loader'
+import Success from '../../components/success'
 
 const Page: NextPage = () => {
     const router = useRouter()
@@ -14,7 +17,7 @@ const Page: NextPage = () => {
     const [formSpec, setFormSpec] = useState<WorkFlowForm>()
     const [rule, setRule] = useState<any>()
     const [dataForm, setDataForm] = useState({})
-
+    const [showSuccess, setShowSuccess] = useState(false)
     const [wfSpec, setWfSpec] = useState<WorkflowSpec | null>(null)
 
     useEffect(() => {
@@ -53,23 +56,61 @@ const Page: NextPage = () => {
         })()
     }, [wfid])
 
-    if (!formSpec) return <div>loading</div>
+    if (!formSpec) return <Loading />
 
-    const workflowNextStep = () => {
-        workflowService.createProcess(
+    const workflowNextStep = async () => {
+        await workflowService.createProcess(
             wfSpec as WorkflowSpec,
             dataForm,
             formSpec
         )
+
+        setShowSuccess(true)
     }
 
+    if (showSuccess)
+        return (
+            <Success
+                title={`Solicitud ${formSpec.title} Enviada correctamente`}
+                content={
+                    <>
+                        <p className="text-sm md:text-base text-white pt-8">
+                            Su solicitud ha sido recibida exitosamente. Ahora
+                            debe esperar a que el área responsable verifique los
+                            datos suministrados. Una vez realizado esto, será
+                            notificado por email la conclusión del mismo
+                        </p>
+                        <button
+                            onClick={() => router.push('/process')}
+                            className="btn btn-primary mt-8"
+                        >
+                            Volver
+                        </button>
+                    </>
+                }
+            />
+        )
+
     return (
-        <div>
-            <div className="flex">
-                <button onClick={workflowNextStep} className="btn btn-primary">
-                    {rule.willBeRequiredDescription}
-                </button>
-            </div>
+        <ClearContainer
+            title={formSpec.title}
+            actions={
+                <div className="flex">
+                    <button
+                        onClick={() => router.push('/process')}
+                        className="btn  btn-link mr-6 "
+                    >
+                        Volver
+                    </button>
+                    <button
+                        onClick={workflowNextStep}
+                        className="btn btn-primary"
+                    >
+                        {rule.willBeRequiredDescription}
+                    </button>
+                </div>
+            }
+        >
             <div className="p-16">
                 <JsonForms
                     schema={formSpec.spec.schema.object}
@@ -82,7 +123,7 @@ const Page: NextPage = () => {
                     }}
                 />
             </div>
-        </div>
+        </ClearContainer>
     )
 }
 

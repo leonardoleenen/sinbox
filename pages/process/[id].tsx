@@ -8,11 +8,13 @@ import { JsonForms } from '@jsonforms/react'
 import { getToken, tokenDecode } from '../../services/auth.service'
 import ClearContainer from '../../components/container/clear'
 import Loading from '../../components/loader'
+import Success from '../../components/success'
 
 const Page: NextPage = () => {
     const router = useRouter()
     const { id } = router.query
 
+    const [showSuccess, setShowSuccess] = useState(false)
     const [process, setProcess] = useState<WorkflowProcess>()
     const [formSpec, setFormSpec] = useState<WorkFlowForm>()
     const [rule, setRule] = useState<any>()
@@ -72,11 +74,33 @@ const Page: NextPage = () => {
             dataForm,
             formSpec as WorkFlowForm
         )
-
-        router.push('/process')
+        setShowSuccess(true)
     }
 
     if (!formSpec) return <Loading />
+
+    if (showSuccess)
+        return (
+            <Success
+                title={`Solicitud ${formSpec.title} Enviada correctamente`}
+                content={
+                    <>
+                        <p className="text-sm md:text-base text-white pt-8">
+                            Su solicitud ha sido recibida exitosamente. Ahora
+                            debe esperar a que el área responsable verifique los
+                            datos suministrados. Una vez realizado esto, será
+                            notificado por email la conclusión del mismo
+                        </p>
+                        <button
+                            onClick={() => router.push('/process')}
+                            className="btn btn-primary mt-8"
+                        >
+                            Volver
+                        </button>
+                    </>
+                }
+            />
+        )
 
     return (
         <ClearContainer

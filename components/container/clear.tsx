@@ -5,7 +5,7 @@ interface Props {
     title: string
     actions: JSX.Element
     onChangeTitle?: any
-    className: string
+    className?: string
 }
 
 const Component = (props: Props): JSX.Element => {

@@ -159,7 +159,6 @@ class Workflow {
             }
         }
 
-        console.log(filteredProcesses)
         const result = []
         for (const d in filteredProcesses) {
             result.push(await this.parseProcess(filteredProcesses[d]))
