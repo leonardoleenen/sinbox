@@ -128,9 +128,10 @@ type Evidence = {
 type WorkflowSpec = {
     id: string
     ref: string
-    ruleAsset: RuleAsset
+    ruleAsset: any
     ruleAssetStep: string
     status: 'ENABLED' | 'DISABLED'
+    lastUpdated: number
 }
 
 type WorkFlowForm = {
@@ -141,8 +142,9 @@ type WorkFlowForm = {
     spec: {
         schema: any
         uischema: schema
-    }
+    } | null
     data?: any
+    lastUpdated: number
 }
 
 type ProcessInstance = {

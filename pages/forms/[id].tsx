@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import type { NextPage } from 'next'
 import ClearContainer from '../../components/container/clear'
-import { JsonForms } from '@jsonforms/react'
+
 import dynamic from 'next/dynamic'
 import { materialRenderers, materialCells } from '@jsonforms/material-renderers'
 import { UISchemaElement } from '@jsonforms/core'
+import { JsonForms } from '@jsonforms/react'
+import Loading from '../../components/loader'
+
 import { useRouter } from 'next/router'
+import { workflowService } from '../../services/workflow.service'
+import { format } from 'path/posix'
 
 const DynamicComponentWithNoSSR = dynamic(
     () => import('../../components/jsoneditor'),
@@ -15,7 +20,9 @@ const DynamicComponentWithNoSSR = dynamic(
 )
 
 const Page: NextPage = () => {
-    const [activeTab, setActiveTab] = useState(1)
+    const [activeTab, setActiveTab] = useState(2)
+    const [isSaving, setIsSaving] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
     const [uiSchema, setUISchema] = useState({
         type: 'Group',
         elements: [
@@ -23,20 +30,6 @@ const Page: NextPage = () => {
                 type: 'Control',
                 scope: '#/properties/name',
                 label: 'Nombre'
-            },
-            {
-                type: 'Control',
-                scope: '#/properties/occupation',
-                label: 'Ocupacion'
-            },
-            {
-                type: 'Control',
-                scope: '#/properties/birthDate',
-                label: 'Fecha de Nacimiento'
-            },
-            {
-                type: 'Control',
-                scope: '#/properties/friends'
             }
         ],
         label: 'Datos'
@@ -44,9 +37,57 @@ const Page: NextPage = () => {
     const [schema, setSchema] = useState(schemaEmpty)
     const [dataForm, setDataForm] = useState({})
     const router = useRouter()
+    const [wfForm, setWfForm] = useState<WorkFlowForm>({
+        id: '',
+        description: '',
+        spec: null,
+        subTitle: '',
+        title: 'Sin Titulo',
+        lastUpdated: new Date().getTime()
+    })
+
+    const { id } = router.query
+
+    useEffect(() => {
+        if (!id || id === 'new') {
+            setIsLoading(false)
+            return
+        } else {
+            workflowService.getFormSpec(id as string).then(fspec => {
+                setIsLoading(false)
+                setWfForm(fspec)
+                setUISchema(fspec.spec?.uischema)
+                setSchema(fspec.spec?.schema)
+            })
+        }
+    }, [id])
+
+    const save = () => {
+        setIsSaving(true)
+        workflowService
+            .saveFormSpec({
+                ...wfForm,
+                spec: {
+                    schema,
+                    uischema: uiSchema
+                }
+            })
+            .then(r => {
+                setWfForm(r)
+                setIsSaving(false)
+            })
+    }
+
+    if (isLoading) return <Loading />
     return (
         <ClearContainer
-            title="New Form"
+            title={wfForm.title}
+            onChangeTitle={(e: string) =>
+                setWfForm({
+                    ...wfForm,
+                    title: e
+                })
+            }
             actions={
                 <div className="flex">
                     <button
@@ -55,21 +96,18 @@ const Page: NextPage = () => {
                     >
                         Volver
                     </button>
-                    <button className="btn btn-primary">Guardar</button>
+                    <button
+                        className={`btn btn-primary ${isSaving && 'loading'}`}
+                        onClick={save}
+                    >
+                        Guardar
+                    </button>
                 </div>
             }
         >
             <div className="flex">
                 <div className="w-1/3">
                     <div className={`tabs mb-8 `}>
-                        <a
-                            onClick={() => setActiveTab(1)}
-                            className={`tab tab-bordered ${
-                                activeTab === 1 && 'tab-active'
-                            } `}
-                        >
-                            <div>Definición de esquema</div>
-                        </a>
                         <a
                             onClick={() => setActiveTab(2)}
                             className={`tab tab-bordered ${
@@ -78,17 +116,26 @@ const Page: NextPage = () => {
                         >
                             <div>Definición de formulario</div>
                         </a>
+                        <a
+                            onClick={() => setActiveTab(1)}
+                            className={`tab tab-bordered ${
+                                activeTab === 1 && 'tab-active'
+                            } `}
+                        >
+                            <div>Definición de esquema</div>
+                        </a>
                     </div>
-                    {activeTab === 2 && (
-                        <DynamicComponentWithNoSSR
-                            src={uiSchema}
-                            updateFunction={setUISchema}
-                        />
-                    )}
+
                     {activeTab === 1 && (
                         <DynamicComponentWithNoSSR
                             src={schema}
                             updateFunction={setSchema}
+                        />
+                    )}
+                    {activeTab === 2 && (
+                        <DynamicComponentWithNoSSR
+                            src={uiSchema}
+                            updateFunction={setUISchema}
                         />
                     )}
                 </div>

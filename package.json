@@ -23,6 +23,7 @@
     "@mui/material": "^5.3.1",
     "@react-pdf/renderer": "^2.0.21",
     "@tailwindcss/typography": "^0.4.1",
+    "@types/react-json-editor-ajrm": "^2.5.2",
     "@typescript-eslint/eslint-plugin": "^5.3.0",
     "autoprefixer": "^10.4.0",
     "axios": "^0.25.0",
@@ -41,6 +42,7 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-hook-form": "^7.21.0",
+    "react-json-editor-ajrm": "^2.5.13",
     "react-json-view": "^1.21.3",
     "sass": "^1.43.4",
     "tailwindcss": "^2.2.19"

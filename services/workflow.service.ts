@@ -28,6 +28,20 @@ class Workflow {
         } as WorkflowSpec
     }
 
+    async saveSpec(workFlow: WorkflowSpec): Promise<WorkflowSpec> {
+        if (!workFlow.id) {
+            workFlow.id = nanoid(10)
+        }
+
+        return setDoc(
+            doc(firebaseManager.getDB(), 'workflowSpec', workFlow.id),
+            {
+                ...workFlow,
+                lastUpdated: new Date().getTime()
+            }
+        ).then(() => workFlow)
+    }
+
     async getForms(): Promise<Array<WorkFlowForm>> {
         const q = query(collection(firebaseManager.getDB(), 'workflowForm'))
         return await (await getDocs(q)).docs.map(d => d.data() as WorkFlowForm)
@@ -38,6 +52,20 @@ class Workflow {
         const docSnap = await getDoc(docRef)
 
         return docSnap.data() as WorkFlowForm
+    }
+
+    async saveFormSpec(formToSave: WorkFlowForm): Promise<WorkFlowForm> {
+        if (!formToSave.id) {
+            formToSave.id = nanoid(10)
+        }
+
+        return setDoc(
+            doc(firebaseManager.getDB(), 'workflowForm', formToSave.id),
+            {
+                ...formToSave,
+                lastUpdated: new Date().getTime()
+            }
+        ).then(() => formToSave)
     }
 
     async createProcess(

@@ -1,6 +1,9 @@
 import React from 'react'
 import ReactJson from 'react-json-view'
 
+import JSONInput from 'react-json-editor-ajrm'
+import locale from 'react-json-editor-ajrm/locale/en'
+
 interface Props {
     src: any
     updateFunction: any
@@ -8,14 +11,13 @@ interface Props {
 
 const Component = (props: Props): JSX.Element => {
     return (
-        <div className="flex">
-            <ReactJson
-                onAdd={e => props.updateFunction(e.updated_src)}
-                onEdit={e => props.updateFunction(e.updated_src)}
-                onDelete={e => props.updateFunction(e.updated_src)}
-                src={props.src}
+        <div className="flex font-mono">
+            <JSONInput
+                id="a_unique_id"
+                placeholder={props.src}
+                locale={locale}
+                onChange={(e: any) => props.updateFunction(e.jsObject)}
             />
-            <div></div>
         </div>
     )
 }

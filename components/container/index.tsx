@@ -80,12 +80,17 @@ const Component = (props: Props): JSX.Element => {
                                 <ItemMenu
                                     name="Workflow"
                                     className="ml-2"
-                                    navigateTo={'/settings/workflow'}
+                                    navigateTo={'/settings/workflow/list'}
                                 />
                                 <ItemMenu
                                     name="Rules"
                                     className="ml-2 pt-3"
                                     navigateTo={'/rules/list'}
+                                />
+                                <ItemMenu
+                                    name="Forms"
+                                    className="ml-2 pt-3"
+                                    navigateTo={'/forms/list'}
                                 />
                             </div>
                         </div>

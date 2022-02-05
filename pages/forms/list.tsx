@@ -4,10 +4,11 @@ import Header from '../../components/header'
 import Container from '../../components/container'
 import InternalPage from '../../components/internalPage'
 import { workflowService } from '../../services/workflow.service'
+import { useRouter } from 'next/router'
 
 const Page: NextPage = () => {
     const [list, setList] = useState<Array<WorkFlowForm>>([])
-
+    const router = useRouter()
     useEffect(() => {
         workflowService.getForms().then(result => setList(result))
     }, [])
@@ -19,7 +20,12 @@ const Page: NextPage = () => {
                 <InternalPage
                     title="Form List"
                     rigthActions={
-                        <button className="btn btn-primary ">New Form</button>
+                        <button
+                            className="btn btn-primary "
+                            onClick={() => router.push('/forms/new')}
+                        >
+                            New Form
+                        </button>
                     }
                 >
                     <div>
@@ -30,6 +36,8 @@ const Page: NextPage = () => {
                                         <th></th>
                                         <th>Titulo</th>
                                         <th>Descripcion</th>
+                                        <th>ID</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
 
@@ -39,6 +47,19 @@ const Page: NextPage = () => {
                                             <th>{i + 1}</th>
                                             <td>{wf.title}</td>
                                             <td>{wf.subTitle}</td>
+                                            <td>{wf.id}</td>
+                                            <td>
+                                                <button
+                                                    onClick={() =>
+                                                        router.push(
+                                                            `/forms/${wf.id}`
+                                                        )
+                                                    }
+                                                    className="btn btn-neutral btn-sm"
+                                                >
+                                                    Editar
+                                                </button>
+                                            </td>
                                         </tr>
                                     ))}
                                 </tbody>
