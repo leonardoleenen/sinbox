@@ -9,6 +9,14 @@ import { getToken, tokenDecode } from '../../services/auth.service'
 import ClearContainer from '../../components/container/clear'
 import Loading from '../../components/loader'
 import Success from '../../components/success'
+import FileUpload from '../../components/fileupload/fileUpload'
+
+interface FilesOpts {
+    type: string
+    size: number
+    extension: string
+    name: string
+}
 
 const Page: NextPage = () => {
     const router = useRouter()
@@ -60,8 +68,14 @@ const Page: NextPage = () => {
             setFormSpec({
                 ...formSpecResult,
                 spec: {
-                    uischema: JSON.parse(formSpecResult.spec.uischema),
-                    schema: JSON.parse(formSpecResult.spec.schema)
+                    uischema:
+                        formSpecResult &&
+                        formSpecResult.spec &&
+                        formSpecResult.spec.uischema,
+                    schema:
+                        formSpecResult &&
+                        formSpecResult.spec &&
+                        formSpecResult.spec.schema
                 }
             })
         })()
@@ -153,15 +167,15 @@ const Page: NextPage = () => {
                     <JsonForms
                         schema={
                             evidenceIndex === -1
-                                ? formSpec.spec.schema.object
+                                ? formSpec.spec.schema
                                 : process?.evidence[evidenceIndex].form.spec
-                                      .schema.object
+                                      .schema
                         }
                         uischema={
                             evidenceIndex === -1
-                                ? formSpec.spec.uischema.object
+                                ? formSpec.spec.uischema
                                 : process?.evidence[evidenceIndex].form.spec
-                                      .uischema.object
+                                      .uischema
                         }
                         data={
                             evidenceIndex === -1
@@ -172,6 +186,13 @@ const Page: NextPage = () => {
                         cells={materialCells}
                         readonly={evidenceIndex !== -1}
                         onChange={({ data }) => setDataForm(data)}
+                    />
+
+                    <FileUpload
+                        readonly={false}
+                        placeholder="Constancia"
+                        extensions={['pdf']}
+                        type="cuit"
                     />
                 </div>
             </div>

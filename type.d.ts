@@ -145,6 +145,10 @@ type WorkFlowForm = {
     } | null
     data?: any
     lastUpdated: number
+    attachments: Array<{
+        fieldName: string
+        fieldId: string
+    }>
 }
 
 type ProcessInstance = {

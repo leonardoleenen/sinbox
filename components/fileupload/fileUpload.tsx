@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import type { NextPage } from 'next'
 import { firebaseManager } from '../../services/firebase.services'
 import { SignUpStore } from '../../store/sigup.store'
+import Icon from '../../components/icon'
+
 interface FileUpload {
     placeholder?: string
     extensions: Array<string>
@@ -9,6 +11,8 @@ interface FileUpload {
     readonly?: boolean
     optionalParams?: any
     showFullScreen?: boolean
+    key?: string
+    onChange: any
 }
 
 interface FileInfo {
@@ -23,7 +27,9 @@ const FileUpload: NextPage<FileUpload> = ({
     type,
     readonly = false,
     optionalParams = [],
-    showFullScreen = false
+    showFullScreen = false,
+    key = '',
+    onChange = () => void null
 }) => {
     const FullScreenComponent = () => {
         if (preview)
@@ -95,37 +101,62 @@ const FileUpload: NextPage<FileUpload> = ({
     const FileInputComponent = () => {
         return (
             <div className="form-control ml-4">
-                <label
-                    className="w-64 flex flex-col items-center px-4 py-3 bg-white rounded-md shadow-md tracking-wide uppercase
-            cursor-pointer
-            hover:bg-purple-600 hover:text-white
-            text-purple-600
-            ease-linear
-            transition-all
-            duration-150
-            border border-blue
+                <div className="flex">
+                    <label
+                        className="w-64 flex flex-col items-center px-4 py-3 bg-white rounded-md shadow-md tracking-wide uppercase
+                        cursor-pointer
+                        hover:bg-purple-600 hover:text-white
+                        text-purple-600
+                        ease-linear
+                        transition-all
+                        duration-150
+                        border border-blue
                                                 "
-                >
-                    <span className="text-base leading-normal">
-                        {placeholder}
-                    </span>
+                    >
+                        <span className="text-base leading-normal">
+                            {placeholder}
+                        </span>
 
-                    <input
-                        type="file"
-                        readOnly={readonly}
-                        onChange={onChangeHandler}
-                        className="hidden"
-                    />
-                </label>
-                {fileInfo?.fileName && (
-                    <>
-                        <span>{fileInfo?.fileName}</span>
-                        <span onClick={previewFile}>Preview</span>
-                        <span onClick={deleteFile}>Delete</span>
-                    </>
-                )}
+                        <input
+                            type="file"
+                            readOnly={readonly}
+                            onChange={onChangeHandler}
+                            className="hidden"
+                        />
+                    </label>
+                    {fileInfo?.fileName && (
+                        <div className="ml-2">
+                            <div
+                                onClick={previewFile}
+                                className="cursor-pointer"
+                            >
+                                <Icon type={'EXPAND'} stroke={1} />
+                            </div>
+
+                            <div
+                                onClick={deleteFile}
+                                className="cursor-pointer"
+                            >
+                                <Icon type={'REMOVE'} stroke={1} color="red" />
+                            </div>
+                        </div>
+                    )}
+                </div>
                 {preview && (
-                    <iframe className="h-screen w-full" src={`${blob}`} />
+                    <div className="my-6 indicator w-full">
+                        <div className="indicator-item  ">
+                            <button
+                                className="btn btn-error"
+                                onClick={() => setPreview(false)}
+                            >
+                                Cerrar
+                            </button>
+                        </div>
+                        <iframe
+                            className="h-screen w-full pt-4"
+                            src={`${blob}`}
+                        />
+                    </div>
                 )}
             </div>
         )
@@ -173,25 +204,7 @@ const FileUpload: NextPage<FileUpload> = ({
                 .deleteFile(fileInfo?.fileName)
                 .then(snapshot => {
                     setDeleted(true)
-                    SignUpStore.update(s => {
-                        switch (type) {
-                            case 'cuitDestinatario':
-                                s.datosEmpresa.destinatarioFactura.cuit.constancia =
-                                    ''
-                                break
-                            case 'cuit':
-                                s.datosEmpresa.cuit.constancia = ''
-                                break
-                            case 'iibb':
-                                s.datosEmpresa.iibb.constancia = ''
-                                break
-                            case 'razonSocial':
-                                s.datosEmpresa.razonSocial.constancia = ''
-                                break
-                            default:
-                                break
-                        }
-                    })
+                    onChange(null)
                 })
                 .catch(err => {
                     console.log(err)
@@ -234,29 +247,7 @@ const FileUpload: NextPage<FileUpload> = ({
                         size: uploadedFile.size
                     })
                     setFile(data)
-                    SignUpStore.update(s => {
-                        switch (type) {
-                            case 'cuitDestinatario':
-                                s.datosEmpresa.destinatarioFactura.cuit.constancia =
-                                    snapshot.metadata.fullPath
-                                break
-                            case 'cuit':
-                                s.datosEmpresa.cuit.constancia =
-                                    snapshot.metadata.fullPath
-                                break
-                            case 'iibb':
-                                s.datosEmpresa.iibb.constancia =
-                                    snapshot.metadata.fullPath
-                                break
-                            case 'razonSocial':
-                                s.datosEmpresa.razonSocial.constancia =
-                                    snapshot.metadata.fullPath
-                                break
-                            default:
-                                console.error('Incorrect type')
-                                break
-                        }
-                    })
+                    onChange(snapshot.metadata.fullPath)
                 })
             } else {
                 console.error('Incorrect extension!!')
@@ -264,7 +255,9 @@ const FileUpload: NextPage<FileUpload> = ({
         }
     }
     return (
-        <>{showFullScreen ? <FullScreenComponent /> : <FileInputComponent />}</>
+        <div key={`fileUpload${key}`}>
+            {showFullScreen ? <FullScreenComponent /> : <FileInputComponent />}
+        </div>
     )
 }
 

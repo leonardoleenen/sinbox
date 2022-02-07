@@ -9,6 +9,14 @@ import { getToken, tokenDecode } from '../../services/auth.service'
 import ClearContainer from '../../components/container/clear'
 import Loading from '../../components/loader'
 import Success from '../../components/success'
+import FileUpload from '../../components/fileupload/fileUpload'
+
+interface FilesOpts {
+    type: string
+    size: number
+    extension: string
+    name: string
+}
 
 const Page: NextPage = () => {
     const router = useRouter()
@@ -49,8 +57,14 @@ const Page: NextPage = () => {
             setFormSpec({
                 ...formSpecResult,
                 spec: {
-                    uischema: JSON.parse(formSpecResult.spec.uischema),
-                    schema: JSON.parse(formSpecResult.spec.schema)
+                    uischema:
+                        formSpecResult &&
+                        formSpecResult.spec &&
+                        formSpecResult.spec.uischema,
+                    schema:
+                        formSpecResult &&
+                        formSpecResult.spec &&
+                        formSpecResult.spec.schema
                 }
             })
         })()
@@ -113,8 +127,10 @@ const Page: NextPage = () => {
         >
             <div className="p-16">
                 <JsonForms
-                    schema={formSpec.spec.schema.object}
-                    uischema={formSpec.spec.uischema.object}
+                    schema={formSpec && formSpec.spec && formSpec.spec.schema}
+                    uischema={
+                        formSpec && formSpec.spec && formSpec.spec.uischema
+                    }
                     data={dataForm}
                     renderers={materialRenderers}
                     cells={materialCells}
@@ -122,6 +138,17 @@ const Page: NextPage = () => {
                         setDataForm(data)
                     }}
                 />
+
+                {formSpec.attachments.map(a => (
+                    <FileUpload
+                        key={a.fieldId}
+                        readonly={false}
+                        placeholder={a.fieldName}
+                        extensions={['pdf']}
+                        type="cuit"
+                        onChange={(value: string) => console.log(value)}
+                    />
+                ))}
             </div>
         </ClearContainer>
     )

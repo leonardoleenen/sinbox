@@ -33,16 +33,34 @@ const Page: NextPage = () => {
                     <table className="table w-full table-zebra">
                         <thead>
                             <tr>
-                                <th>ID</th>
                                 <th>Referencia</th>
+                                <th>Regla Acciones Posibles</th>
+                                <th>Regla Control de Flujo</th>
                                 <th>Estado</th>
                             </tr>
                         </thead>
                         <tbody>
                             {list.map((invite, index) => (
                                 <tr key={`invite${index}`}>
-                                    <td>{invite.id}</td>
                                     <td>{invite.ref}</td>
+                                    <td>
+                                        <a
+                                            target={`_blank`}
+                                            className="link link-primary"
+                                            href={`/rules/${invite.ruleAsset}`}
+                                        >
+                                            {invite.ruleAsset}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a
+                                            target={`_blank`}
+                                            className="link link-primary"
+                                            href={`/rules/${invite.ruleAssetStep}`}
+                                        >
+                                            {invite.ruleAsset}
+                                        </a>
+                                    </td>
                                     <td>{invite.status}</td>
                                 </tr>
                             ))}
