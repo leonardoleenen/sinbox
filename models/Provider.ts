@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 const { Schema } = mongoose
 
-const companySchema = new Schema({
+const providerSchema = new Schema({
     razonSocial: {
         value: String,
         constancia: String
@@ -34,3 +34,5 @@ const companySchema = new Schema({
     status: String,
     offer: []
 })
+export default mongoose.models.Provider ||
+    mongoose.model('Provider', providerSchema)
