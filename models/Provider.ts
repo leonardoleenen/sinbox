@@ -1,7 +1,9 @@
+import { ObjectId } from 'mongodb'
 import mongoose from 'mongoose'
 const { Schema } = mongoose
 
 const providerSchema = new Schema({
+    id: String,
     razonSocial: {
         value: String,
         constancia: String

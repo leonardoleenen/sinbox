@@ -13,24 +13,15 @@ import { nanoid } from 'nanoid'
 import axios from 'axios'
 class BusinessService {
     async saveCompany(data: Company, user: User, id?: string) {
-        //data/store/mongo
-        axios
-            .post('http://localhost:3000/api/business/save', {
+        const res = await axios.post<ApiResponse>(
+            `http://localhost:3000/api/store/${process.env.STORE}/business/save`,
+            {
                 data,
                 user,
                 id
-            })
-            .then(saved => {
-                console.log('saved')
-            })
-        // await setDoc(doc(firebaseManager.getDB(), 'users', user.id), user)
-        // if (id) {
-        //     await setDoc(doc(firebaseManager.getDB(), 'provider', id), data)
-        // } else {
-        //     const _id = nanoid(10)
-        //     await setDoc(doc(firebaseManager.getDB(), 'provider', _id), data)
-        // }
-        return
+            }
+        )
+        return res.data
     }
 
     async getCompanyByUser(id: string) {

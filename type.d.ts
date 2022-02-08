@@ -1,16 +1,17 @@
+/* eslint-disable prettier/prettier */
 type User = {
     name: string
     iat: number
     id: string
     identityProvider: string
     role:
-        | 'PROVIDER'
-        | 'BACKOFFICE'
-        | 'ESCRIBANO'
-        | 'SUPERVISOR'
-        | 'RECEPTIONIST'
-        | 'CERT RECEPTIONIST'
-        | 'CERT SUPERVISOR'
+    | 'PROVIDER'
+    | 'BACKOFFICE'
+    | 'ESCRIBANO'
+    | 'SUPERVISOR'
+    | 'RECEPTIONIST'
+    | 'CERT RECEPTIONIST'
+    | 'CERT SUPERVISOR'
     controllerCompanyCuit?: string
 }
 
@@ -161,4 +162,10 @@ type RuleAsset = {
     id: string
     description: string
     spec: string
+}
+
+type ApiResponse = {
+    store: 'firebase' | 'mongodb'
+    data: Record<string, unknown>
+    message?: string | undefined
 }
