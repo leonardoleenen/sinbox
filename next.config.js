@@ -6,6 +6,7 @@ module.exports = {
         MONGODB_DB_NAME: process.env.MONGODB_DB_NAME,
         MONGO_USER: process.env.MONGO_USER,
         MONGO_USER_PASSWORD: process.env.MONGO_USER_PASSWORD,
-        STORE: process.env.STORE
+        STORE: process.env.STORE,
+        API_URL: process.env.API_URL
     }
 }

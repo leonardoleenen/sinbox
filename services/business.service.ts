@@ -12,9 +12,10 @@ import { firebaseManager } from './firebase.services'
 import { nanoid } from 'nanoid'
 import axios from 'axios'
 class BusinessService {
+    public API_URL: any = process.env.API_URL
     async saveCompany(data: Company, user: User, id?: string) {
         const res = await axios.post<ApiResponse>(
-            `http://localhost:3000/api/store/${process.env.STORE}/business/save`,
+            `${this.API_URL}/api/store/${process.env.STORE}/business/company/save`,
             {
                 data,
                 user,
@@ -25,43 +26,40 @@ class BusinessService {
     }
 
     async getCompanyByUser(id: string) {
-        const providersRef = collection(firebaseManager.getDB(), 'provider')
-        const q: Query = query(
-            providersRef,
-            where('representante.id', '==', id)
+        const {
+            data: { data: response }
+        } = await axios.get<ApiResponse>(
+            `${this.API_URL}/api/store/${process.env.STORE}/business/company/user?=${id}`
         )
-        const querySnapshot = await getDocs(q)
-        let provider: unknown
-        querySnapshot.forEach(doc => (provider = doc.data()))
-        return provider as Company
+        return response
     }
     async getCompany(id: string) {
-        const docRef = doc(firebaseManager.getDB(), 'provider', id)
-        const docSnap = await getDoc(docRef)
-        return docSnap.data() as Company
-    }
-    async getCompanyControlled(userId: string) {
-        const docRef = doc(firebaseManager.getDB(), 'users', userId)
-        const docSnap = await getDoc(docRef)
-        const user = docSnap.data() as User
-        const company = await this.getCompanyByUser(user.id as string)
-        return company
+        const {
+            data: { data: response }
+        } = await axios.get<ApiResponse>(
+            `${this.API_URL}/api/store/${process.env.STORE}/business/company/${id}`
+        )
+        return response
     }
 
     async getCompanyIdByCuit(cuit: string) {
-        const q = query(
-            collection(firebaseManager.getDB(), 'provider'),
-            where('cuit.value', '==', cuit)
+        const {
+            data: { data: response }
+        } = await axios.get<ApiResponse>(
+            `${this.API_URL}/api/store/${process.env.STORE}/business/company?cuit=${cuit}`
         )
-        return (await (await getDocs(q)).docs.map(d => d.id)[0]) as string
+        return response
     }
 
     async getProviderPendingToApprove() {
-        const q = query(
-            collection(firebaseManager.getDB(), 'provider'),
-            where('status', '==', 'PENDING')
+        const {
+            data: { data: response }
+        } = await axios.get<ApiResponse>(
+            // eslint-disable-next-line prettier/prettier
+            `${this.API_URL}/api/store/${process.env.STORE
+            }/business/company?status=${'PENDING'}`
         )
-        return getDocs(q)
+        return response
     }
 
     async getLegalFormForInbox() {

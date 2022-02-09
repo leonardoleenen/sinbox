@@ -3,7 +3,7 @@ import mongoose from 'mongoose'
 const { Schema } = mongoose
 
 const providerSchema = new Schema({
-    id: String,
+    id: { type: String, unique: true },
     razonSocial: {
         value: String,
         constancia: String
@@ -15,7 +15,7 @@ const providerSchema = new Schema({
         constancia: String
     },
     iibb: {
-        value: Number,
+        value: String,
         constancia: String
     },
     domicilioLegal: String,
@@ -35,6 +35,13 @@ const providerSchema = new Schema({
     },
     status: String,
     offer: []
+})
+providerSchema.set('toJSON', {
+    virtuals: true,
+    transform: (doc, ret, options) => {
+        delete ret.__v
+        delete ret._id
+    }
 })
 export default mongoose.models.Provider ||
     mongoose.model('Provider', providerSchema)

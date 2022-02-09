@@ -9,6 +9,8 @@ import {
     setDoc,
     query
 } from 'firebase/firestore'
+import axios from 'axios'
+const API_URL: any = process.env.API_URL
 
 export const tokenDecode = (token: string): User => {
     return jwt.decode(token) as User
@@ -31,15 +33,19 @@ export const setCredentials = (publicKey: string) => {
 }
 
 export const userAlreadyExist = async (id: string) => {
-    const docRef = doc(firebaseManager.getDB(), 'users', id)
-    const docSnap = await getDoc(docRef)
-    return docSnap.data()
+    const { data: response } = await axios.get<ApiResponse>(
+        `${API_URL}/api/store/${process.env.STORE}/auth/user/${id}`
+    )
+    return response.data
 }
 
 export const getInvite = async (inviteId: string) => {
-    const docRef = doc(firebaseManager.getDB(), 'invite', inviteId)
-    const docSnap = await getDoc(docRef)
-    return docSnap.data()
+    const {
+        data: { data: response }
+    } = await axios.get<ApiResponse>(
+        `${API_URL}/api/store/${process.env.STORE}/auth/invite?id=${inviteId}`
+    )
+    return response
 }
 
 export const registerBackendUser = async (invite: any, user: any) => {
