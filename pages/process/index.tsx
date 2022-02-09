@@ -14,10 +14,16 @@ import { getToken, tokenDecode } from '../../services/auth.service'
 const Page: NextPage = () => {
     const [list, setList] = useState<Array<WorkflowProcess>>()
     const router = useRouter()
-    const [processes, setProcesses] = useState([])
+    const [processes, setProcesses] = useState<Array<WorkflowSpec>>([])
 
     useEffect(() => {
-        workflowService.getActiveProcess().then(result => setList(result))
+        workflowService
+            .getActiveProcess()
+            .then(result => setList(result))
+            .catch(err => {
+                router.push('/503')
+                return
+            })
 
         workflowService.getList().then(async wList => {
             for (const index in wList) {
@@ -25,7 +31,6 @@ const Page: NextPage = () => {
                     role: tokenDecode(getToken() as string).role,
                     signal: 'START'
                 })
-                console.log(rule)
                 if (rule['0'].result) {
                     setProcesses([
                         ...processes,
@@ -38,34 +43,6 @@ const Page: NextPage = () => {
                 // console.log(rule)
             }
         })
-        /*workflowService.getList().then(wfList => {
-            Promise.all(
-                wfList.map(wf =>
-                    ruleEngine.execute(wf.ruleAsset, {
-                        role: tokenDecode(getToken() as string).role,
-                        signal: 'START'
-                    })
-                )
-            ).then(async result => {
-                const wfEvaluated = result.map(r => r)
-                const _forms = []
-
-                for (const f in wfEvaluated) {
-                    console.log(wfEvaluated[f])
-                    if (wfEvaluated['0'][f].result) {
-                        const _f = await workflowService.getFormSpec(
-                            wfEvaluated['0'][f].result.formToShow
-                        )
-                        _forms.push({
-                            ..._f,
-                            processId: wfEvaluated[f].id
-                        })
-                    }
-                }
-
-                setForms(_forms)                
-            })
-        })*/
     }, [])
 
     const Empty = () => {
@@ -114,7 +91,7 @@ const Page: NextPage = () => {
             <InternalContainer
                 title="Procesos Activos"
                 actions={
-                    !_.isEmpty(processes) && (
+                    !_.isEmpty(processes) ? (
                         <div className="dropdown">
                             <div tabIndex={0} className="m-1 btn">
                                 Nuevo Proceso
@@ -137,6 +114,8 @@ const Page: NextPage = () => {
                                 ))}
                             </ul>
                         </div>
+                    ) : (
+                        <></>
                     )
                 }
             >
@@ -155,31 +134,35 @@ const Page: NextPage = () => {
                             </thead>
 
                             <tbody>
-                                {list.map((wp: WorkflowProcess, i) => (
-                                    <tr key={`form${i + 1}`}>
-                                        <th>{i + 1}</th>
-                                        <td>{wp.evidence[0].form.title}</td>
-                                        <td>{'Falta referenia'}</td>
-                                        <td>
-                                            {moment(wp.createdAt).format(
-                                                'DD/MM/YYYY HH:mm'
-                                            )}
-                                        </td>
-                                        <td>{wp.creator.name}</td>
-                                        <td>
-                                            <button
-                                                onClick={() =>
-                                                    router.push(
-                                                        `/process/${wp.id}`
-                                                    )
-                                                }
-                                                className="btn btn-sm"
-                                            >
-                                                {wp.descriptionCurrentStep}
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
+                                {list &&
+                                    list.map((wp: WorkflowProcess, i) => (
+                                        <tr key={`form${i + 1}`}>
+                                            <th>{i + 1}</th>
+                                            <td>
+                                                {wp.evidence &&
+                                                    wp.evidence[0].form.title}
+                                            </td>
+                                            <td>{'Falta referenia'}</td>
+                                            <td>
+                                                {moment(wp.createdAt).format(
+                                                    'DD/MM/YYYY HH:mm'
+                                                )}
+                                            </td>
+                                            <td>{wp.creator.name}</td>
+                                            <td>
+                                                <button
+                                                    onClick={() =>
+                                                        router.push(
+                                                            `/process/${wp.id}`
+                                                        )
+                                                    }
+                                                    className="btn btn-sm"
+                                                >
+                                                    {wp.descriptionCurrentStep}
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
                             </tbody>
                         </table>
                     </div>

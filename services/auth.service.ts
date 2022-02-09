@@ -9,6 +9,7 @@ import {
     setDoc,
     query
 } from 'firebase/firestore'
+import { nanoid } from 'nanoid'
 
 export const tokenDecode = (token: string): User => {
     return jwt.decode(token) as User
@@ -50,7 +51,9 @@ export const registerBackendUser = async (invite: any, user: any) => {
         id: user.uid,
         role: invite.role,
         identityProvider: 'google',
-        name: user.displayName
+        name: user.displayName,
+        status: 'ENABLED',
+        issuedAt: new Date().getTime()
     }
     await setDoc(doc(firebaseManager.getDB(), 'users', user.uid), newUser)
 
@@ -63,20 +66,26 @@ export const getInvites = async () => {
     return getDocs(q)
 }
 
+export const createInvite = async (email: string, role: string) => {
+    const invite: UserInvite = {
+        id: nanoid(10),
+        issuedAt: new Date().getTime(),
+        email,
+        role
+    }
+
+    await setDoc(doc(firebaseManager.getDB(), 'invite', invite.id), invite)
+    return invite
+}
+
 export const getRouteAfterLogin = () => {
     if (!tokenDecode(getToken() as string)) return '/signup'
 
     if (tokenDecode(getToken() as string).role === 'ESCRIBANO')
         return '/registro/modulo1'
-
-    if (
-        tokenDecode(getToken() as string).role === 'SUPERVISOR' ||
-        tokenDecode(getToken() as string).role === 'BACKOFFICE' ||
-        tokenDecode(getToken() as string).role === 'RECEPTIONIST' ||
-        tokenDecode(getToken() as string).role === 'CERT RECEPTIONIST' ||
-        tokenDecode(getToken() as string).role === 'CERT SUPERVISOR'
-    )
-        return '/inbox'
+    else {
+        return '/process'
+    }
 }
 
 export const logout = () => {

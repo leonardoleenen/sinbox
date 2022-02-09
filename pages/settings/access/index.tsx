@@ -4,9 +4,10 @@ import Header from '../../../components/header'
 import Container from '../../../components/container'
 import { getInvites } from '../../../services/auth.service'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 const Page: NextPage = () => {
     const [invites, setInvites] = useState<Array<UserInvite>>([])
-
+    const router = useRouter()
     useEffect(() => {
         getInvites().then(result =>
             setInvites(result.docs.map(d => d.data() as UserInvite))
@@ -22,7 +23,10 @@ const Page: NextPage = () => {
                         Usuarios del sistema
                     </h2>
                     <div>
-                        <button className="btn btn-outline btn-primary">
+                        <button
+                            className="btn btn-outline btn-primary"
+                            onClick={() => router.push('/settings/access/new')}
+                        >
                             Invitar
                         </button>{' '}
                     </div>
@@ -47,7 +51,7 @@ const Page: NextPage = () => {
                                     <td>{invite.email}</td>
                                     <td>{invite.role}</td>
                                     <td>Pending</td>
-                                    <td>
+                                    <td className="cursor-pointer link link-primary">
                                         <Link
                                             href={`${document.location.origin}/?invite=${invite.id}`}
                                         >
