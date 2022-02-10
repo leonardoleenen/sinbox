@@ -13,6 +13,7 @@ type User = {
         | 'CERT SUPERVISOR'
     issuedAt: number
     status: 'ENABLED' | 'DISABLED'
+    email: string
 }
 
 type Company = {

@@ -53,12 +53,18 @@ export const registerBackendUser = async (invite: any, user: any) => {
         identityProvider: 'google',
         name: user.displayName,
         status: 'ENABLED',
+        email: user.email,
         issuedAt: new Date().getTime()
     }
     await setDoc(doc(firebaseManager.getDB(), 'users', user.uid), newUser)
 
     await deleteDoc(doc(firebaseManager.getDB(), 'invite', invite.id))
     return newUser
+}
+
+export const getUsers = async () => {
+    const q = query(collection(firebaseManager.getDB(), 'users'))
+    return (await getDocs(q)).docs.map(d => d.data() as User)
 }
 
 export const getInvites = async () => {
