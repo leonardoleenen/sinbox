@@ -120,18 +120,15 @@ class BusinessService {
     }
 
     async saveLegalForm(form: LegalForm) {
-        const _id = nanoid(10)
-        if (form.id) {
-            await setDoc(
-                doc(firebaseManager.getDB(), 'legalForm', form.id),
-                form
-            )
-        } else {
-            await setDoc(doc(firebaseManager.getDB(), 'legalForm', _id), {
-                ...form,
-                id: _id
-            })
-        }
+        const {
+            data: { data: response }
+        } = await axios.post<ApiResponse>(
+            `${this.API_URL}/api/store/${process.env.STORE}/business/form/save`,
+            {
+                ...form
+            }
+        )
+        return response
     }
 }
 

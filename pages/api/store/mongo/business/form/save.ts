@@ -4,6 +4,7 @@ import { connectToDatabase } from '../../../../../../utils/db'
 
 import LegalForm from '../../../../../../models/LegalForm'
 import { handleResponse } from '../../../../../../utils/responseHandler'
+import { nanoid } from 'nanoid'
 
 export default async function handler(
     req: NextApiRequest,
@@ -11,14 +12,14 @@ export default async function handler(
 ) {
     await connectToDatabase()
     const { form } = req.body
-    await LegalForm.create({ ...form })
-    handleResponse(
-        req,
-        res,
-        200,
-        {
-            ...form
-        },
-        'Aforo was succesfuly saved'
-    )
+    const _id = nanoid(10)
+    if (form.id) {
+        await LegalForm.updateOne({ id: form.id, form })
+    } else {
+        Object.assign({ id: _id })
+        await LegalForm.create({ ...form })
+    }
+    handleResponse(req, res, 200, {
+        ...form
+    })
 }
