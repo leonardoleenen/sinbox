@@ -139,16 +139,18 @@ const Page: NextPage = () => {
                     }}
                 />
 
-                {formSpec.attachments.map(a => (
-                    <FileUpload
-                        key={a.fieldId}
-                        readonly={false}
-                        placeholder={a.fieldName}
-                        extensions={['pdf']}
-                        type="cuit"
-                        onChange={(value: string) => console.log(value)}
-                    />
-                ))}
+                <div className="flex">
+                    {formSpec.attachments.map((a, index) => (
+                        <FileUpload
+                            key={a.fieldId}
+                            readonly={false}
+                            placeholder={a.fieldName}
+                            extensions={['pdf']}
+                            type="cuit"
+                            onChange={(value: string) => console.log(value)}
+                        />
+                    ))}
+                </div>
             </div>
         </ClearContainer>
     )

@@ -12,7 +12,9 @@ type User = {
     | 'RECEPTIONIST'
     | 'CERT RECEPTIONIST'
     | 'CERT SUPERVISOR'
-    controllerCompanyCuit?: string
+    issuedAt: number
+    status: 'ENABLED' | 'DISABLED'
+    email: string
 }
 
 type Company = {
