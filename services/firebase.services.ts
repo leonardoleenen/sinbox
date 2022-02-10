@@ -12,7 +12,7 @@ import '@firebase/firestore'
 import _ from 'lodash'
 
 class FirebaseManager {
-    private firebaseApp: any
+    public firebaseApp: any
     private storage: any
     constructor() {
         if (process.env.FIREBASE) {

@@ -1,14 +1,4 @@
 import jwt from 'jsonwebtoken'
-import { firebaseManager } from './firebase.services'
-import {
-    getDocs,
-    collection,
-    deleteDoc,
-    doc,
-    getDoc,
-    setDoc,
-    query
-} from 'firebase/firestore'
 import axios from 'axios'
 const API_URL: any = process.env.API_URL
 
@@ -58,15 +48,26 @@ export const registerBackendUser = async (invite: any, user: any) => {
         identityProvider: 'google',
         name: user.displayName
     }
-    await setDoc(doc(firebaseManager.getDB(), 'users', user.uid), newUser)
+    const {
+        data: { data: response }
+    } = await axios.post<ApiResponse>(
+        `${API_URL}/api/store/${process.env.STORE}/auth/user/save`,
+        { data: newUser }
+    )
 
-    await deleteDoc(doc(firebaseManager.getDB(), 'invite', invite.id))
+    await axios.delete<ApiResponse>(
+        `${API_URL}/api/store/${process.env.STORE}/auth/invite?id=$${invite.id}`
+    )
     return newUser
 }
 
 export const getInvites = async () => {
-    const q = query(collection(firebaseManager.getDB(), 'invite'))
-    return getDocs(q)
+    const {
+        data: { data: response }
+    } = await axios.get<ApiResponse>(
+        `${API_URL}/api/store/${process.env.STORE}/auth/invite`
+    )
+    return response
 }
 
 export const getRouteAfterLogin = () => {

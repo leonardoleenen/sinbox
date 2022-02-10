@@ -10,13 +10,12 @@ import {
     userAlreadyExist
 } from '../services/auth.service'
 import { useRouter } from 'next/router'
-import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
 import { firebaseManager } from '../services/firebase.services'
+import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
 import { SignUpStore } from '../store/sigup.store'
 import Loader from '../components/loader'
 import { businessService } from '../services/business.service'
 import { webAuthn } from '../services/webauthn.service'
-
 const Home: NextPage = () => {
     const router = useRouter()
     const { token } = router.query
@@ -35,7 +34,7 @@ const Home: NextPage = () => {
     }
 
     const signWithGoogle = () => {
-        const auth = getAuth()
+        const auth = getAuth(firebaseManager.firebaseApp)
         signInWithPopup(auth, provider)
             .then(async result => {
                 SignUpStore.update(s => {

@@ -1,13 +1,4 @@
-import {
-    getDocs,
-    collection,
-    doc,
-    getDoc,
-    setDoc,
-    query,
-    where,
-    Query
-} from 'firebase/firestore'
+import { doc, setDoc } from 'firebase/firestore'
 import { firebaseManager } from './firebase.services'
 import { nanoid } from 'nanoid'
 import axios from 'axios'
@@ -63,22 +54,32 @@ class BusinessService {
     }
 
     async getLegalFormForInbox() {
-        const q = query(collection(firebaseManager.getDB(), 'legalForm'))
-        return getDocs(q)
+        const {
+            data: { data: response }
+        } = await axios.get<ApiResponse>(
+            `${this.API_URL}/api/store/${process.env.STORE}/business/form`
+        )
+        return response
     }
 
     async getLegalFormForOutBox() {
-        const q = query(
-            collection(firebaseManager.getDB(), 'legalForm'),
-            where('status', '==', 'CLOSED')
+        const {
+            data: { data: response }
+        } = await axios.get<ApiResponse>(
+            // eslint-disable-next-line prettier/prettier
+            `${this.API_URL}/api/store/${process.env.STORE
+            }/business/form?status=${'CLOSED'}`
         )
-        return getDocs(q)
+        return response
     }
 
     async getLegalForm(id: string) {
-        const docRef = doc(firebaseManager.getDB(), 'legalForm', id)
-        const docSnap = await getDoc(docRef)
-        return docSnap.data() as LegalForm
+        const {
+            data: { data: response }
+        } = await axios.get<ApiResponse>(
+            `${this.API_URL}/api/store/${process.env.STORE}/business/form/${id}`
+        )
+        return response
     }
 
     async setLegalFormStatus(
@@ -89,21 +90,33 @@ class BusinessService {
             signature: string
         }
     ) {
-        await setDoc(doc(firebaseManager.getDB(), 'legalForm', form.id), {
-            ...form,
-            signature: {
-                signedAt: new Date().getTime(),
-                ...signature
-            },
-            status
-        })
+        const {
+            data: { data: response }
+        } = await axios.post<ApiResponse>(
+            `${this.API_URL}/api/store/${process.env.STORE}/business/form`,
+            {
+                form,
+                signature: {
+                    signedAt: new Date().getTime(),
+                    ...signature
+                },
+                status
+            }
+        )
+        return response
     }
 
     async aforar(form: LegalForm, aforo: number) {
-        await setDoc(doc(firebaseManager.getDB(), 'legalForm', form.id), {
-            ...form,
-            aforo
-        })
+        const {
+            data: { data: response }
+        } = await axios.post<ApiResponse>(
+            `${this.API_URL}/api/store/${process.env.STORE}/business/form/aforar`,
+            {
+                ...form,
+                aforo
+            }
+        )
+        return response
     }
 
     async saveLegalForm(form: LegalForm) {

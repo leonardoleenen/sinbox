@@ -19,5 +19,7 @@ export default async function handler(
     } else if (cuit) {
         const companyByCuit = await Provider.findOne({ 'cuit.value': cuit })
         handleResponse(req, res, 200, companyByCuit)
+    } else {
+        handleResponse(req, res, 200, null, 'Not provided parameter to search')
     }
 }

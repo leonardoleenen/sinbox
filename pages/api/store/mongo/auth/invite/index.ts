@@ -11,6 +11,22 @@ export default async function handler(
 ) {
     await connectToDatabase()
     const { id } = req.query
-    const invite = await Invite.findOne({ id: id })
-    handleResponse(req, res, 200, invite)
+    if (id) {
+        if (req.method === 'DELETE') {
+            const invite = await Invite.deleteOne({ id: id })
+            handleResponse(
+                req,
+                res,
+                200,
+                invite,
+                'Invite was succesfully deleted'
+            )
+        } else {
+            const invite = await Invite.findOne({ id: id })
+            handleResponse(req, res, 200, invite)
+        }
+    } else {
+        const invites = await Invite.find()
+        handleResponse(req, res, 200, invites)
+    }
 }
