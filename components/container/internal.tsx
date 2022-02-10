@@ -4,7 +4,7 @@ interface Props {
     children: JSX.Element
     className?: string
     title: string
-    actions?: JSX.Element
+    actions?: JSX.Element | undefined
 }
 
 const Component = (props: Props): JSX.Element => {

@@ -92,6 +92,11 @@ const Component = (props: Props): JSX.Element => {
                                     className="ml-2 pt-3"
                                     navigateTo={'/forms/list'}
                                 />
+                                <ItemMenu
+                                    name="Users And Invites"
+                                    className="ml-2 pt-3"
+                                    navigateTo={'/settings/access'}
+                                />
                             </div>
                         </div>
                     </li>
