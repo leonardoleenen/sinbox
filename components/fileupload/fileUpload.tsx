@@ -13,6 +13,7 @@ interface FileUpload {
     showFullScreen?: boolean
     key?: string
     onChange?: any
+    defaultFilePath?: string
 }
 
 interface FileInfo {
@@ -29,7 +30,8 @@ const FileUpload: NextPage<FileUpload> = ({
     optionalParams = [],
     showFullScreen = false,
     key = '',
-    onChange = () => void null
+    onChange = () => void null,
+    defaultFilePath = null
 }) => {
     const state = SignUpStore.useState(s => s)
     /*Manage blob*/
@@ -131,12 +133,16 @@ const FileUpload: NextPage<FileUpload> = ({
                             {processingFile && (
                                 <button className="btn loading btn-ghost"></button>
                             )}
-                            <input
-                                type="file"
-                                readOnly={readonly}
-                                onChange={onChangeHandler}
-                                className="hidden"
-                            />
+                            {readonly ? (
+                                <></>
+                            ) : (
+                                <input
+                                    type="file"
+                                    readOnly={readonly}
+                                    onChange={onChangeHandler}
+                                    className="hidden"
+                                />
+                            )}
                         </div>
                     </label>
                     {fileInfo?.fileName && (
@@ -148,12 +154,18 @@ const FileUpload: NextPage<FileUpload> = ({
                                 <Icon type={'EXPAND'} stroke={1} />
                             </div>
 
-                            <div
-                                onClick={deleteFile}
-                                className="cursor-pointer"
-                            >
-                                <Icon type={'REMOVE'} stroke={1} color="red" />
-                            </div>
+                            {!readonly && (
+                                <div
+                                    onClick={deleteFile}
+                                    className="cursor-pointer"
+                                >
+                                    <Icon
+                                        type={'REMOVE'}
+                                        stroke={1}
+                                        color="red"
+                                    />
+                                </div>
+                            )}
                         </div>
                     )}
                 </div>
@@ -178,6 +190,20 @@ const FileUpload: NextPage<FileUpload> = ({
     }
 
     useEffect(() => {
+        ;(async () => {
+            if (!defaultFilePath) return
+
+            setProcessingFile(true)
+            const url = await firebaseManager.getFileUrl(defaultFilePath)
+            setFileInfo({
+                fileName: url
+            })
+            setBlob(url)
+            setProcessingFile(false)
+        })()
+    }, [defaultFilePath])
+
+    useEffect(() => {
         if (optionalParams.length > 0 && !deleted) {
             setFileInfo({
                 extension: optionalParams[0].extension,
@@ -189,9 +215,9 @@ const FileUpload: NextPage<FileUpload> = ({
 
     const previewFile = async () => {
         let blob
-        if (optionalParams.length > 0) {
+        if (optionalParams.length > 0 || readonly) {
             const url = await firebaseManager.getFileUrl(
-                optionalParams[0].fullPath
+                readonly ? defaultFilePath : optionalParams[0].fullPath
             )
             blob = url
         } else {

@@ -10,6 +10,7 @@ import ClearContainer from '../../components/container/clear'
 import Loading from '../../components/loader'
 import Success from '../../components/success'
 import FileUpload from '../../components/fileupload/fileUpload'
+import moment from 'moment'
 
 interface FilesOpts {
     type: string
@@ -27,7 +28,17 @@ const Page: NextPage = () => {
     const [formSpec, setFormSpec] = useState<WorkFlowForm>()
     const [rule, setRule] = useState<any>()
     const [isFinalStep, setIsFinalStep] = useState(false)
-    const [dataForm, setDataForm] = useState({})
+    const [dataForm, setDataForm] = useState<{
+        id: string
+        description: string
+        value: string
+        attachements: any
+    }>({
+        id: '',
+        description: '',
+        value: '',
+        attachements: {}
+    })
     const [evidenceIndex, setEvidenceIndex] = useState(-1)
 
     useEffect(() => {
@@ -135,6 +146,7 @@ const Page: NextPage = () => {
                       process?.evidence[evidenceIndex].data.attachements[k]
               )
 
+    console.log(dataForm)
     if (!attachements) attachements = []
 
     return (
@@ -174,16 +186,28 @@ const Page: NextPage = () => {
                                     index === evidenceIndex ? '★' : index + 1
                                 }
                                 key={`evidence${index}`}
-                                className="step step-info cursor-pointer"
+                                className="step step-info cursor-pointer "
                             >
-                                {e.action}
+                                <div className="text-left">
+                                    <div>{e.action}</div>
+                                    <div className="text-xs">
+                                        {moment(e.date).format(
+                                            'DD/MM/YYYY HH:mm:ss'
+                                        )}
+                                    </div>
+                                </div>
                             </li>
                         ))}
                         {!process?.processComplete && (
                             <li
                                 onClick={e => {
                                     setEvidenceIndex(-1)
-                                    setDataForm({})
+                                    setDataForm({
+                                        id: '',
+                                        description: '',
+                                        value: '',
+                                        attachements: {}
+                                    })
                                 }}
                                 className="step cursor-pointer"
                             >
@@ -222,21 +246,23 @@ const Page: NextPage = () => {
                         {attachements.map((a, index) => (
                             <FileUpload
                                 key={a.id}
-                                readonly={evidenceIndex !== -1}
+                                defaultFilePath={a.value}
+                                readonly={
+                                    process?.processComplete ||
+                                    evidenceIndex !== -1
+                                }
                                 placeholder={a.description}
                                 extensions={['pdf']}
                                 type="cuit"
                                 onChange={(value: string) => {
                                     const tempData = {
-                                        ...dataForm,
-                                        attachements
+                                        ...dataForm
                                     }
-                                    tempData.attachements[a.fieldId as string] =
-                                        {
-                                            id: a.fieldId,
-                                            value: value as string,
-                                            description: a.fieldName
-                                        }
+                                    tempData.attachements[a.id as string] = {
+                                        id: a.id,
+                                        value: value as string,
+                                        description: a.description
+                                    }
                                     setDataForm({
                                         ...tempData
                                     })
