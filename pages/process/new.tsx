@@ -147,7 +147,22 @@ const Page: NextPage = () => {
                             placeholder={a.fieldName}
                             extensions={['pdf']}
                             type="cuit"
-                            onChange={(value: string) => console.log(value)}
+                            onChange={(value: string) => {
+                                const tempData = {
+                                    ...dataForm,
+                                    attachements: dataForm.attachements
+                                        ? dataForm.attachements
+                                        : {}
+                                }
+                                tempData.attachements[a.fieldId as string] = {
+                                    id: a.fieldId,
+                                    value: value as string,
+                                    description: a.fieldName
+                                }
+                                setDataForm({
+                                    ...tempData
+                                })
+                            }}
                         />
                     ))}
                 </div>

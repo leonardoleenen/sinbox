@@ -116,7 +116,7 @@ type WorkflowProcess = {
     currentStep: string
     descriptionCurrentStep?: string
     processComplete: boolean
-    evidence?: Array<Evidence>
+    evidence: Array<Evidence>
 }
 
 type Evidence = {

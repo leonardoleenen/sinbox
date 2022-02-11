@@ -50,7 +50,7 @@ const Component = (props: Props): JSX.Element => {
                             <Icon type={'UPLOAD'} stroke={2} size={24} />
                             <ItemMenu
                                 name="Bandeja de salida"
-                                navigateTo={'/outbox'}
+                                navigateTo={'/process/completed'}
                             />
                         </a>
                     </li>
