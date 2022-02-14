@@ -162,6 +162,7 @@ const Inscription: NextPage<Inscription> = ({ readonly, filesOpts = [] }) => {
                                         />
                                     </div>
                                     <FileUpload
+                                        onChange={() => null}
                                         optionalParams={
                                             filesOpts?.length > 0
                                                 ? filesOpts?.filter(f => {
@@ -199,6 +200,7 @@ const Inscription: NextPage<Inscription> = ({ readonly, filesOpts = [] }) => {
                                         />
                                     </div>
                                     <FileUpload
+                                        onChange={() => null}
                                         optionalParams={filesOpts?.filter(f => {
                                             const file = f.type === 'cuit'
                                             return file
@@ -230,6 +232,7 @@ const Inscription: NextPage<Inscription> = ({ readonly, filesOpts = [] }) => {
                                         />
                                     </div>
                                     <FileUpload
+                                        onChange={() => null}
                                         optionalParams={filesOpts?.filter(f => {
                                             const file = f.type === 'iibb'
                                             return file
@@ -358,6 +361,7 @@ const Inscription: NextPage<Inscription> = ({ readonly, filesOpts = [] }) => {
                                             />
                                         </div>
                                         <FileUpload
+                                            onChange={() => null}
                                             optionalParams={filesOpts?.filter(
                                                 f => {
                                                     const file =

@@ -168,6 +168,6 @@ type RuleAsset = {
 
 type ApiResponse = {
     store: 'firebase' | 'mongodb'
-    data: Record<string, unknown>
+    data: any,
     message?: string | undefined
 }

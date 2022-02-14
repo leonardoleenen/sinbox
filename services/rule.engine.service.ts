@@ -12,6 +12,7 @@ import { firebaseManager } from './firebase.services'
 import axios from 'axios'
 
 class RuleEngine {
+    private API_URL = process.env.API_URL
     async execute(ruleId: string, context: any) {
         const docRef = doc(firebaseManager.getDB(), 'ruleAssets', ruleId)
         const docSnap = await getDoc(docRef)
@@ -32,17 +33,30 @@ class RuleEngine {
     }
 
     async get(id: string): Promise<RuleAsset> {
-        const docRef = doc(firebaseManager.getDB(), 'ruleAssets', id)
-        const docSnap = await getDoc(docRef)
-        return docSnap.data() as RuleAsset
+        const {
+            data: { data: response }
+        } = await axios.get<ApiResponse>(
+            `${this.API_URL}/api/store/${process.env.STORE}/engine/${id}`
+        )
+        return response as RuleAsset
     }
     async getAll(): Promise<Array<RuleAsset>> {
-        const q = query(collection(firebaseManager.getDB(), 'ruleAssets'))
-        return (await getDocs(q)).docs.map(d => d.data() as RuleAsset)
+        const {
+            data: { data: response }
+        } = await axios.get<ApiResponse>(
+            `${this.API_URL}/api/store/${process.env.STORE}/engine`
+        )
+        return response as unknown as Array<RuleAsset>
     }
 
     async save(rule: RuleAsset) {
-        await setDoc(doc(firebaseManager.getDB(), 'ruleAssets', rule.id), rule)
+        const {
+            data: { data: response }
+        } = await axios.post<ApiResponse>(
+            `${this.API_URL}/api/store/${process.env.STORE}/engine/save`,
+            { data: rule }
+        )
+        return response
     }
 }
 

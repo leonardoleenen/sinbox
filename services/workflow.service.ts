@@ -4,54 +4,63 @@ import {
     doc,
     getDoc,
     setDoc,
-    query,
-    where,
-    Query
+    query
 } from 'firebase/firestore'
 import { firebaseManager } from './firebase.services'
 import { nanoid } from 'nanoid'
 import { getToken, tokenDecode } from './auth.service'
 import { ruleEngine } from './rule.engine.service'
+import axios from 'axios'
 
 class Workflow {
+    private API_URL = process.env.API_URL
+    private STORE = process.env.STORE
     async getList(): Promise<Array<WorkflowSpec>> {
-        const q = query(collection(firebaseManager.getDB(), 'workflowSpec'))
-        return await (await getDocs(q)).docs.map(d => d.data() as WorkflowSpec)
+        const {
+            data: { data: response }
+        } = await axios.get<ApiResponse>(
+            `${this.API_URL}/api/store/${process.env.STORE}/workflow/spec/`
+        )
+        return response as unknown as Array<WorkflowSpec>
     }
 
     async getSpec(id: string): Promise<WorkflowSpec> {
-        const docRef = doc(firebaseManager.getDB(), 'workflowSpec', id)
-        const docSnap = await getDoc(docRef)
-
-        return {
-            ...docSnap.data()
-        } as WorkflowSpec
+        const {
+            data: { data: response }
+        } = await axios.get<ApiResponse>(
+            `${this.API_URL}/api/store/${process.env.STORE}/workflow/spec/${id}`
+        )
+        return response as WorkflowSpec
     }
 
     async saveSpec(workFlow: WorkflowSpec): Promise<WorkflowSpec> {
         if (!workFlow.id) {
             workFlow.id = nanoid(10)
         }
-
-        return setDoc(
-            doc(firebaseManager.getDB(), 'workflowSpec', workFlow.id),
-            {
-                ...workFlow,
-                lastUpdated: new Date().getTime()
-            }
-        ).then(() => workFlow)
+        const {
+            data: { data: response }
+        } = await axios.get<ApiResponse>(
+            `${this.API_URL}/api/store/${process.env.STORE}/workflow/save`
+        )
+        return response as WorkflowSpec
     }
 
     async getForms(): Promise<Array<WorkFlowForm>> {
-        const q = query(collection(firebaseManager.getDB(), 'workflowForm'))
-        return await (await getDocs(q)).docs.map(d => d.data() as WorkFlowForm)
+        const {
+            data: { data: response }
+        } = await axios.get<ApiResponse>(
+            `${this.API_URL}/api/store/${process.env.STORE}/workflow/form/`
+        )
+        return response as unknown as Promise<Array<WorkFlowForm>>
     }
 
     async getFormSpec(id: string): Promise<WorkFlowForm> {
-        const docRef = doc(firebaseManager.getDB(), 'workflowForm', id)
-        const docSnap = await getDoc(docRef)
-
-        return docSnap.data() as WorkFlowForm
+        const {
+            data: { data: response }
+        } = await axios.get<ApiResponse>(
+            `${this.API_URL}/api/store/${process.env.STORE}/workflow/form/${id}`
+        )
+        return response as unknown as Promise<WorkFlowForm>
     }
 
     async saveFormSpec(formToSave: WorkFlowForm): Promise<WorkFlowForm> {
@@ -59,13 +68,15 @@ class Workflow {
             formToSave.id = nanoid(10)
         }
 
-        return setDoc(
-            doc(firebaseManager.getDB(), 'workflowForm', formToSave.id),
+        const {
+            data: { data: response }
+        } = await axios.post<ApiResponse>(
+            `${this.API_URL}/api/store/${process.env.STORE}/workflow/form/save`,
             {
-                ...formToSave,
-                lastUpdated: new Date().getTime()
+                formToSave: formToSave
             }
-        ).then(() => formToSave)
+        )
+        return response as WorkFlowForm
     }
 
     async createProcess(
@@ -99,8 +110,15 @@ class Workflow {
                 }
             ]
         }
-
-        await setDoc(doc(firebaseManager.getDB(), 'process', id), wkfProcess)
+        const {
+            data: { data: response }
+        } = await axios.post<ApiResponse>(
+            `${this.API_URL}/api/store/${process.env.STORE}/workflow/form/save`,
+            {
+                wkfProcess
+            }
+        )
+        return response
     }
 
     async moveNext(
@@ -117,26 +135,36 @@ class Workflow {
             }
         )
 
-        await setDoc(doc(firebaseManager.getDB(), 'process', process.id), {
-            ...process,
-            currentStep: ruleResult[0].result,
-            evidence: [
-                ...(process.evidence as []),
-                {
-                    data,
-                    form: formSpec,
-                    date: new Date().getTime(),
-                    user: tokenDecode(getToken() as string),
-                    action: process.currentStep
-                }
-            ],
-            processComplete: isFinalStep
-        })
+        const {
+            data: { data: response }
+        } = await axios.post<ApiResponse>(
+            `${this.API_URL}/api/store/${this.STORE}/workflow/process/save?next=true`,
+            {
+                ...process,
+                currentStep: ruleResult[0].result,
+                evidence: [
+                    ...(process.evidence as []),
+                    {
+                        data,
+                        form: formSpec,
+                        date: new Date().getTime(),
+                        user: tokenDecode(getToken() as string),
+                        action: process.currentStep
+                    }
+                ],
+                processComplete: isFinalStep
+            }
+        )
+        return response
     }
 
     async getProcess(id: string): Promise<WorkflowProcess> {
-        const docRef = doc(firebaseManager.getDB(), 'process', id)
-        return (await (await getDoc(docRef)).data()) as WorkflowProcess
+        const {
+            data: { data: response }
+        } = await axios.get<ApiResponse>(
+            `${this.API_URL}/api/store/${process.env.STORE}/workflow/process/${id}`
+        )
+        return response as WorkflowProcess
     }
 
     async validateProcessForUser(process: WorkflowProcess) {
@@ -173,14 +201,12 @@ class Workflow {
     }
 
     async getActiveProcess() {
-        const q = query(collection(firebaseManager.getDB(), 'process'))
-
-        const processes: Array<WorkflowProcess> = (await getDocs(q)).docs.map(
-            d => d.data() as WorkflowProcess
+        const {
+            data: { data: processes }
+        } = await axios.get<ApiResponse>(
+            `${this.API_URL}/api/store/${process.env.STORE}/workflow/process`
         )
-
         const filteredProcesses = []
-
         for (const p in processes) {
             if (await this.validateProcessForUser(processes[p])) {
                 filteredProcesses.push(processes[p])
