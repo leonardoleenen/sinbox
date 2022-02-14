@@ -292,7 +292,7 @@ const FileUpload: NextPage<FileUpload> = ({
         }
     }
     return (
-        <div key={`fileUpload${key}`}>
+        <div key={`fileUpload${key}`} className="w-full">
             {showFullScreen ? <FullScreenComponent /> : <FileInputComponent />}
         </div>
     )

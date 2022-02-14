@@ -24,6 +24,20 @@ const Page: NextPage = () => {
                     </select>
                     <select className="select select-bordered w-full max-w-xs m-4 ">
                         <option disabled="disabled" selected="selected">
+                            Departamento
+                        </option>
+                        <option>Capital</option>
+                        <option>Rosario</option>
+                    </select>
+                    <select className="select select-bordered w-full max-w-xs m-4 ">
+                        <option disabled="disabled" selected="selected">
+                            Ciudades
+                        </option>
+                        <option>Santa Fe</option>
+                        <option>Rosario</option>
+                    </select>
+                    <select className="select select-bordered w-full max-w-xs m-4 ">
+                        <option disabled="disabled" selected="selected">
                             Elija el grupo economico
                         </option>
                         <option>telekinesis</option>
@@ -35,9 +49,9 @@ const Page: NextPage = () => {
                         <option disabled="disabled" selected="selected">
                             Elija el medio
                         </option>
-                        <option>telekinesis</option>
-                        <option>time travel</option>
-                        <option>invisibility</option>
+                        <option>Radio</option>
+                        <option>Television</option>
+                        <option>Internet</option>
                     </select>
 
                     <div className="m-4 flex w-full justify-end">
