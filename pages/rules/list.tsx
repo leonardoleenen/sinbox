@@ -58,7 +58,16 @@ const Page: NextPage = () => {
                                                     Editar
                                                 </button>
                                             </td>
-                                            <td>{rule.id}</td>
+                                            <td>
+                                                <a
+                                                    className="link link-primary"
+                                                    target="_blank"
+                                                    href={`${document.location.origin}/api/engine/rules/execute/${rule.id}`}
+                                                    rel="noreferrer"
+                                                >
+                                                    {rule.id}
+                                                </a>
+                                            </td>
                                         </tr>
                                     ))}
                                 </tbody>

@@ -59,7 +59,7 @@ const Component = (props: Props): JSX.Element => {
                             <Icon type={'PLANNING'} stroke={2} size={24} />
                             <ItemMenu
                                 name="Planificacion"
-                                navigateTo={'/planning'}
+                                navigateTo={'/analytics/pivot-table'}
                             />
                         </a>
                     </li>
