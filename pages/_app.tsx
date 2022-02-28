@@ -1,5 +1,5 @@
-import '../styles/globals.scss'
-import 'tailwindcss/tailwind.css'
+import '../styles/globals.css'
+// import 'tailwindcss/tailwind.css'
 import type { AppProps } from 'next/app'
 import Header from 'next/head'
 

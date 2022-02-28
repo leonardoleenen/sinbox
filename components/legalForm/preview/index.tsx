@@ -55,6 +55,20 @@ const Component = (props: Props): JSX.Element => {
 
     const sign = async () => {
         setInProcess(true)
+
+        await businessService.setLegalFormStatus(
+            props.legalForm,
+            getNextStatus() as any,
+            {
+                signedBy: user as User,
+                signature: arrayBufferToBase64('signature')
+            }
+        )
+        setInProcess(false)
+        props.onClose()
+
+        return
+
         const test = {
             name: 'Alex',
             displayName: 'Fiorenza'

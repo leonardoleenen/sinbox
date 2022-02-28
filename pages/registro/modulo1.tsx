@@ -5,9 +5,19 @@ import { SignUpStore } from '../../store/sigup.store'
 import { businessService } from '../../services/business.service'
 import { webAuthn, Assertion } from '../../services/webauthn.service'
 import { getToken, tokenDecode } from '../../services/auth.service'
+import FileUpload from '../../components/fileupload/fileUpload'
+
+interface FilesOpts {
+    type: string
+    size: number
+    extension: string
+    name: string
+}
 
 const Page: NextPage = () => {
     const router = useRouter()
+
+    const filesOpts: Array<FilesOpts> = []
     const state = SignUpStore.useState(s => s)
     const [loading, setLoading] = useState(false)
     const { id } = router.query
@@ -70,12 +80,16 @@ const Page: NextPage = () => {
             ...legalForm,
             status: 'TO CLOSE'
         })
-        await signWebAuthn()
+        // await signWebAuthn()
     }
 
     const signWebAuthn = async () => {
         //!! DATA THAT MUST BE PASSED IN ORDER TO GENERATE PUBLIC KEY
         /*Options: Obtain from state | this is a placeholder*/
+
+        await save(arrayBufferToBase64('signature'))
+        router.push('/registro/success')
+        return
         const test = {
             name: 'Alex',
             displayName: 'Fiorenza'
@@ -883,19 +897,34 @@ const Page: NextPage = () => {
                                     <div className="card  card shadow-lg mt-8">
                                         <div className="card-body">
                                             <h3 className="card-title">
-                                                8. No puede despacharse la
-                                                solicitud por causa de:
+                                                8. Expediente interno
                                             </h3>
 
                                             <div className="mb-4 ">
                                                 <div className="form-control w-full">
-                                                    <textarea
-                                                        className="textarea h-24 textarea-bordered"
-                                                        disabled={
-                                                            mode !== 'EDIT CERT'
+                                                    <FileUpload
+                                                        optionalParams={
+                                                            filesOpts?.length >
+                                                            0
+                                                                ? filesOpts?.filter(
+                                                                      f => {
+                                                                          const file =
+                                                                              f.type ===
+                                                                              'razonSocial'
+                                                                          return file
+                                                                      }
+                                                                  )
+                                                                : filesOpts
                                                         }
-                                                        placeholder="Otros Datos, enmiendas,etc"
-                                                    ></textarea>
+                                                        readonly={false}
+                                                        placeholder="Documento / Expediente interno"
+                                                        extensions={[
+                                                            'jpg',
+                                                            'pdf',
+                                                            'jpeg'
+                                                        ]}
+                                                        type="razonSocial"
+                                                    />
                                                 </div>
                                             </div>
                                         </div>
