@@ -1,5 +1,5 @@
 import type { NextPage } from 'next'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import {
     generateToken,
     getInvite,
@@ -22,6 +22,9 @@ const Home: NextPage = () => {
     const { token } = router.query
     const { invite } = router.query
     const provider = new GoogleAuthProvider()
+    const [provisionalUserRole, setProvisionalUserRole] = useState<string>(
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdGF0dXMiOiJFTkFCTEVEIiwiZW1haWwiOiJsZW9uYXJkb2xlZW5lbkBnbWFpbC5jb20iLCJpZCI6ImQ1c2FFTXNGWmVhVm50cTZIZmZvZ2FCSktFSjIiLCJyb2xlIjoiU1VQRVJWSVNPUiIsImlkZW50aXR5UHJvdmlkZXIiOiJnb29nbGUiLCJpc3N1ZWRBdCI6MTY0NTY4NzUyNjU0OSwibmFtZSI6IkFsdGFtaXJhbm8iLCJpYXQiOjE2NDYwNTY2NDd9.X5uMC6la31IoSanVF_KPKOMGKyw5oOnOqlQdeLhgaOY'
+    )
     const state = SignUpStore.useState(s => s)
 
     const handleInvite = async (user: any) => {
@@ -98,7 +101,39 @@ const Home: NextPage = () => {
                             Ingreso
                         </span>
                         <h4 className="mb-6 text-3xl">Santa Fé </h4>
-                        <div className="flex mb-4 px-4 bg-blueGray-50 rounded">
+                        <select
+                            name="selectedRole"
+                            defaultValue="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdGF0dXMiOiJFTkFCTEVEIiwiZW1haWwiOiJsZW9uYXJkb2xlZW5lbkBnbWFpbC5jb20iLCJpZCI6ImQ1c2FFTXNGWmVhVm50cTZIZmZvZ2FCSktFSjIiLCJyb2xlIjoiU1VQRVJWSVNPUiIsImlkZW50aXR5UHJvdmlkZXIiOiJnb29nbGUiLCJpc3N1ZWRBdCI6MTY0NTY4NzUyNjU0OSwibmFtZSI6IkFsdGFtaXJhbm8iLCJpYXQiOjE2NDYwNTY2NDd9.X5uMC6la31IoSanVF_KPKOMGKyw5oOnOqlQdeLhgaOY"
+                            onChange={e =>
+                                setProvisionalUserRole(e.target.value)
+                            }
+                        >
+                            <option value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdGF0dXMiOiJFTkFCTEVEIiwiZW1haWwiOiJsZW9uYXJkb2xlZW5lbkBnbWFpbC5jb20iLCJpZCI6ImQ1c2FFTXNGWmVhVm50cTZIZmZvZ2FCSktFSjIiLCJyb2xlIjoiU1VQRVJWSVNPUiIsImlkZW50aXR5UHJvdmlkZXIiOiJnb29nbGUiLCJpc3N1ZWRBdCI6MTY0NTY4NzUyNjU0OSwibmFtZSI6IkFsdGFtaXJhbm8iLCJpYXQiOjE2NDYwNTY2NDd9.X5uMC6la31IoSanVF_KPKOMGKyw5oOnOqlQdeLhgaOY">
+                                Secretario: Altamirano
+                            </option>
+                            <option value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdGF0dXMiOiJFTkFCTEVEIiwiZW1haWwiOiJsZW9uYXJkb2xlZW5lbkBnbWFpbC5jb20iLCJpZCI6ImQ1c2FFTXNGWmVhVm50cTZIZmZvZ2FCSktFSjIiLCJyb2xlIjoiU1VQRVJWSVNPUiIsImlkZW50aXR5UHJvdmlkZXIiOiJnb29nbGUiLCJpc3N1ZWRBdCI6MTY0NTY4NzUyNjU0OSwibmFtZSI6Ikp1YW4gTWFudWVsIiwiaWF0IjoxNjQ2MDU2NjQ3fQ.QS3QRMQv1Lt9hfwwAhQMfJpwAVfgssVEg1RsF0HNMYA">
+                                Subsecretario: Juan Manuel
+                            </option>
+                            <option value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdGF0dXMiOiJFTkFCTEVEIiwiZW1haWwiOiJsZW9uYXJkb2xlZW5lbkBnbWFpbC5jb20iLCJpZCI6ImQ1c2FFTXNGWmVhVm50cTZIZmZvZ2FCSktFSjIiLCJyb2xlIjoiU1VQRVJWSVNPUiIsImlkZW50aXR5UHJvdmlkZXIiOiJnb29nbGUiLCJpc3N1ZWRBdCI6MTY0NTY4NzUyNjU0OSwibmFtZSI6IkdhYnJpZWxhIEZyYW5jbyIsImlhdCI6MTY0NjA1NjY0N30.Ji8QpffNTxcIAuoAx2C-5z67X2vxjluHz5k8sTHTi9A">
+                                Directora General: Gabriela Franco
+                            </option>
+                            <option value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdGF0dXMiOiJFTkFCTEVEIiwiZW1haWwiOiJsZW9uYXJkb2xlZW5lbkBnbWFpbC5jb20iLCJpZCI6ImQ1c2FFTXNGWmVhVm50cTZIZmZvZ2FCSktFSjIiLCJyb2xlIjoiU1VQRVJWSVNPUiIsImlkZW50aXR5UHJvdmlkZXIiOiJnb29nbGUiLCJpc3N1ZWRBdCI6MTY0NTY4NzUyNjU0OSwibmFtZSI6IkdhYnJpZWxhIEZyYW5jbyIsImlhdCI6MTY0NjA1NjY0N30.Ji8QpffNTxcIAuoAx2C-5z67X2vxjluHz5k8sTHTi9A">
+                                Subdirectora: Analia Triay
+                            </option>
+                            <option value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdGF0dXMiOiJFTkFCTEVEIiwiZW1haWwiOiJsZW9uYXJkb2xlZW5lbkBnbWFpbC5jb20iLCJpZCI6ImQ1c2FFTXNGWmVhVm50cTZIZmZvZ2FCSktFSjIiLCJyb2xlIjoiUkVDRVBUSU9OSVNUIEFOQUxZU1QiLCJpZGVudGl0eVByb3ZpZGVyIjoiZ29vZ2xlIiwiaXNzdWVkQXQiOjE2NDU2ODc1MjY1NDksIm5hbWUiOiJNYXJpZWxhIFBlbGV6b24iLCJpYXQiOjE2NDYwNTY2NDd9.FjZIwSF4DLzHTfZtjbKxkIqiWSrKhlTuPVVlHLUsbVU">
+                                Analista Mariela Pelezon
+                            </option>
+                            <option value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdGF0dXMiOiJFTkFCTEVEIiwiZW1haWwiOiJsZW9uYXJkb2xlZW5lbkBnbWFpbC5jb20iLCJpZCI6ImQ1c2FFTXNGWmVhVm50cTZIZmZvZ2FCSktFSjIiLCJyb2xlIjoiUkVDRVBUSU9OSVNUIiwiaWRlbnRpdHlQcm92aWRlciI6Imdvb2dsZSIsImlzc3VlZEF0IjoxNjQ1Njg3NTI2NTQ5LCJuYW1lIjoiQW5hbGlzdGEgMSIsImlhdCI6MTY0NjA1NjY0N30.FojbLe3LAKpFfE0Fg08Zar6_iEgsCbXaoKGfl-A2Xwc">
+                                Analista 1
+                            </option>
+                            <option value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdGF0dXMiOiJFTkFCTEVEIiwiZW1haWwiOiJsZW9uYXJkb2xlZW5lbkBnbWFpbC5jb20iLCJpZCI6ImQ1c2FFTXNGWmVhVm50cTZIZmZvZ2FCSktFSjIiLCJyb2xlIjoiUkVDRVBUSU9OSVNUIiwiaWRlbnRpdHlQcm92aWRlciI6Imdvb2dsZSIsImlzc3VlZEF0IjoxNjQ1Njg3NTI2NTQ5LCJuYW1lIjoiQW5hbGlzdGEgMiIsImlhdCI6MTY0NjA1NjY0N30.5EzwZQk18maCctnm6WwsLY-Ngmv3NBsO2_3Voqb6nbs">
+                                Analista 2
+                            </option>
+                            <option value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdGF0dXMiOiJFTkFCTEVEIiwiZW1haWwiOiJsZW9uYXJkb2xlZW5lbkBnbWFpbC5jb20iLCJpZCI6ImQ1c2FFTXNGWmVhVm50cTZIZmZvZ2FCSktFSjIiLCJyb2xlIjoiUkVDRVBUSU9OSVNUIiwiaWRlbnRpdHlQcm92aWRlciI6Imdvb2dsZSIsImlzc3VlZEF0IjoxNjQ1Njg3NTI2NTQ5LCJuYW1lIjoiQW5hbGlzdGEgMyIsImlhdCI6MTY0NjA1NjY0N30.nHbVL76mzOiWLvctcJ4f0kK-DnUQMmV9D4BIEDkXN1s">
+                                Analista 3
+                            </option>
+                        </select>
+                        {/* <div className="flex mb-4 px-4 bg-blueGray-50 rounded">
                             <input
                                 type="text"
                                 placeholder="username"
@@ -111,8 +146,15 @@ const Home: NextPage = () => {
                                 placeholder="password"
                                 className="input input-bordered w-full"
                             />
-                        </div>
-                        <button className="block w-full p-4 text-center text-xs text-white font-semibold leading-none bg-blue-600 hover:bg-blue-700 rounded">
+                        </div> */}
+                        <button
+                            className="block w-full p-4 text-center text-xs text-white font-semibold leading-none bg-blue-600 hover:bg-blue-700 rounded"
+                            onClick={() => {
+                                setToken(provisionalUserRole as string)
+
+                                router.push('/process')
+                            }}
+                        >
                             Ingresar con clave y usuario
                         </button>
                         <p className="my-6 text-xs text-blueGray-400 text-center">

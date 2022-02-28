@@ -29,12 +29,7 @@
     "axios": "^0.25.0",
     "base64url": "^3.0.1",
     "camunda-dmn-moddle": "^1.1.0",
-<<<<<<< HEAD
-    "chalk": "^2.4.2",
-    "daisyui": "^1.16.1",
-=======
     "daisyui": "^2.2.2",
->>>>>>> d420b466f07c58e3172ba27af58483986b7c2928
     "dmn-js": "^11.0.2",
     "firebase": "^9.3.0",
     "jsonwebtoken": "^8.5.1",
