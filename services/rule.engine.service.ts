@@ -18,7 +18,7 @@ class RuleEngine {
         const ruleAsset = docSnap.data() as any
 
         return axios
-            .post('http://localhost:21345/jitdmn/dmnresult', {
+            .post('http://192.168.0.49:21345/jitdmn/dmnresult', {
                 context,
                 mainURI: 'regla prueba',
                 resources: [
