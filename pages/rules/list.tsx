@@ -5,13 +5,16 @@ import Container from '../../components/container'
 import InternalPage from '../../components/internalPage'
 import { ruleEngine } from '../../services/rule.engine.service'
 import { useRouter } from 'next/router'
+import _ from 'lodash'
 
 const Page: NextPage = () => {
     const [list, setList] = useState([])
     const router = useRouter()
 
     useEffect(() => {
-        ruleEngine.getAll().then(result => setList(result))
+        ruleEngine
+            .getAll()
+            .then(result => setList(_.sortBy(result, e => e.description)))
     }, [])
 
     return (
