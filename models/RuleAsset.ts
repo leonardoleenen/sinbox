@@ -15,4 +15,4 @@ ruleAssetSchema.set('toJSON', {
     }
 })
 export default mongoose.models.RuleAsset ||
-    mongoose.model('Invite', ruleAssetSchema)
+    mongoose.model('RuleAsset', ruleAssetSchema)

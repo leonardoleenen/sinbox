@@ -20,5 +20,5 @@ workflowFormSchema.set('toJSON', {
         delete ret._id
     }
 })
-export default mongoose.models.workflow ||
-    mongoose.model('Invite', workflowFormSchema)
+export default mongoose.models.workflowForm ||
+    mongoose.model('workflowForm', workflowFormSchema)

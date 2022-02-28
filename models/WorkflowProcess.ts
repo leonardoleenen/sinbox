@@ -18,4 +18,4 @@ workflowProcessSchema.set('toJSON', {
     }
 })
 export default mongoose.models.workflowProcess ||
-    mongoose.model('Invite', workflowProcessSchema)
+    mongoose.model('workflowProcess', workflowProcessSchema)

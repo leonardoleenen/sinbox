@@ -17,4 +17,4 @@ workflowSpecSchema.set('toJSON', {
     }
 })
 export default mongoose.models.workflowSpec ||
-    mongoose.model('Invite', workflowSpecSchema)
+    mongoose.model('workflowSpec', workflowSpecSchema)

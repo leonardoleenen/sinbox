@@ -51,7 +51,7 @@ class Workflow {
         } = await axios.get<ApiResponse>(
             `${this.API_URL}/api/store/${process.env.STORE}/workflow/form/`
         )
-        return response as unknown as Promise<Array<WorkFlowForm>>
+        return [response] as unknown as Promise<Array<WorkFlowForm>>
     }
 
     async getFormSpec(id: string): Promise<WorkFlowForm> {
