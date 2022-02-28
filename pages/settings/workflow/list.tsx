@@ -58,7 +58,7 @@ const Page: NextPage = () => {
                                             className="link link-primary"
                                             href={`/rules/${invite.ruleAssetStep}`}
                                         >
-                                            {invite.ruleAsset}
+                                            {invite.ruleAssetStep}
                                         </a>
                                     </td>
                                     <td>{invite.status}</td>

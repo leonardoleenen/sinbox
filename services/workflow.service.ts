@@ -194,6 +194,16 @@ class Workflow {
 
         return result
     }
+
+    async getCompletedProcess(): Promise<Array<WorkflowProcess>> {
+        const providersRef = collection(firebaseManager.getDB(), 'process')
+        const q: Query = query(
+            providersRef,
+            where('processComplete', '==', true)
+        )
+        const querySnapshot = await getDocs(q)
+        return querySnapshot.docs.map(d => d.data() as WorkflowProcess)
+    }
 }
 
 export const workflowService = new Workflow()

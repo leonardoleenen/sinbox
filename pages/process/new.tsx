@@ -140,16 +140,33 @@ const Page: NextPage = () => {
                 />
 
                 <div className="flex">
-                    {formSpec.attachments.map((a, index) => (
-                        <FileUpload
-                            key={a.fieldId}
-                            readonly={false}
-                            placeholder={a.fieldName}
-                            extensions={['pdf']}
-                            type="cuit"
-                            onChange={(value: string) => console.log(value)}
-                        />
-                    ))}
+                    {formSpec.attachments &&
+                        formSpec.attachments.map((a, index) => (
+                            <FileUpload
+                                key={a.fieldId}
+                                readonly={false}
+                                placeholder={a.fieldName}
+                                extensions={['pdf']}
+                                type="cuit"
+                                onChange={(value: string) => {
+                                    const tempData = {
+                                        ...dataForm,
+                                        attachements: dataForm.attachements
+                                            ? dataForm.attachements
+                                            : {}
+                                    }
+                                    tempData.attachements[a.fieldId as string] =
+                                        {
+                                            id: a.fieldId,
+                                            value: value as string,
+                                            description: a.fieldName
+                                        }
+                                    setDataForm({
+                                        ...tempData
+                                    })
+                                }}
+                            />
+                        ))}
                 </div>
             </div>
         </ClearContainer>

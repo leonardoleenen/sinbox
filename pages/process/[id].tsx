@@ -10,6 +10,7 @@ import ClearContainer from '../../components/container/clear'
 import Loading from '../../components/loader'
 import Success from '../../components/success'
 import FileUpload from '../../components/fileupload/fileUpload'
+import moment from 'moment'
 
 interface FilesOpts {
     type: string
@@ -27,7 +28,17 @@ const Page: NextPage = () => {
     const [formSpec, setFormSpec] = useState<WorkFlowForm>()
     const [rule, setRule] = useState<any>()
     const [isFinalStep, setIsFinalStep] = useState(false)
-    const [dataForm, setDataForm] = useState({})
+    const [dataForm, setDataForm] = useState<{
+        id: string
+        description: string
+        value: string
+        attachements: any
+    }>({
+        id: '',
+        description: '',
+        value: '',
+        attachements: {}
+    })
     const [evidenceIndex, setEvidenceIndex] = useState(-1)
 
     useEffect(() => {
@@ -54,15 +65,18 @@ const Page: NextPage = () => {
 
             setRule(ruleResult[0].result)
 
-            if (!ruleResult[0].result) {
+            if (!ruleResult[0].result && !process.processComplete) {
                 router.push('/403')
                 return
             }
-            const formSpecResult = await workflowService.getFormSpec(
-                ruleResult[0].result.formToShow
-            )
+            const formSpecResult = !process.processComplete
+                ? await workflowService.getFormSpec(
+                      ruleResult[0].result.formToShow
+                  )
+                : process.evidence[0].form
 
-            ruleResult[0].result.isFinalStep &&
+            !process.processComplete &&
+                ruleResult[0].result.isFinalStep &&
                 setIsFinalStep(ruleResult[0].result.isFinalStep)
 
             setFormSpec({
@@ -78,6 +92,8 @@ const Page: NextPage = () => {
                         formSpecResult.spec.schema
                 }
             })
+
+            process.processComplete && setEvidenceIndex(0)
         })()
     }, [process])
 
@@ -116,24 +132,47 @@ const Page: NextPage = () => {
             />
         )
 
+    let attachements =
+        evidenceIndex === -1
+            ? formSpec.attachments &&
+              formSpec.attachments.map(v => {
+                  return { id: v.fieldId, description: v.fieldName }
+              })
+            : process?.evidence[evidenceIndex].data.attachements &&
+              Object.keys(
+                  process?.evidence[evidenceIndex].data.attachements
+              ).map(
+                  (k: string) =>
+                      process?.evidence[evidenceIndex].data.attachements[k]
+              )
+
+    console.log(dataForm)
+    if (!attachements) attachements = []
+
     return (
         <ClearContainer
             title={formSpec.title}
             actions={
                 <div className="flex">
                     <button
-                        onClick={() => router.push('/process')}
+                        onClick={() =>
+                            process?.processComplete
+                                ? router.push('/process/completed')
+                                : router.push('/process')
+                        }
                         className="btn btn-error mr-8 "
                     >
-                        Cancelar
+                        {process?.processComplete ? 'Volver' : 'Cancelar'}
                     </button>
 
-                    <button
-                        onClick={workflowNextStep}
-                        className="btn btn-primary "
-                    >
-                        {rule.willBeRequiredDescription}
-                    </button>
+                    {!process?.processComplete && (
+                        <button
+                            onClick={workflowNextStep}
+                            className="btn btn-primary "
+                        >
+                            {rule.willBeRequiredDescription}
+                        </button>
+                    )}
                 </div>
             }
         >
@@ -147,53 +186,90 @@ const Page: NextPage = () => {
                                     index === evidenceIndex ? '★' : index + 1
                                 }
                                 key={`evidence${index}`}
-                                className="step step-info cursor-pointer"
+                                className="step step-info cursor-pointer "
                             >
-                                {e.action}
+                                <div className="text-left">
+                                    <div>{e.action}</div>
+                                    <div className="text-xs">
+                                        {moment(e.date).format(
+                                            'DD/MM/YYYY HH:mm:ss'
+                                        )}
+                                    </div>
+                                </div>
                             </li>
                         ))}
-                        <li
-                            onClick={e => {
-                                setEvidenceIndex(-1)
-                                setDataForm({})
-                            }}
-                            className="step cursor-pointer"
-                        >
-                            {process?.currentStep}
-                        </li>
+                        {!process?.processComplete && (
+                            <li
+                                onClick={e => {
+                                    setEvidenceIndex(-1)
+                                    setDataForm({
+                                        id: '',
+                                        description: '',
+                                        value: '',
+                                        attachements: {}
+                                    })
+                                }}
+                                className="step cursor-pointer"
+                            >
+                                {process?.currentStep}
+                            </li>
+                        )}
                     </ul>
                 </div>
                 <div className="w-full">
-                    <JsonForms
-                        schema={
-                            evidenceIndex === -1
-                                ? formSpec.spec.schema
-                                : process?.evidence[evidenceIndex].form.spec
-                                      .schema
-                        }
-                        uischema={
-                            evidenceIndex === -1
-                                ? formSpec.spec.uischema
-                                : process?.evidence[evidenceIndex].form.spec
-                                      .uischema
-                        }
-                        data={
-                            evidenceIndex === -1
-                                ? dataForm
-                                : process?.evidence[evidenceIndex].data
-                        }
-                        renderers={materialRenderers}
-                        cells={materialCells}
-                        readonly={evidenceIndex !== -1}
-                        onChange={({ data }) => setDataForm(data)}
-                    />
-
-                    <FileUpload
-                        readonly={false}
-                        placeholder="Constancia"
-                        extensions={['pdf']}
-                        type="cuit"
-                    />
+                    <div className="w-full">
+                        <JsonForms
+                            schema={
+                                evidenceIndex === -1
+                                    ? formSpec.spec.schema
+                                    : process?.evidence[evidenceIndex].form.spec
+                                          .schema
+                            }
+                            uischema={
+                                evidenceIndex === -1
+                                    ? formSpec.spec.uischema
+                                    : process?.evidence[evidenceIndex].form.spec
+                                          .uischema
+                            }
+                            data={
+                                evidenceIndex === -1
+                                    ? dataForm
+                                    : process?.evidence[evidenceIndex].data
+                            }
+                            renderers={materialRenderers}
+                            cells={materialCells}
+                            readonly={evidenceIndex !== -1}
+                            onChange={({ data }) => setDataForm(data)}
+                        />
+                    </div>
+                    <div className="flex">
+                        {attachements.map((a, index) => (
+                            <FileUpload
+                                key={a.id}
+                                defaultFilePath={a.value}
+                                readonly={
+                                    process?.processComplete ||
+                                    evidenceIndex !== -1
+                                }
+                                placeholder={a.description}
+                                extensions={['pdf']}
+                                type="cuit"
+                                onChange={(value: string) => {
+                                    const tempData = {
+                                        ...dataForm
+                                    }
+                                    tempData.attachements[a.id as string] = {
+                                        id: a.id,
+                                        value: value as string,
+                                        description: a.description
+                                    }
+                                    setDataForm({
+                                        ...tempData
+                                    })
+                                }}
+                            />
+                        ))}
+                    </div>
                 </div>
             </div>
         </ClearContainer>

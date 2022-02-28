@@ -12,7 +12,8 @@ interface FileUpload {
     optionalParams?: any
     showFullScreen?: boolean
     key?: string
-    onChange: any
+    onChange?: any
+    defaultFilePath?: string
 }
 
 interface FileInfo {
@@ -29,8 +30,19 @@ const FileUpload: NextPage<FileUpload> = ({
     optionalParams = [],
     showFullScreen = false,
     key = '',
-    onChange = () => void null
+    onChange = () => void null,
+    defaultFilePath = null
 }) => {
+    const state = SignUpStore.useState(s => s)
+    /*Manage blob*/
+    const [file, setFile] = useState<any>(null)
+    const [blob, setBlob] = useState<any>()
+    /*File info set in state*/
+    const [fileInfo, setFileInfo] = useState<any>()
+    const [preview, setPreview] = useState(false)
+    const [deleted, setDeleted] = useState(false)
+    const [processingFile, setProcessingFile] = useState(false)
+
     const FullScreenComponent = () => {
         if (preview)
             return (
@@ -103,7 +115,7 @@ const FileUpload: NextPage<FileUpload> = ({
             <div className="form-control ml-4">
                 <div className="flex">
                     <label
-                        className="w-64 flex flex-col items-center px-4 py-3 bg-white rounded-md shadow-md tracking-wide uppercase
+                        className=" flex  items-center px-4 py-3 bg-white rounded-md shadow-md tracking-wide uppercase
                         cursor-pointer
                         hover:bg-purple-600 hover:text-white
                         text-purple-600
@@ -117,12 +129,21 @@ const FileUpload: NextPage<FileUpload> = ({
                             {placeholder}
                         </span>
 
-                        <input
-                            type="file"
-                            readOnly={readonly}
-                            onChange={onChangeHandler}
-                            className="hidden"
-                        />
+                        <div className="flex">
+                            {processingFile && (
+                                <button className="btn loading btn-ghost"></button>
+                            )}
+                            {readonly ? (
+                                <></>
+                            ) : (
+                                <input
+                                    type="file"
+                                    readOnly={readonly}
+                                    onChange={onChangeHandler}
+                                    className="hidden"
+                                />
+                            )}
+                        </div>
                     </label>
                     {fileInfo?.fileName && (
                         <div className="ml-2">
@@ -133,12 +154,18 @@ const FileUpload: NextPage<FileUpload> = ({
                                 <Icon type={'EXPAND'} stroke={1} />
                             </div>
 
-                            <div
-                                onClick={deleteFile}
-                                className="cursor-pointer"
-                            >
-                                <Icon type={'REMOVE'} stroke={1} color="red" />
-                            </div>
+                            {!readonly && (
+                                <div
+                                    onClick={deleteFile}
+                                    className="cursor-pointer"
+                                >
+                                    <Icon
+                                        type={'REMOVE'}
+                                        stroke={1}
+                                        color="red"
+                                    />
+                                </div>
+                            )}
                         </div>
                     )}
                 </div>
@@ -161,14 +188,21 @@ const FileUpload: NextPage<FileUpload> = ({
             </div>
         )
     }
-    const state = SignUpStore.useState(s => s)
-    /*Manage blob*/
-    const [file, setFile] = useState<any>(null)
-    const [blob, setBlob] = useState<any>()
-    /*File info set in state*/
-    const [fileInfo, setFileInfo] = useState<any>()
-    const [preview, setPreview] = useState(false)
-    const [deleted, setDeleted] = useState(false)
+
+    useEffect(() => {
+        ;(async () => {
+            if (!defaultFilePath) return
+
+            setProcessingFile(true)
+            const url = await firebaseManager.getFileUrl(defaultFilePath)
+            setFileInfo({
+                fileName: url
+            })
+            setBlob(url)
+            setProcessingFile(false)
+        })()
+    }, [defaultFilePath])
+
     useEffect(() => {
         if (optionalParams.length > 0 && !deleted) {
             setFileInfo({
@@ -181,9 +215,9 @@ const FileUpload: NextPage<FileUpload> = ({
 
     const previewFile = async () => {
         let blob
-        if (optionalParams.length > 0) {
+        if (optionalParams.length > 0 || readonly) {
             const url = await firebaseManager.getFileUrl(
-                optionalParams[0].fullPath
+                readonly ? defaultFilePath : optionalParams[0].fullPath
             )
             blob = url
         } else {
@@ -205,6 +239,7 @@ const FileUpload: NextPage<FileUpload> = ({
                 .then(snapshot => {
                     setDeleted(true)
                     onChange(null)
+                    setProcessingFile(false)
                 })
                 .catch(err => {
                     console.log(err)
@@ -230,6 +265,7 @@ const FileUpload: NextPage<FileUpload> = ({
     }
     const onChangeHandler = (e: any) => {
         if (e.target.files) {
+            setProcessingFile(true)
             if (file) deleteFile()
             const files: Array<File> = e.target.files
             files.length > 1 && console.error('Cant upload more than 1 file')
@@ -248,6 +284,7 @@ const FileUpload: NextPage<FileUpload> = ({
                     })
                     setFile(data)
                     onChange(snapshot.metadata.fullPath)
+                    setProcessingFile(false)
                 })
             } else {
                 console.error('Incorrect extension!!')
@@ -255,7 +292,7 @@ const FileUpload: NextPage<FileUpload> = ({
         }
     }
     return (
-        <div key={`fileUpload${key}`}>
+        <div key={`fileUpload${key}`} className="w-full">
             {showFullScreen ? <FullScreenComponent /> : <FileInputComponent />}
         </div>
     )

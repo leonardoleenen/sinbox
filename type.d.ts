@@ -116,7 +116,7 @@ type WorkflowProcess = {
     currentStep: string
     descriptionCurrentStep?: string
     processComplete: boolean
-    evidence?: Array<Evidence>
+    evidence: Array<Evidence>
 }
 
 type Evidence = {
@@ -163,4 +163,12 @@ type RuleAsset = {
     id: string
     description: string
     spec: string
+}
+
+type AnalyticsServicesRegistered = {
+    user: string
+    key: string
+    url: string
+    name: string
+    id: string
 }
