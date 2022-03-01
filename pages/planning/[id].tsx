@@ -10,7 +10,6 @@ import dynamic from 'next/dynamic'
 import _ from 'lodash'
 import { useRouter } from 'next/router'
 import ReactDataSheet from 'react-datasheet'
-import 'react-datasheet/lib/react-datasheet.css'
 
 const Plot = dynamic(() => import('react-plotly.js'), { ssr: false })
 const PlotlyRenderers = createPlotlyRenderers(Plot)

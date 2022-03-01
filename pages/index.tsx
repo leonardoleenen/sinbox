@@ -102,12 +102,24 @@ const Home: NextPage = () => {
                         </span>
                         <h4 className="mb-6 text-3xl">Santa Fé </h4>
                         <select
+                            className="select w-full max-w-xs"
                             name="selectedRole"
-                            defaultValue="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdGF0dXMiOiJFTkFCTEVEIiwiZW1haWwiOiJsZW9uYXJkb2xlZW5lbkBnbWFpbC5jb20iLCJpZCI6ImQ1c2FFTXNGWmVhVm50cTZIZmZvZ2FCSktFSjIiLCJyb2xlIjoiU1VQRVJWSVNPUiIsImlkZW50aXR5UHJvdmlkZXIiOiJnb29nbGUiLCJpc3N1ZWRBdCI6MTY0NTY4NzUyNjU0OSwibmFtZSI6IkFsdGFtaXJhbm8iLCJpYXQiOjE2NDYwNTY2NDd9.X5uMC6la31IoSanVF_KPKOMGKyw5oOnOqlQdeLhgaOY"
-                            onChange={e =>
+                            onChange={e => {
                                 setProvisionalUserRole(e.target.value)
-                            }
+                                localStorage.setItem(
+                                    'sinbox:token',
+                                    e.target.value
+                                )
+                                router.push('/process')
+                            }}
                         >
+                            <option disabled selected>
+                                Seleccione un rol{' '}
+                            </option>
+                            <option value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdGF0dXMiOiJFTkFCTEVEIiwiZW1haWwiOiJsZW9uYXJkb2xlZW5lbkBnbWFpbC5jb20iLCJpZCI6ImQ1c2FFTXNGWmVhVm50cTZIZmZvZ2FCSktFSjIiLCJyb2xlIjoiUFJPVklERVIiLCJpZGVudGl0eVByb3ZpZGVyIjoiZ29vZ2xlIiwiaXNzdWVkQXQiOjE2NDU2ODc1MjY1NDksIm5hbWUiOiJGTSBTdGEgRmUiLCJpYXQiOjE2NDYwNTY2NDd9.moCF3joJzkk-x-IywaYiaIVeYWJXS7kcA1TcLrR5sto">
+                                Proveedor Ej. FM Sta Fe
+                            </option>
+
                             <option value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdGF0dXMiOiJFTkFCTEVEIiwiZW1haWwiOiJsZW9uYXJkb2xlZW5lbkBnbWFpbC5jb20iLCJpZCI6ImQ1c2FFTXNGWmVhVm50cTZIZmZvZ2FCSktFSjIiLCJyb2xlIjoiU1VQRVJWSVNPUiIsImlkZW50aXR5UHJvdmlkZXIiOiJnb29nbGUiLCJpc3N1ZWRBdCI6MTY0NTY4NzUyNjU0OSwibmFtZSI6IkFsdGFtaXJhbm8iLCJpYXQiOjE2NDYwNTY2NDd9.X5uMC6la31IoSanVF_KPKOMGKyw5oOnOqlQdeLhgaOY">
                                 Secretario: Altamirano
                             </option>
@@ -117,7 +129,7 @@ const Home: NextPage = () => {
                             <option value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdGF0dXMiOiJFTkFCTEVEIiwiZW1haWwiOiJsZW9uYXJkb2xlZW5lbkBnbWFpbC5jb20iLCJpZCI6ImQ1c2FFTXNGWmVhVm50cTZIZmZvZ2FCSktFSjIiLCJyb2xlIjoiU1VQRVJWSVNPUiIsImlkZW50aXR5UHJvdmlkZXIiOiJnb29nbGUiLCJpc3N1ZWRBdCI6MTY0NTY4NzUyNjU0OSwibmFtZSI6IkdhYnJpZWxhIEZyYW5jbyIsImlhdCI6MTY0NjA1NjY0N30.Ji8QpffNTxcIAuoAx2C-5z67X2vxjluHz5k8sTHTi9A">
                                 Directora General: Gabriela Franco
                             </option>
-                            <option value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdGF0dXMiOiJFTkFCTEVEIiwiZW1haWwiOiJsZW9uYXJkb2xlZW5lbkBnbWFpbC5jb20iLCJpZCI6ImQ1c2FFTXNGWmVhVm50cTZIZmZvZ2FCSktFSjIiLCJyb2xlIjoiU1VQRVJWSVNPUiIsImlkZW50aXR5UHJvdmlkZXIiOiJnb29nbGUiLCJpc3N1ZWRBdCI6MTY0NTY4NzUyNjU0OSwibmFtZSI6IkdhYnJpZWxhIEZyYW5jbyIsImlhdCI6MTY0NjA1NjY0N30.Ji8QpffNTxcIAuoAx2C-5z67X2vxjluHz5k8sTHTi9A">
+                            <option value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdGF0dXMiOiJFTkFCTEVEIiwiZW1haWwiOiJsZW9uYXJkb2xlZW5lbkBnbWFpbC5jb20iLCJpZCI6ImQ1c2FFTXNGWmVhVm50cTZIZmZvZ2FCSktFSjIiLCJyb2xlIjoiU1VQRVJWSVNPUiIsImlkZW50aXR5UHJvdmlkZXIiOiJnb29nbGUiLCJpc3N1ZWRBdCI6MTY0NTY4NzUyNjU0OSwibmFtZSI6IkFuYWxpYSBUcmlheSIsImlhdCI6MTY0NjA1NjY0N30.P2mHDdzM0wyNplJJde0RCjFmA0CSz4xS0cKaIUQVGoE">
                                 Subdirectora: Analia Triay
                             </option>
                             <option value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdGF0dXMiOiJFTkFCTEVEIiwiZW1haWwiOiJsZW9uYXJkb2xlZW5lbkBnbWFpbC5jb20iLCJpZCI6ImQ1c2FFTXNGWmVhVm50cTZIZmZvZ2FCSktFSjIiLCJyb2xlIjoiUkVDRVBUSU9OSVNUIEFOQUxZU1QiLCJpZGVudGl0eVByb3ZpZGVyIjoiZ29vZ2xlIiwiaXNzdWVkQXQiOjE2NDU2ODc1MjY1NDksIm5hbWUiOiJNYXJpZWxhIFBlbGV6b24iLCJpYXQiOjE2NDYwNTY2NDd9.FjZIwSF4DLzHTfZtjbKxkIqiWSrKhlTuPVVlHLUsbVU">
@@ -133,30 +145,7 @@ const Home: NextPage = () => {
                                 Analista 3
                             </option>
                         </select>
-                        {/* <div className="flex mb-4 px-4 bg-blueGray-50 rounded">
-                            <input
-                                type="text"
-                                placeholder="username"
-                                className="input input-bordered w-full"
-                            />
-                        </div>
-                        <div className="flex mb-6 px-4 bg-blueGray-50 rounded">
-                            <input
-                                type="password"
-                                placeholder="password"
-                                className="input input-bordered w-full"
-                            />
-                        </div> */}
-                        <button
-                            className="block w-full p-4 text-center text-xs text-white font-semibold leading-none bg-blue-600 hover:bg-blue-700 rounded"
-                            onClick={() => {
-                                setToken(provisionalUserRole as string)
 
-                                router.push('/process')
-                            }}
-                        >
-                            Ingresar con clave y usuario
-                        </button>
                         <p className="my-6 text-xs text-blueGray-400 text-center">
                             o utilizando una red social
                         </p>

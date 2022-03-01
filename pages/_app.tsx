@@ -1,5 +1,6 @@
 import '../styles/globals.css'
 // import 'tailwindcss/tailwind.css'
+import 'react-datasheet/lib/react-datasheet.css'
 import type { AppProps } from 'next/app'
 import Header from 'next/head'
 
