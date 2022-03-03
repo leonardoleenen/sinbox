@@ -9,7 +9,9 @@ import { useRouter } from 'next/router'
 const Page: NextPage = () => {
     const router = useRouter()
     useEffect(() => {
-        planificacionService.getTarriffs().then(result => console.log(result))
+        planificacionService
+            .getPanificaciones()
+            .then(result => console.log(result))
     }, [])
     return (
         <div>
@@ -22,7 +24,7 @@ const Page: NextPage = () => {
                             className="btn btn-primary"
                             onClick={() => router.push('/planning/new')}
                         >
-                            Nuevo{' '}
+                            Nueva planificación
                         </button>
                     }
                 >

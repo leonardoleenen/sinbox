@@ -5,12 +5,15 @@ import Container from '../../components/container'
 import InternalPage from '../../components/internalPage'
 import { workflowService } from '../../services/workflow.service'
 import { useRouter } from 'next/router'
+import _ from 'lodash'
 
 const Page: NextPage = () => {
     const [list, setList] = useState<Array<WorkFlowForm>>([])
     const router = useRouter()
     useEffect(() => {
-        workflowService.getForms().then(result => setList(result))
+        workflowService
+            .getForms()
+            .then(result => setList(_.sortBy(result, e => e.title)))
     }, [])
 
     return (

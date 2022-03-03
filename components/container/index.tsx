@@ -28,8 +28,13 @@ const Component = (props: Props): JSX.Element => {
         )
     }
 
-    return (
-        <div className="flex">
+    return <div className="p-8 bg-gray-100 h-screen">{props.children}</div>
+}
+
+export default Component
+
+/** 
+ * <div className="flex">
             <div
                 className="drawer-side  bg-neutral text-gray-300 "
                 style={{ width: '400px', backgroundColor: 'rgb(30,41,59)' }}
@@ -59,7 +64,7 @@ const Component = (props: Props): JSX.Element => {
                             <Icon type={'PLANNING'} stroke={2} size={24} />
                             <ItemMenu
                                 name="Planificacion"
-                                navigateTo={'/analytics/pivot-table'}
+                                navigateTo={'/planning'}
                             />
                         </a>
                     </li>
@@ -106,7 +111,4 @@ const Component = (props: Props): JSX.Element => {
                 {props.children}
             </div>
         </div>
-    )
-}
-
-export default Component
+ */

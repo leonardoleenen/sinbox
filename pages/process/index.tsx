@@ -31,6 +31,7 @@ const Page: NextPage = () => {
                     role: tokenDecode(getToken() as string).role,
                     signal: 'START'
                 })
+                console.log(rule)
                 if (rule['0'].result) {
                     setProcesses([
                         ...processes,

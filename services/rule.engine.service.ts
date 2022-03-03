@@ -13,12 +13,17 @@ import axios from 'axios'
 
 class RuleEngine {
     async execute(ruleId: string, context: any) {
+        return axios
+            .post(('/api/engine/rules/execute/' + ruleId) as any, context)
+            .then((result: any) => result.data.result)
+    }
+    async execute2(ruleId: string, context: any) {
         const docRef = doc(firebaseManager.getDB(), 'ruleAssets', ruleId)
         const docSnap = await getDoc(docRef)
         const ruleAsset = docSnap.data() as any
 
         return axios
-            .post('http://192.168.0.49:21345/jitdmn/dmnresult', {
+            .post('http://localhost:21345/jitdmn/dmnresult', {
                 context,
                 mainURI: 'regla prueba',
                 resources: [

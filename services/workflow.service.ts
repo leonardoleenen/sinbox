@@ -12,6 +12,7 @@ import { firebaseManager } from './firebase.services'
 import { nanoid } from 'nanoid'
 import { getToken, tokenDecode } from './auth.service'
 import { ruleEngine } from './rule.engine.service'
+import axios from 'axios'
 
 class Workflow {
     async getList(): Promise<Array<WorkflowSpec>> {
@@ -143,22 +144,29 @@ class Workflow {
         const _wfSpec = process.spec
 
         const user = tokenDecode(getToken() as string)
-        const ruleResult = await ruleEngine.execute(_wfSpec.ruleAsset as any, {
-            signal: process.currentStep,
-            role: user.role
-        })
 
-        return ruleResult[0].result ? true : false
+        const ruleResult = await axios.post(
+            ('/api/engine/rules/execute/' + _wfSpec.ruleAsset) as any,
+            {
+                signal: process.currentStep,
+                role: user.role
+            }
+        )
+
+        return ruleResult.data.result[0].result ? true : false
     }
 
     async getActionFromProcess(process: WorkflowProcess) {
         const _wfSpec = process.spec
 
         const user = tokenDecode(getToken() as string)
-        const ruleResult = await ruleEngine.execute(_wfSpec.ruleAsset as any, {
-            signal: process.currentStep,
-            role: user.role
-        })
+        const ruleResult: any = await ruleEngine.execute(
+            _wfSpec.ruleAsset as any,
+            {
+                signal: process.currentStep,
+                role: user.role
+            }
+        )
 
         return ruleResult[0].result.willBeRequiredDescription
     }
