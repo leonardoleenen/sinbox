@@ -28,7 +28,7 @@ const Component = (props: Props): JSX.Element => {
         )
     }
 
-    return <div className="p-8 bg-gray-100 h-screen">{props.children}</div>
+    return <div className=" px-10 bg-gray-100 h-screen">{props.children}</div>
 }
 
 export default Component
