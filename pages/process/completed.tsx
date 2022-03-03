@@ -5,6 +5,7 @@ import InternalPage from '../../components/container/internal'
 import Header from '../../components/header'
 import { workflowService } from '../../services/workflow.service'
 import { useRouter } from 'next/router'
+import moment from 'moment'
 
 const Page: NextPage = () => {
     const [process, setProcess] = useState<Array<WorkflowProcess>>([])
@@ -12,6 +13,8 @@ const Page: NextPage = () => {
     useEffect(() => {
         workflowService.getCompletedProcess().then(r => setProcess(r))
     }, [])
+
+    console.log(process)
     return (
         <div>
             <Header />
@@ -33,8 +36,15 @@ const Page: NextPage = () => {
                                 {process.map(p => (
                                     <tr key={`${p.id}`}>
                                         <td>{p.spec.ref}</td>
-                                        <td>{p.evidence[0].data.referencia}</td>
-                                        <td>{p.createdAt}</td>
+                                        <td>
+                                            {p.evidence[0].data.referencia ||
+                                                p.evidence[0].data.cuit}
+                                        </td>
+                                        <td>
+                                            {moment(p.createdAt).format(
+                                                'DD/MM/YYYY HH:mm:ss'
+                                            )}
+                                        </td>
                                         <td>{p.creator.name}</td>
                                         <td>
                                             <button
