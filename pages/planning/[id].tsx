@@ -25,7 +25,7 @@ const Page: NextPage = () => {
         campania: '',
         mes: '',
         anio: '',
-        title: '',
+        title: 'Sin Nombre',
         payload: []
     })
 
@@ -49,9 +49,13 @@ const Page: NextPage = () => {
         })
     }, [])
 
-    const hableOnChange = e => {
-        console.log(e.target.value)
-    }
+    useEffect(() => {
+        if (id && id !== 'new') {
+            planificacionService.getPlanificacion(id as string).then(result => {
+                setPlanificacion(result)
+            })
+        }
+    }, [id])
 
     const save = () => {
         setIsSaving(true)
@@ -87,7 +91,7 @@ const Page: NextPage = () => {
     return (
         <ClearContainer
             className=""
-            title="Sin Nombre"
+            title={planificacion.title}
             onChangeTitle={(val: string) =>
                 setPlanificacion({
                     ...planificacion,
@@ -128,7 +132,7 @@ const Page: NextPage = () => {
                                 onChange={e =>
                                     setPlanificacion({
                                         ...planificacion,
-                                        id: e.target.value
+                                        campania: e.target.value
                                     })
                                 }
                                 className="input w-full w-64 input-bordered"
@@ -138,36 +142,54 @@ const Page: NextPage = () => {
                             <option disabled selected>
                                 Medio
                             </option>
-                            <option>TV</option>
-                            <option>RADIO</option>
-                            <option>WEB</option>
-                            <option>VIA PUBLICA</option>
+                            <option value="TV">TV</option>
+                            <option value="RADIO">RADIO</option>
+                            <option value="WEB">WEB</option>
+                            <option value="VIA PUBLICA">VIA PUBLICA</option>
                         </select>
-                        <select className="select w-full max-w-xs select-bordered ml-4">
+                        <select
+                            onChange={e => {
+                                setPlanificacion({
+                                    ...planificacion,
+                                    mes: e.target.value
+                                })
+                            }}
+                            value={planificacion.mes}
+                            className="select w-full max-w-xs select-bordered ml-4"
+                        >
                             <option disabled selected>
                                 Mes
                             </option>
-                            <option>Enero</option>
-                            <option>Febrero</option>
-                            <option>Marzo</option>
-                            <option>Abril</option>
-                            <option>Mayo</option>
-                            <option>Junio</option>
-                            <option>Julio</option>
-                            <option>Agosto</option>
-                            <option>Septiembre</option>
-                            <option>Octubre</option>
-                            <option>Noviembre</option>
-                            <option>Diciembre</option>
+                            <option value="Enero">Enero</option>
+                            <option value="Febrero">Febrero</option>
+                            <option value="Marzo">Marzo</option>
+                            <option value="Abril">Abril</option>
+                            <option value="Mayo">Mayo</option>
+                            <option value="Junio">Junio</option>
+                            <option value="Junio">Junio</option>
+                            <option value="Agosto">Agosto</option>
+                            <option value="Septiembre">Septiembre</option>
+                            <option value="Octubre">Octubre</option>
+                            <option value="Noviembre">Noviembre</option>
+                            <option value="Diciembre">Diciembre</option>
                         </select>
-                        <select className="select w-full max-w-xs select-bordered ml-4">
+                        <select
+                            onChange={e => {
+                                setPlanificacion({
+                                    ...planificacion,
+                                    anio: e.target.value
+                                })
+                            }}
+                            value={planificacion.anio}
+                            className="select w-full max-w-xs select-bordered ml-4"
+                        >
                             <option disabled selected>
                                 Año
                             </option>
-                            <option>2022</option>
-                            <option>2023</option>
-                            <option>2024</option>
-                            <option>2025</option>
+                            <option value="2022">2022</option>
+                            <option value="2023">2023</option>
+                            <option value="2024">2024</option>
+                            <option value="2025">2025</option>
                         </select>
                     </div>
                 </div>

@@ -30,7 +30,7 @@ const Component = (): JSX.Element => {
     }
 
     return (
-        <div className="p-8 bg-gray-100">
+        <div className="px-4 py-8 bg-gray-100">
             <div className="navbar bg-base-100  shadow-xl rounded-box">
                 <div className="navbar-start">
                     <div className="dropdown">
@@ -64,7 +64,7 @@ const Component = (): JSX.Element => {
                                 >
                                     <Icon
                                         type={'DOWNLOAD'}
-                                        stroke={2}
+                                        stroke={1}
                                         size={24}
                                     />
                                     <span>Bandeja de entrada</span>
@@ -79,14 +79,60 @@ const Component = (): JSX.Element => {
                                 >
                                     <Icon
                                         type={'UPLOAD'}
-                                        stroke={2}
+                                        stroke={1}
                                         size={24}
                                     />
                                     <span>Procesos Finalizados</span>
                                 </div>
                             </li>
                             <li>
-                                <a>About</a>
+                                <div
+                                    className="flex px-3"
+                                    onClick={() => router.push('/planning')}
+                                >
+                                    <Icon
+                                        type={'PLANNING'}
+                                        stroke={1}
+                                        size={24}
+                                    />
+                                    <span>Planificación</span>
+                                </div>
+                            </li>
+                            <div>
+                                <div className="divider">Settings</div>
+                            </div>
+                            <li>
+                                <div
+                                    className="flex px-3"
+                                    onClick={() => router.push('/forms/list')}
+                                >
+                                    <Icon type={'FORMS'} stroke={1} size={24} />
+                                    <span>Formularios</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div
+                                    className="flex px-3"
+                                    onClick={() => router.push('/rules/list')}
+                                >
+                                    <Icon type={'RULES'} stroke={1} size={24} />
+                                    <span>Reglas</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div
+                                    className="flex px-3"
+                                    onClick={() =>
+                                        router.push('/settings/workflow/list')
+                                    }
+                                >
+                                    <Icon
+                                        type={'WORKFLOW'}
+                                        stroke={1}
+                                        size={24}
+                                    />
+                                    <span>Flujos de trabajo</span>
+                                </div>
                             </li>
                         </ul>
                     </div>

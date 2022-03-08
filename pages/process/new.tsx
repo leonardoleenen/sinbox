@@ -125,7 +125,7 @@ const Page: NextPage = () => {
                 </div>
             }
         >
-            <div className="p-16">
+            <div className="">
                 <JsonForms
                     schema={formSpec && formSpec.spec && formSpec.spec.schema}
                     uischema={

@@ -31,7 +31,7 @@ const Page: NextPage = () => {
                     role: tokenDecode(getToken() as string).role,
                     signal: 'START'
                 })
-                console.log(rule)
+
                 if (rule['0'].result) {
                     setProcesses([
                         ...processes,
@@ -143,7 +143,11 @@ const Page: NextPage = () => {
                                                 {wp.evidence &&
                                                     wp.evidence[0].form.title}
                                             </td>
-                                            <td>{'Falta referenia'}</td>
+                                            <td>
+                                                {wp.evidence[0].data
+                                                    .referencia ||
+                                                    wp.evidence[0].data.cuit}
+                                            </td>
                                             <td>
                                                 {moment(wp.createdAt).format(
                                                     'DD/MM/YYYY HH:mm'
