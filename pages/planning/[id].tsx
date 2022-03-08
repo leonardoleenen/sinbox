@@ -36,11 +36,14 @@ const Page: NextPage = () => {
         planificacionService.getTarriffs().then(result => {
             setTarriffs(result)
             const temp = []
-            result.forEach((r: any) => {
+            result.forEach((r: any, index: number) => {
                 r.tarifas.forEach((t: any) => {
                     temp.push({
                         razonSocial: r.razonSocial,
                         cuit: r.cuit,
+                        activo: true,
+                        cantidadAsignada: t.cantidad,
+                        index,
                         ...t
                     })
                 })
@@ -84,9 +87,16 @@ const Page: NextPage = () => {
 
     if (_.isEmpty(values)) return <div></div>
 
-    const Row = props => {
-        return <div>{props.children}</div>
-    }
+    const formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD'
+
+        // These options are needed to round to whole numbers if that's what you want.
+        //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+        //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+    })
+
+    console.log(values)
 
     return (
         <ClearContainer
@@ -217,7 +227,7 @@ const Page: NextPage = () => {
 
                     <div>
                         <PivotTableUI
-                            data={values}
+                            data={values.filter(v => v.activo)}
                             onChange={s => setValue(s)}
                             {...value}
                             renderers={Object.assign(
@@ -232,23 +242,80 @@ const Page: NextPage = () => {
                 <div className="text-2xl font-semibold pt-8 pb-4">
                     Cuadros Tarifarios
                 </div>
-                <div>
-                    <ReactDataSheet
-                        data={values2Grid(values)}
-                        valueRenderer={cell => cell.value}
-                        rowRenderer={props => (
-                            <div>
-                                <Row {...props} />
-                            </div>
-                        )}
-                        onCellsChanged={changes => {
-                            const gridTemp = grid.map(row => [...row])
-                            changes.forEach(({ cell, row, col, value }) => {
-                                grid[row][col] = { ...grid[row][col], value }
-                            })
-                            setGrid({ gridTemp })
-                        }}
-                    />
+                <div className="overflow-x-auto">
+                    <table className="table w-full table-compac">
+                        <thead>
+                            <tr>
+                                <th>Razon Social</th>
+                                <th>Unidad</th>
+                                <th>Cantidad Disponible</th>
+                                <th>Cantidad Asignada</th>
+                                <th>Importe Unit</th>
+                                <th>Menciones</th>
+                                <th>Programa</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {values.map((v: any, row: number) => (
+                                <tr
+                                    className={!v.activo ? 'bg-gray-50' : ''}
+                                    key={`${row}`}
+                                >
+                                    <td>{v.razonSocial}</td>
+                                    <td>{v.unidad}</td>
+                                    <td>{v.cantidad}</td>
+                                    <td
+                                        className={
+                                            v.activo
+                                                ? 'bg-green-100'
+                                                : 'bg-gray-50'
+                                        }
+                                    >
+                                        <input
+                                            className="input input-ghost"
+                                            value={v.cantidadAsignada}
+                                            onChange={e => {
+                                                const cell: any = values[row]
+                                                cell.cantidadAsignada =
+                                                    e.target.value
+                                                const listTemp: [] =
+                                                    Object.assign([], values)
+                                                listTemp[row] = cell
+                                                setValues(listTemp)
+
+                                                if (value.index === row)
+                                                    setValue({
+                                                        ...value,
+                                                        cantidadAsignada:
+                                                            e.target.value
+                                                    })
+                                            }}
+                                        ></input>
+                                    </td>
+                                    <td>{formatter.format(v.importe)}</td>
+                                    <td>{v.menciones}</td>
+                                    <td>{v.programa}</td>
+                                    <td>
+                                        <input
+                                            type="checkbox"
+                                            className="toggle"
+                                            checked={v.activo}
+                                            onChange={e => {
+                                                const cell: any = values[row]
+                                                cell.activo = e.target.checked
+                                                const listTemp: [] =
+                                                    Object.assign([], values)
+                                                listTemp[row] = cell
+                                                setValues(listTemp)
+                                            }}
+                                        />
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </ClearContainer>
