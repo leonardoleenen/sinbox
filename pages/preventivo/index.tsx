@@ -3,20 +3,18 @@ import type { NextPage } from 'next'
 import Header from '../../components/header'
 import Container from '../../components/container'
 import InternalContainer from '../../components/container/internal'
-import { planificacionService } from '../../services/planificacion.service'
 import { useRouter } from 'next/router'
 import moment from 'moment'
+import { preventivoService } from '../../services/preventivo.service'
 
 const Page: NextPage = () => {
     const router = useRouter()
-    const [planificaciones, setPlanificaciones] = useState([])
+    const [preventivos, setPreventivos] = useState<any>([])
     useEffect(() => {
-        planificacionService
-            .getPanificaciones()
-            .then(result => setPlanificaciones(result))
+        preventivoService.getPreventivos().then(result => {
+            setPreventivos(result)
+        })
     }, [])
-
-    console.log(planificaciones)
     return (
         <div>
             <Header />
@@ -48,7 +46,7 @@ const Page: NextPage = () => {
                                 </thead>
 
                                 <tbody>
-                                    {planificaciones.map((p: any, i) => (
+                                    {preventivos.map((p: any, i: number) => (
                                         <tr key={`form${i + 1}`}>
                                             <th>{i + 1}</th>
                                             <td>{p.title}</td>

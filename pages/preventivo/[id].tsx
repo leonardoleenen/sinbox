@@ -9,6 +9,7 @@ import TableRenderers from 'react-pivottable/TableRenderers'
 import dynamic from 'next/dynamic'
 import _ from 'lodash'
 import { useRouter } from 'next/router'
+import { preventivoService } from '../../services/preventivo.service'
 import ReactDataSheet from 'react-datasheet'
 
 const Plot = dynamic(() => import('react-plotly.js'), { ssr: false })
@@ -22,7 +23,7 @@ const Page: NextPage = () => {
     const [grid, setGrid] = useState([])
     const [isSaving, setIsSaving] = useState(false)
     const [showPlanificacionActiva, setShowPlanificacionActiva] = useState(true)
-    const [planificacion, setPlanificacion] = useState({
+    const [preventivo, setPreventivo] = useState({
         id: '',
         campania: '',
         mes: '',
@@ -63,8 +64,8 @@ const Page: NextPage = () => {
 
     useEffect(() => {
         if (id && id !== 'new') {
-            planificacionService.getPlanificacion(id as string).then(result => {
-                setPlanificacion(result)
+            preventivoService.getPreventivo(id as string).then(result => {
+                setPreventivo(result)
                 setValues(result.payload)
             })
         }
@@ -72,15 +73,15 @@ const Page: NextPage = () => {
 
     const save = () => {
         setIsSaving(true)
-        planificacionService
-            .savePlanificacion({
-                ...planificacion,
+        preventivoService
+            .savePreventivo({
+                ...preventivo,
                 payload: values
             })
             .then(result => {
                 setIsSaving(false)
                 //console.log(result)
-                setPlanificacion(result)
+                setPreventivo(result)
             })
     }
 
@@ -323,16 +324,13 @@ const Page: NextPage = () => {
             </div>
         )
     }
-
-    const getStatsElement = () => {}
-
     return (
         <ClearContainer
             className=""
-            title={planificacion.title}
+            title={preventivo.title}
             onChangeTitle={(val: string) =>
-                setPlanificacion({
-                    ...planificacion,
+                setPreventivo({
+                    ...preventivo,
                     title: val
                 })
             }
@@ -366,10 +364,10 @@ const Page: NextPage = () => {
                             <input
                                 type="text"
                                 placeholder="Campaña"
-                                value={planificacion.campania}
+                                value={preventivo.campania}
                                 onChange={e =>
-                                    setPlanificacion({
-                                        ...planificacion,
+                                    setPreventivo({
+                                        ...preventivo,
                                         campania: e.target.value
                                     })
                                 }
@@ -387,12 +385,12 @@ const Page: NextPage = () => {
                         </select>
                         <select
                             onChange={e => {
-                                setPlanificacion({
-                                    ...planificacion,
+                                setPreventivo({
+                                    ...preventivo,
                                     mes: e.target.value
                                 })
                             }}
-                            value={planificacion.mes}
+                            value={preventivo.mes}
                             className="select w-full max-w-xs select-bordered ml-4"
                         >
                             <option disabled selected>
@@ -413,12 +411,12 @@ const Page: NextPage = () => {
                         </select>
                         <select
                             onChange={e => {
-                                setPlanificacion({
-                                    ...planificacion,
+                                setPreventivo({
+                                    ...preventivo,
                                     anio: e.target.value
                                 })
                             }}
-                            value={planificacion.anio}
+                            value={preventivo.anio}
                             className="select w-full max-w-xs select-bordered ml-4"
                         >
                             <option disabled selected>
