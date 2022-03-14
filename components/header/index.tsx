@@ -88,6 +88,19 @@ const Component = (): JSX.Element => {
                             <li>
                                 <div
                                     className="flex px-3"
+                                    onClick={() => router.push('/preventivo')}
+                                >
+                                    <Icon
+                                        type={'CALCULATOR'}
+                                        stroke={1}
+                                        size={24}
+                                    />
+                                    <span>Preventivos</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div
+                                    className="flex px-3"
                                     onClick={() => router.push('/planning')}
                                 >
                                     <Icon
@@ -98,6 +111,7 @@ const Component = (): JSX.Element => {
                                     <span>Planificación</span>
                                 </div>
                             </li>
+
                             <div>
                                 <div className="divider">Settings</div>
                             </div>

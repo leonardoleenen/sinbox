@@ -22,13 +22,13 @@ const Page: NextPage = () => {
             <Header />
             <Container>
                 <InternalContainer
-                    title="Planificación"
+                    title="Preventivos"
                     actions={
                         <button
                             className="btn btn-primary"
-                            onClick={() => router.push('/planning/new')}
+                            onClick={() => router.push('/preventivo/new')}
                         >
-                            Nueva planificación
+                            Nuevo Preventivo
                         </button>
                     }
                 >
@@ -38,9 +38,8 @@ const Page: NextPage = () => {
                                 <thead>
                                     <tr>
                                         <th></th>
-                                        <th>Tipo Medio</th>
                                         <th>Titulo</th>
-                                        <th>Campaña</th>
+                                        <th>Estado</th>
                                         <th>Cuando</th>
                                         <th>Creado</th>
                                         <th>Actualizado</th>
@@ -52,9 +51,8 @@ const Page: NextPage = () => {
                                     {planificaciones.map((p: any, i) => (
                                         <tr key={`form${i + 1}`}>
                                             <th>{i + 1}</th>
-                                            <td>Radio</td>
                                             <td>{p.title}</td>
-                                            <td>{p.campania}</td>
+                                            <td>A la espera de Aprobacion</td>
                                             <td>{`${p.mes} - ${p.anio}`}</td>
                                             <td>
                                                 {moment(p.createdAt).format(
@@ -71,11 +69,21 @@ const Page: NextPage = () => {
                                                     className="btn btn-sm"
                                                     onClick={() =>
                                                         router.push(
-                                                            `/planning/${p.id}`
+                                                            `/preventivo/${p.id}`
                                                         )
                                                     }
                                                 >
-                                                    Editar
+                                                    Ver
+                                                </button>
+                                                <button
+                                                    className="btn btn-sm ml-4"
+                                                    onClick={() =>
+                                                        router.push(
+                                                            `/preventivo/new`
+                                                        )
+                                                    }
+                                                >
+                                                    Ampliar
                                                 </button>
                                             </td>
                                         </tr>

@@ -144,7 +144,7 @@ const Page: NextPage = () => {
                     <div className="hero-content text-center">
                         <div className="max-w-md">
                             <h1 className="text-5xl font-bold">
-                                Sin planificaciones
+                                No hay proveedores seleccionados
                             </h1>
                             <p className="py-6">
                                 No ha seleccionado ningun proveedor. Por favor
@@ -340,7 +340,7 @@ const Page: NextPage = () => {
                 <div className="flex">
                     <button
                         className="btn btn-error mx-3"
-                        onClick={() => router.push('/planning')}
+                        onClick={() => router.push('//preventivo')}
                     >
                         volver
                     </button>
@@ -351,7 +351,7 @@ const Page: NextPage = () => {
                         Guardar
                     </button>
                     <button className="btn btn-active mx-3">
-                        Iniciar Ordenes de publicidad
+                        Solicitar preventivo
                     </button>
                 </div>
             }
@@ -361,19 +361,7 @@ const Page: NextPage = () => {
                     <div className="text-2xl font-semibold  pt-8 pb-4">
                         Datos de Cabecera
                     </div>
-
                     <div className="flex">
-                        <select className="select w-full max-w-xs select-bordered mr-4">
-                            <option disabled selected>
-                                Preventivo
-                            </option>
-                            <option value="TV">Radio - Enero 2022</option>
-                            <option value="RADIO">TV - Enero 2022</option>
-                            <option value="WEB">Radio - Febrero 2022</option>
-                            <option value="VIA PUBLICA">
-                                TV - Febrero 2022
-                            </option>
-                        </select>
                         <div>
                             <input
                                 type="text"
@@ -388,8 +376,16 @@ const Page: NextPage = () => {
                                 className="input w-full w-64 input-bordered"
                             />
                         </div>
-
-                        {/*<select
+                        <select className="select w-full max-w-xs select-bordered ml-4">
+                            <option disabled selected>
+                                Medio
+                            </option>
+                            <option value="TV">TV</option>
+                            <option value="RADIO">RADIO</option>
+                            <option value="WEB">WEB</option>
+                            <option value="VIA PUBLICA">VIA PUBLICA</option>
+                        </select>
+                        <select
                             onChange={e => {
                                 setPlanificacion({
                                     ...planificacion,
@@ -432,7 +428,7 @@ const Page: NextPage = () => {
                             <option value="2023">2023</option>
                             <option value="2024">2024</option>
                             <option value="2025">2025</option>
-                        </select>*/}
+                        </select>
                     </div>
                 </div>
                 {/* <div className="text-2xl font-semibold  pt-8 pb-4">
