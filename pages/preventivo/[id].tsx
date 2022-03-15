@@ -11,10 +11,9 @@ import _ from 'lodash'
 import { useRouter } from 'next/router'
 import { preventivoService } from '../../services/preventivo.service'
 import ReactDataSheet from 'react-datasheet'
-
 const Plot = dynamic(() => import('react-plotly.js'), { ssr: false })
 const PlotlyRenderers = createPlotlyRenderers(Plot)
-
+import { customAlphabet } from 'nanoid'
 const Page: NextPage = () => {
     const [tarriffs, setTarriffs] = useState([])
     const [values, setValues] = useState<Array<any>>([])
@@ -22,17 +21,17 @@ const Page: NextPage = () => {
     const [value, setValue] = useState()
     const [grid, setGrid] = useState([])
     const [isSaving, setIsSaving] = useState(false)
+    const [isSoliciting, setIsSoliciting] = useState(false)
     const [showPlanificacionActiva, setShowPlanificacionActiva] = useState(true)
     const [preventivo, setPreventivo] = useState({
         id: '',
         campania: '',
-        mes: '',
-        anio: '',
+        mes: 'enero',
+        anio: '2022',
         title: 'Sin Nombre',
         status: 'draft',
         payload: []
     })
-
     const router = useRouter()
 
     const { id } = router.query
@@ -74,15 +73,18 @@ const Page: NextPage = () => {
 
     const save = () => {
         setIsSaving(true)
+        const nanoid = customAlphabet('1234567890abcdef', 6)
         preventivoService
             .savePreventivo({
                 ...preventivo,
+                id: nanoid(),
                 payload: values
             })
             .then(result => {
                 setIsSaving(false)
                 //console.log(result)
                 setPreventivo(result)
+                router.back()
             })
     }
 
@@ -343,24 +345,42 @@ const Page: NextPage = () => {
                     >
                         volver
                     </button>
-                    <button
-                        className={`btn btn-primary ${isSaving && 'loading'}`}
-                        onClick={save}
-                    >
-                        Guardar
-                    </button>
-                    <button
-                        className="btn btn-active mx-3"
-                        onClick={() => {
-                            if (preventivo.status === 'draft') {
-                                preventivoService.setWaitingPreventivo(id)
-                            } else {
-                                preventivoService.setApprovedPreventivo(id)
+                    {preventivo.status === 'draft' && (
+                        <button
+                            className={`btn btn-primary ${
+                                isSaving && 'loading'
+                            }`}
+                            disabled={
+                                preventivo.title !== '' &&
+                                preventivo.campania !== '' &&
+                                preventivo.anio !== '' &&
+                                preventivo.mes !== '' &&
+                                values.length > 0
+                                    ? false
+                                    : true
                             }
-                        }}
-                    >
-                        Solicitar preventivo
-                    </button>
+                            onClick={save}
+                        >
+                            Guardar
+                        </button>
+                    )}
+
+                    {preventivo.status == 'draft' && (
+                        <button
+                            className={`btn btn-active mx-3 ${
+                                isSaving && 'loading'
+                            }`}
+                            disabled={preventivo.id === '' ? true : false}
+                            onClick={async () => {
+                                setIsSoliciting(true)
+                                await preventivoService.setWaitingPreventivo(id)
+                                setIsSoliciting(false)
+                                router.back()
+                            }}
+                        >
+                            Solicitar preventivo
+                        </button>
+                    )}
                 </div>
             }
         >
@@ -403,7 +423,7 @@ const Page: NextPage = () => {
                             value={preventivo.mes}
                             className="select w-full max-w-xs select-bordered ml-4"
                         >
-                            <option disabled selected>
+                            <option value="none" disabled selected hidden>
                                 Mes
                             </option>
                             <option value="Enero">Enero</option>

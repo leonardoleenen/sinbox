@@ -35,7 +35,7 @@ const Page: NextPage = () => {
                             <table className="table w-full table-zebra">
                                 <thead>
                                     <tr>
-                                        <th></th>
+                                        <th>Nro prev</th>
                                         <th>Titulo</th>
                                         <th>Estado</th>
                                         <th>Cuando</th>
@@ -48,7 +48,11 @@ const Page: NextPage = () => {
                                 <tbody>
                                     {preventivos.map((p: any, i: number) => (
                                         <tr key={`form${i + 1}`}>
-                                            <th>{i + 1}</th>
+                                            <th>
+                                                {p.status !== 'draft'
+                                                    ? p.id
+                                                    : '-'}
+                                            </th>
                                             <td>{p.title}</td>
                                             <td>{p.status}</td>
                                             <td>{`${p.mes} - ${p.anio}`}</td>
@@ -72,17 +76,24 @@ const Page: NextPage = () => {
                                                     }
                                                 >
                                                     Ver
+                                                    {`${
+                                                        p.status === 'draft'
+                                                            ? ' y editar'
+                                                            : ''
+                                                    } `}
                                                 </button>
-                                                <button
-                                                    className="btn btn-sm ml-4"
-                                                    onClick={() =>
-                                                        router.push(
-                                                            `/preventivo/new`
-                                                        )
-                                                    }
-                                                >
-                                                    Ampliar
-                                                </button>
+                                                {p.status === 'approved' && (
+                                                    <button
+                                                        className="btn btn-sm ml-4"
+                                                        onClick={() =>
+                                                            router.push(
+                                                                `/preventivo/new`
+                                                            )
+                                                        }
+                                                    >
+                                                        Ampliar
+                                                    </button>
+                                                )}
                                             </td>
                                         </tr>
                                     ))}
