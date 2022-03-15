@@ -29,6 +29,7 @@ const Page: NextPage = () => {
         mes: '',
         anio: '',
         title: 'Sin Nombre',
+        status: 'draft',
         payload: []
     })
 
@@ -348,7 +349,16 @@ const Page: NextPage = () => {
                     >
                         Guardar
                     </button>
-                    <button className="btn btn-active mx-3">
+                    <button
+                        className="btn btn-active mx-3"
+                        onClick={() => {
+                            if (preventivo.status === 'draft') {
+                                preventivoService.setWaitingPreventivo(id)
+                            } else {
+                                preventivoService.setApprovedPreventivo(id)
+                            }
+                        }}
+                    >
                         Solicitar preventivo
                     </button>
                 </div>

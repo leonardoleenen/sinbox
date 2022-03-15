@@ -50,7 +50,7 @@ const Page: NextPage = () => {
                                         <tr key={`form${i + 1}`}>
                                             <th>{i + 1}</th>
                                             <td>{p.title}</td>
-                                            <td>A la espera de Aprobacion</td>
+                                            <td>{p.status}</td>
                                             <td>{`${p.mes} - ${p.anio}`}</td>
                                             <td>
                                                 {moment(p.createdAt).format(

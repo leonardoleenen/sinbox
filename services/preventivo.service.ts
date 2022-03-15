@@ -30,14 +30,14 @@ class PreventivoService {
     async setWaitingPreventivo(id: any) {
         return axios
             .post(
-                'http://localhost:5001/sinbox-155b2/us-central1/setWaitingPreventivo/' + id //            'https://us-central1-sinbox-155b2.cloudfunctions.net/savePlanning',
+                'http://localhost:5001/sinbox-155b2/us-central1/setWaitingPreventivo?id=' + id //            'https://us-central1-sinbox-155b2.cloudfunctions.net/savePlanning',
             )
             .then(result => result.data)
     }
     async setApprovedPreventivo(id: any) {
         return axios
             .post(
-                'http://localhost:5001/sinbox-155b2/us-central1/setApprovedPreventivo/' + id //            'https://us-central1-sinbox-155b2.cloudfunctions.net/savePlanning',
+                'http://localhost:5001/sinbox-155b2/us-central1/setApprovedPreventivo?id=' + id //            'https://us-central1-sinbox-155b2.cloudfunctions.net/savePlanning',
             )
             .then(result => result.data)
     }
