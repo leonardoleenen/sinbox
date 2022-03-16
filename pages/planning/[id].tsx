@@ -408,13 +408,15 @@ const Page: NextPage = () => {
                             <option disabled selected>
                                 Preventivo
                             </option>
-                            {preventivos?.map(p => {
-                                return (
-                                    <option key={p.id} value={p.id}>
-                                        {`${p.medio} - ${p.mes} ${p.anio}`}
-                                    </option>
-                                )
-                            })}
+                            {preventivos
+                                ?.filter(p => p.status === 'approved')
+                                .map(p => {
+                                    return (
+                                        <option key={p.id} value={p.id}>
+                                            {`${p.medio} - ${p.mes} ${p.anio}`}
+                                        </option>
+                                    )
+                                })}
                         </select>
                         <div>
                             <input
