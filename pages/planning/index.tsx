@@ -15,8 +15,6 @@ const Page: NextPage = () => {
             .getPanificaciones()
             .then(result => setPlanificaciones(result))
     }, [])
-
-    console.log(planificaciones)
     return (
         <div>
             <Header />
@@ -37,11 +35,11 @@ const Page: NextPage = () => {
                             <table className="table w-full table-zebra">
                                 <thead>
                                     <tr>
-                                        <th></th>
+                                        <th>Nro de planificación</th>
                                         <th>Tipo Medio</th>
                                         <th>Titulo</th>
                                         <th>Campaña</th>
-                                        <th>Cuando</th>
+                                        <th>Estado</th>
                                         <th>Creado</th>
                                         <th>Actualizado</th>
                                         <th></th>
@@ -51,11 +49,15 @@ const Page: NextPage = () => {
                                 <tbody>
                                     {planificaciones.map((p: any, i) => (
                                         <tr key={`form${i + 1}`}>
-                                            <th>{i + 1}</th>
+                                            <th>
+                                                {p.status !== 'draft'
+                                                    ? p.id
+                                                    : '-'}
+                                            </th>
                                             <td>Radio</td>
                                             <td>{p.title}</td>
                                             <td>{p.campania}</td>
-                                            <td>{`${p.mes} - ${p.anio}`}</td>
+                                            <td>{p.status}</td>
                                             <td>
                                                 {moment(p.createdAt).format(
                                                     'DD/MM/YYYY HH:mm:ss'
@@ -75,7 +77,12 @@ const Page: NextPage = () => {
                                                         )
                                                     }
                                                 >
-                                                    Editar
+                                                    Ver
+                                                    {`${
+                                                        p.status === 'draft'
+                                                            ? ' y editar'
+                                                            : ''
+                                                    } `}
                                                 </button>
                                             </td>
                                         </tr>

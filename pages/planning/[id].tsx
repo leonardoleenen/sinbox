@@ -10,6 +10,9 @@ import dynamic from 'next/dynamic'
 import _ from 'lodash'
 import { useRouter } from 'next/router'
 import ReactDataSheet from 'react-datasheet'
+import { preventivoService } from '../../services/preventivo.service'
+import { object } from '@jsonforms/examples'
+import { customAlphabet } from 'nanoid'
 
 const Plot = dynamic(() => import('react-plotly.js'), { ssr: false })
 const PlotlyRenderers = createPlotlyRenderers(Plot)
@@ -22,19 +25,25 @@ const Page: NextPage = () => {
     const [grid, setGrid] = useState([])
     const [isSaving, setIsSaving] = useState(false)
     const [showPlanificacionActiva, setShowPlanificacionActiva] = useState(true)
+    const [preventivos, setPreventivos] = useState<Array<any>>([])
     const [planificacion, setPlanificacion] = useState({
         id: '',
         campania: '',
         mes: '',
         anio: '',
         title: 'Sin Nombre',
-        payload: []
+        payload: [],
+        status: ''
     })
 
     const router = useRouter()
-
     const { id } = router.query
     useEffect(() => {
+        ;(async () => {
+            const retrievedPreventivos =
+                await preventivoService.getPreventivos()
+            setPreventivos(retrievedPreventivos)
+        })()
         planificacionService.getTarriffs().then(result => {
             setTarriffs(result)
             const temp = []
@@ -72,15 +81,19 @@ const Page: NextPage = () => {
 
     const save = () => {
         setIsSaving(true)
+        const nanoid = customAlphabet('1234567890abcdef', 6)
         planificacionService
             .savePlanificacion({
                 ...planificacion,
+                status: 'draft',
+                id: nanoid(),
                 payload: values
             })
             .then(result => {
                 setIsSaving(false)
                 //console.log(result)
                 setPlanificacion(result)
+                router.back()
             })
     }
 
@@ -323,9 +336,6 @@ const Page: NextPage = () => {
             </div>
         )
     }
-
-    const getStatsElement = () => {}
-
     return (
         <ClearContainer
             className=""
@@ -344,15 +354,37 @@ const Page: NextPage = () => {
                     >
                         volver
                     </button>
-                    <button
-                        className={`btn btn-primary ${isSaving && 'loading'}`}
-                        onClick={save}
-                    >
-                        Guardar
-                    </button>
-                    <button className="btn btn-active mx-3">
-                        Iniciar Ordenes de publicidad
-                    </button>
+                    {planificacion.status === 'draft' && (
+                        <button
+                            disabled={
+                                values.length === 0 &&
+                                planificacion.campania !== ''
+                                    ? true
+                                    : false
+                            }
+                            className={`btn btn-primary ${
+                                isSaving && 'loading'
+                            }`}
+                            onClick={save}
+                        >
+                            Guardar
+                        </button>
+                    )}
+                    {planificacion.status === 'draft' && (
+                        <button
+                            disabled={planificacion.id === ''}
+                            onClick={async e => {
+                                if (!id) return
+                                await planificacionService.setWaitingPlanning(
+                                    id?.toString()
+                                )
+                                router.back()
+                            }}
+                            className="btn btn-active mx-3"
+                        >
+                            Iniciar Ordenes de publicidad
+                        </button>
+                    )}
                 </div>
             }
         >
@@ -363,16 +395,27 @@ const Page: NextPage = () => {
                     </div>
 
                     <div className="flex">
-                        <select className="select w-full max-w-xs select-bordered mr-4">
+                        <select
+                            onChange={e => {
+                                preventivos?.filter(p => {
+                                    if (e.target.value === p.id) {
+                                        setValues(p.payload)
+                                    }
+                                })
+                            }}
+                            className="select w-full max-w-xs select-bordered mr-4"
+                            defaultValue=""
+                        >
                             <option disabled selected>
                                 Preventivo
                             </option>
-                            <option value="TV">Radio - Enero 2022</option>
-                            <option value="RADIO">TV - Enero 2022</option>
-                            <option value="WEB">Radio - Febrero 2022</option>
-                            <option value="VIA PUBLICA">
-                                TV - Febrero 2022
-                            </option>
+                            {preventivos?.map(p => {
+                                return (
+                                    <option key={p.id} value={p.id}>
+                                        {`${p.medio} - ${p.mes} ${p.anio}`}
+                                    </option>
+                                )
+                            })}
                         </select>
                         <div>
                             <input

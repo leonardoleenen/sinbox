@@ -30,6 +30,7 @@ const Page: NextPage = () => {
         anio: '2022',
         title: 'Sin Nombre',
         status: 'draft',
+        medio: '',
         payload: []
     })
     const router = useRouter()
@@ -404,7 +405,16 @@ const Page: NextPage = () => {
                                 className="input w-full w-64 input-bordered"
                             />
                         </div>
-                        <select className="select w-full max-w-xs select-bordered ml-4">
+                        <select
+                            className="select w-full max-w-xs select-bordered ml-4"
+                            onChange={e => {
+                                setPreventivo({
+                                    ...preventivo,
+                                    medio: e.target.value
+                                })
+                            }}
+                            value={preventivo.medio}
+                        >
                             <option disabled selected>
                                 Medio
                             </option>

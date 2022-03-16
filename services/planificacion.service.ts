@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import axios from 'axios'
 
 class PlanificacionService {
@@ -13,11 +14,26 @@ class PlanificacionService {
         return axios
             .get(
                 'http://localhost:5001/sinbox-155b2/us-central1/getPlanning?id=' +
-                    id // 'https://us-central1-sinbox-155b2.cloudfunctions.net/getPLannings'
+                id // 'https://us-central1-sinbox-155b2.cloudfunctions.net/getPLannings'
             )
             .then(result => result.data)
     }
-
+    async setApprovedPlanning(id: string) {
+        return axios
+            .post(
+                'http://localhost:5001/sinbox-155b2/us-central1/setApprovedPlanning?id=' +
+                id // 'https://us-central1-sinbox-155b2.cloudfunctions.net/getPLannings'
+            )
+            .then(result => result.data)
+    }
+    async setWaitingPlanning(id: string) {
+        return axios
+            .post(
+                'http://localhost:5001/sinbox-155b2/us-central1/setWaitingPlanning?id=' +
+                id // 'https://us-central1-sinbox-155b2.cloudfunctions.net/getPLannings'
+            )
+            .then(result => result.data)
+    }
     async getPanificaciones() {
         return axios
             .get(
