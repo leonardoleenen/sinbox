@@ -35,7 +35,6 @@ const Page: NextPage = () => {
                             <table className="table w-full table-zebra">
                                 <thead>
                                     <tr>
-                                        <th>Nro de planificación</th>
                                         <th>Tipo Medio</th>
                                         <th>Titulo</th>
                                         <th>Campaña</th>
@@ -49,11 +48,6 @@ const Page: NextPage = () => {
                                 <tbody>
                                     {planificaciones.map((p: any, i) => (
                                         <tr key={`form${i + 1}`}>
-                                            <th>
-                                                {p.status !== 'draft'
-                                                    ? p.id
-                                                    : '-'}
-                                            </th>
                                             <td>Radio</td>
                                             <td>{p.title}</td>
                                             <td>{p.campania}</td>

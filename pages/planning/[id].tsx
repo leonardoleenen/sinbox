@@ -33,7 +33,7 @@ const Page: NextPage = () => {
         anio: '',
         title: 'Sin Nombre',
         payload: [],
-        status: ''
+        status: 'draft'
     })
 
     const router = useRouter()
@@ -93,7 +93,6 @@ const Page: NextPage = () => {
                 setIsSaving(false)
                 //console.log(result)
                 setPlanificacion(result)
-                router.back()
             })
     }
 

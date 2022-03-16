@@ -37,6 +37,7 @@ const Page: NextPage = () => {
                                     <tr>
                                         <th>Nro prev</th>
                                         <th>Titulo</th>
+                                        <th>Tipo de medio</th>
                                         <th>Estado</th>
                                         <th>Cuando</th>
                                         <th>Creado</th>
@@ -54,6 +55,7 @@ const Page: NextPage = () => {
                                                     : '-'}
                                             </th>
                                             <td>{p.title}</td>
+                                            <td>{p.medio}</td>
                                             <td>{p.status}</td>
                                             <td>{`${p.mes} - ${p.anio}`}</td>
                                             <td>

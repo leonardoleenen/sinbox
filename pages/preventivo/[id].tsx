@@ -85,7 +85,6 @@ const Page: NextPage = () => {
                 setIsSaving(false)
                 //console.log(result)
                 setPreventivo(result)
-                router.back()
             })
     }
 
