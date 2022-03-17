@@ -79,7 +79,7 @@ const Page: NextPage = () => {
         preventivoService
             .savePreventivo({
                 ...preventivo,
-                id: nanoid(),
+                id: preventivo.id || nanoid(),
                 payload: values
             })
             .then(result => {
@@ -332,7 +332,7 @@ const Page: NextPage = () => {
         <ClearContainer
             className=""
             title={preventivo.title}
-            headTitle={'Preventivo'}
+            headTitle={'Edición de preventivo'}
             onChangeTitle={(val: string) =>
                 setPreventivo({
                     ...preventivo,

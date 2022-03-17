@@ -87,7 +87,7 @@ const Page: NextPage = () => {
             .savePlanificacion({
                 ...planificacion,
                 status: 'draft',
-                id: nanoid(),
+                id: planificacion.id || nanoid(),
                 payload: values
             })
             .then(result => {
