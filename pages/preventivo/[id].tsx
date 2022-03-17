@@ -14,6 +14,7 @@ import ReactDataSheet from 'react-datasheet'
 const Plot = dynamic(() => import('react-plotly.js'), { ssr: false })
 const PlotlyRenderers = createPlotlyRenderers(Plot)
 import { customAlphabet } from 'nanoid'
+import { workflowService } from '../../services/workflow.service'
 const Page: NextPage = () => {
     const [tarriffs, setTarriffs] = useState([])
     const [values, setValues] = useState<Array<any>>([])
@@ -331,6 +332,7 @@ const Page: NextPage = () => {
         <ClearContainer
             className=""
             title={preventivo.title}
+            headTitle={'Preventivo'}
             onChangeTitle={(val: string) =>
                 setPreventivo({
                     ...preventivo,
@@ -373,7 +375,48 @@ const Page: NextPage = () => {
                             disabled={preventivo.id === '' ? true : false}
                             onClick={async () => {
                                 setIsSoliciting(true)
-                                await preventivoService.setWaitingPreventivo(id)
+                                const data = {
+                                    asignado: 1,
+                                    cantidadMedios: 3,
+                                    detalle: 'detalle',
+                                    disponible: 1,
+                                    estado: 'estado',
+                                    fechaBaja: '2022-03-16',
+                                    fechaDesde: '2022-03-16',
+                                    fechaHasta: '2022-03-16',
+                                    fechaRegistro: '2022-03-16',
+                                    mediosAsignados: [],
+                                    nombre: 'nombre',
+                                    preventivoNro: preventivo.id,
+                                    utilizado: 1
+                                }
+                                const r = {}
+
+                                for (const i in values) {
+                                    const importe = r[values[i].cuit]
+                                        ? r[values[i].cuit].total
+                                        : 0
+                                    data.mediosAsignados.push({
+                                        montoAsignado:
+                                            importe +
+                                            calcularMenciones(values[i]) *
+                                                values[i]
+                                                    .segundosSeleccionados *
+                                                values[i].importe,
+                                        medio: values[i].razonSocial
+                                    })
+                                }
+
+                                await workflowService.createProcess(
+                                    await workflowService.getSpec('WrHWs4NumN'),
+                                    data,
+                                    await workflowService.getFormSpec(
+                                        'rEmxH6U2EH'
+                                    )
+                                )
+                                await preventivoService.setWaitingPreventivo(
+                                    preventivo.id
+                                )
                                 setIsSoliciting(false)
                                 router.back()
                             }}

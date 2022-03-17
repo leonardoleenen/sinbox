@@ -5,8 +5,10 @@ import React, { useEffect, useState } from 'react'
 import { getToken, logout, tokenDecode } from '../../services/auth.service'
 import { HeaderStore } from '../../store/header.store'
 import Icon from '../../components/icon'
-
-const Component = (): JSX.Element => {
+interface Props {
+    headTitle?: string
+}
+const Component = (props: Props): JSX.Element => {
     const router = useRouter()
     const [user, setUser] = useState<User>()
     const state = HeaderStore.useState(s => s)
@@ -153,7 +155,7 @@ const Component = (): JSX.Element => {
                 </div>
                 <div className="navbar-center">
                     <a className="btn btn-ghost normal-case text-xl">
-                        Simple Workspace
+                        {props.headTitle || 'Simple workspace'}
                     </a>
                 </div>
                 <div className="navbar-end">

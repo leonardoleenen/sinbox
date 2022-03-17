@@ -6,12 +6,13 @@ interface Props {
     actions: JSX.Element
     onChangeTitle?: any
     className?: string
+    headTitle?: string
 }
 
 const Component = (props: Props): JSX.Element => {
     return (
         <div className={`bg-gray-100 h-screen ${props.className}`}>
-            <Header />
+            <Header headTitle={props.headTitle} />
             <div className="px-10">
                 <div className="flex justify-between items-center">
                     <div

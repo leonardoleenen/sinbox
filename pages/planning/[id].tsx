@@ -13,6 +13,7 @@ import ReactDataSheet from 'react-datasheet'
 import { preventivoService } from '../../services/preventivo.service'
 import { object } from '@jsonforms/examples'
 import { customAlphabet } from 'nanoid'
+import Icon from '../../components/icon/index'
 
 const Plot = dynamic(() => import('react-plotly.js'), { ssr: false })
 const PlotlyRenderers = createPlotlyRenderers(Plot)
@@ -46,7 +47,7 @@ const Page: NextPage = () => {
         })()
         planificacionService.getTarriffs().then(result => {
             setTarriffs(result)
-            const temp = []
+            const temp: any = []
             result.forEach((r: any, index: number) => {
                 r.tarifas.forEach((t: any) => {
                     temp.push({
@@ -183,6 +184,7 @@ const Page: NextPage = () => {
                 <table className="table w-full table-compac">
                     <thead>
                         <tr>
+                            <th></th>
                             <th>ID/Benef</th>
                             <th>Razon Social</th>
                             <th>Grupo</th>
@@ -207,6 +209,18 @@ const Page: NextPage = () => {
                                 className={!v.activo ? 'bg-gray-50' : ''}
                                 key={`${row}`}
                             >
+                                <td
+                                    className="cursor-pointer"
+                                    onClick={e => {
+                                        setValues(
+                                            values.filter(
+                                                value => value.id !== v.id
+                                            )
+                                        )
+                                    }}
+                                >
+                                    <Icon stroke={1} type="REMOVE"></Icon>
+                                </td>
                                 <td>{`${v.razonSocial}/1`}</td>
                                 <td>{v.razonSocial}</td>
                                 <td>{v.grupo}</td>
@@ -277,7 +291,6 @@ const Page: NextPage = () => {
             </div>
         )
     }
-
     const ListaProveedores = () => {
         return (
             <div
@@ -339,6 +352,7 @@ const Page: NextPage = () => {
         <ClearContainer
             className=""
             title={planificacion.title}
+            headTitle={'Planificación'}
             onChangeTitle={(val: string) =>
                 setPlanificacion({
                     ...planificacion,
