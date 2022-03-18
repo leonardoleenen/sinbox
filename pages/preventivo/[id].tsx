@@ -22,6 +22,8 @@ const Page: NextPage = () => {
     const [value, setValue] = useState()
     const [grid, setGrid] = useState([])
     const [isSaving, setIsSaving] = useState(false)
+    const [selectedProveedor, setSelectedProveedor] = useState('')
+    const [selectedProvincia, setSelectedProvincia] = useState('')
     const [isSoliciting, setIsSoliciting] = useState(false)
     const [showPlanificacionActiva, setShowPlanificacionActiva] = useState(true)
     const [preventivo, setPreventivo] = useState({
@@ -46,6 +48,7 @@ const Page: NextPage = () => {
                     temp.push({
                         id: r.razonSocial + r.cuit + t.programa,
                         razonSocial: r.razonSocial,
+                        provincia: r.provincia,
                         cuit: r.cuit,
                         activo: false,
                         cantidadAsignada: t.cantidad,
@@ -139,7 +142,7 @@ const Page: NextPage = () => {
             </div>
         )
     }
-
+    console.log(proveedores)
     const EnPlanificacion = () => {
         getStats()
 
@@ -270,59 +273,130 @@ const Page: NextPage = () => {
             </div>
         )
     }
-
     const ListaProveedores = () => {
+        const filterByProvincia = (e: any) => {
+            if (e.provincia === selectedProvincia || selectedProvincia == '')
+                return e
+        }
+        const filterByProveedor = (e: any) => {
+            if (e.cuit === selectedProveedor || selectedProveedor === '')
+                return e
+        }
         return (
             <div
                 className="overflow-x-auto overflow-y-auto w-full"
                 style={{ height: '500px' }}
             >
+                <div className="flex w-full justify-between mb-4">
+                    <select
+                        className="select select-bordered w-full max-w-xs"
+                        defaultValue={selectedProvincia}
+                        onChange={e => setSelectedProvincia(e.target.value)}
+                    >
+                        <option disabled selected value="">
+                            Listar por Provincia
+                        </option>
+                        <option value="">Todos</option>
+                        <option>Santa Fe</option>
+                        <option>Buenos Aires</option>
+                    </select>
+                    <select
+                        className="select select-bordered w-full max-w-xs"
+                        defaultValue={selectedProveedor}
+                        onChange={e => {
+                            setSelectedProveedor(e.target.value)
+                        }}
+                    >
+                        <option disabled selected value="">
+                            Listar por Proveedores
+                        </option>
+                        <option value="">Todos</option>
+                        {proveedores.map((proveedor: any) => {
+                            return (
+                                <option
+                                    key={proveedor.cuit}
+                                    value={proveedor.cuit}
+                                >
+                                    {proveedor.razonSocial}
+                                </option>
+                            )
+                        })}
+                    </select>
+                    <div className="w-64 flex">
+                        <div className="input-group">
+                            <input
+                                type="text"
+                                placeholder="Search…"
+                                className="input input-bordered"
+                            />
+                            <button className="btn btn-square">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="h-6 w-6"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                                    />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
                 <table className="table w-full table-compac">
                     <thead>
                         <tr>
                             <th></th>
                             <th>Razon Social</th>
                             <th>Unidad</th>
-                            <th>Cantidad</th>
                             <th>Importe Unit</th>
                             <th>Programa</th>
                         </tr>
                     </thead>
 
                     <tbody>
-                        {proveedores.map((v: any, row: number) => (
-                            <tr
-                                className={!v.activo ? 'bg-gray-50' : ''}
-                                key={`${row}`}
-                            >
-                                <td>
-                                    <input
-                                        type="checkbox"
-                                        className="toggle"
-                                        checked={v.activo}
-                                        onChange={e => {
-                                            const cell: any = proveedores[row]
-                                            cell.activo = e.target.checked
-                                            const listTemp: [] = Object.assign(
-                                                [],
-                                                proveedores
-                                            )
-                                            listTemp[row] = cell
-                                            setProveedores(listTemp)
-                                            seleccionarProveedor(
-                                                e.target.checked,
-                                                v.id
-                                            )
-                                        }}
-                                    />
-                                </td>
-                                <td>{v.razonSocial}</td>
-                                <td>{v.unidad}</td>
-                                <td>{v.cantidad}</td>
-                                <td>{formatter.format(v.importe)}</td>
-                                <td>{v.programa}</td>
-                            </tr>
-                        ))}
+                        {proveedores
+                            .filter(filterByProvincia)
+                            .filter(filterByProveedor)
+                            .map((v: any, row: number) => (
+                                <tr
+                                    className={!v.activo ? 'bg-gray-50' : ''}
+                                    key={`${row}`}
+                                >
+                                    <td>
+                                        <input
+                                            type="checkbox"
+                                            className="toggle"
+                                            checked={v.activo}
+                                            onChange={e => {
+                                                const cell: any =
+                                                    proveedores[row]
+                                                cell.activo = e.target.checked
+                                                const listTemp: [] =
+                                                    Object.assign(
+                                                        [],
+                                                        proveedores
+                                                    )
+                                                listTemp[row] = cell
+                                                setProveedores(listTemp)
+                                                seleccionarProveedor(
+                                                    e.target.checked,
+                                                    v.id
+                                                )
+                                            }}
+                                        />
+                                    </td>
+                                    <td>{v.razonSocial}</td>
+                                    <td>{v.unidad}</td>
+                                    <td>{formatter.format(v.importe)}</td>
+                                    <td>{v.programa}</td>
+                                </tr>
+                            ))}
                     </tbody>
                 </table>
             </div>
