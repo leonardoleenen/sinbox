@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 // Update with your config settings.
-
 /**
  * @type { Object.<string, import("knex").Knex.Config> }
  */
+require('dotenv').config({ path: './.env.local' })
 module.exports = {
     development: {
         client: 'pg',
@@ -13,6 +14,9 @@ module.exports = {
         },
         seeds: {
             directory: './datastore/seeds'
+        },
+        migrations: {
+            directory: './datastore/migrations'
         }
     },
     staging: {

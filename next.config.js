@@ -5,6 +5,10 @@ module.exports = {
         FIREBASE: process.env.FIREBASE,
         MONGODB_DB_NAME: process.env.MONGODB_DB_NAME,
         MONGO_USER: process.env.MONGO_USER,
-        MONGO_USER_PASSWORD: process.env.MONGO_USER_PASSWORD
+        MONGO_USER_PASSWORD: process.env.MONGO_USER_PASSWORD,
+        KNEX_DB_NAME: process.env.KNEX_DB_NAME,
+        KNEX_DB_USER: process.env.KNEX_DB_USER,
+        KNEX_DB_PASSWORD: process.env.KNEX_DB_PASSWORD,
+        API_URL: process.env.API_URL
     }
 }

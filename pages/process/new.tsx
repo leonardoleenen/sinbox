@@ -10,6 +10,7 @@ import ClearContainer from '../../components/container/clear'
 import Loading from '../../components/loader'
 import Success from '../../components/success'
 import FileUpload from '../../components/fileupload/fileUpload'
+import { analyticsService } from '../../services/analytics.service'
 
 interface FilesOpts {
     type: string
@@ -78,7 +79,13 @@ const Page: NextPage = () => {
             dataForm,
             formSpec
         )
-
+        await analyticsService.insertWorkflowForm({
+            title: formSpec.title,
+            subtitle: formSpec.subTitle,
+            entityId: formSpec.id,
+            description: formSpec.description,
+            createdAt: Date.now()
+        })
         setShowSuccess(true)
     }
 

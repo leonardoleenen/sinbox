@@ -16,7 +16,7 @@ import { SignUpStore } from '../store/sigup.store'
 import Loader from '../components/loader'
 import { businessService } from '../services/business.service'
 import { webAuthn } from '../services/webauthn.service'
-
+import { analyticsService } from '../services/analytics.service'
 const Home: NextPage = () => {
     const router = useRouter()
     const { token } = router.query
@@ -104,12 +104,18 @@ const Home: NextPage = () => {
                         <select
                             className="select w-full max-w-xs"
                             name="selectedRole"
-                            onChange={e => {
+                            onChange={async e => {
                                 setProvisionalUserRole(e.target.value)
                                 localStorage.setItem(
                                     'sinbox:token',
                                     e.target.value
                                 )
+                                const decodedToken = tokenDecode(e.target.value)
+                                await analyticsService.insertUserSession({
+                                    accessedAt: Date.now(),
+                                    name: decodedToken.name,
+                                    entityId: decodedToken.id
+                                })
                                 router.push('/process')
                             }}
                         >
