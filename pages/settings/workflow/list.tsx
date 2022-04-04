@@ -5,6 +5,8 @@ import { workflowService } from '../../../services/workflow.service'
 import InternalPage from '../../../components/container/internal'
 import Header from '../../../components/header'
 import { useRouter } from 'next/router'
+import { ruleEngine } from '../../../services/rule.engine.service'
+import { nanoid, customAlphabet } from 'nanoid'
 
 const Page: NextPage = () => {
     const [list, setList] = useState<Array<WorkflowSpec>>([])
@@ -12,7 +14,34 @@ const Page: NextPage = () => {
     useEffect(() => {
         workflowService.getList().then(result => setList(result))
     }, [])
-
+    const copyWorkflow = async (id: string) => {
+        const { ruleAsset, ruleAssetStep, ref } = await workflowService.getSpec(
+            id
+        )
+        const retrievedRuleAsset = await ruleEngine.get(ruleAsset)
+        const retrievedRuleAssetStep = await ruleEngine.get(ruleAssetStep)
+        const ruleAssetCopy = {
+            ...retrievedRuleAsset,
+            id: customAlphabet('1234567890abcdef', 10)(),
+            description: `${retrievedRuleAsset.description} - copia`
+        }
+        const ruleAssetStepCopy = {
+            ...retrievedRuleAssetStep,
+            id: customAlphabet('1234567890abcdef', 10)(),
+            description: `${retrievedRuleAssetStep.description} - copia`
+        }
+        await ruleEngine.save(ruleAssetCopy)
+        await ruleEngine.save(ruleAssetStepCopy)
+        const workflowToSave: WorkflowSpec = {
+            id: customAlphabet('1234567890abcdef', 10)(),
+            ref: `${ref} - copia`,
+            ruleAsset: ruleAssetCopy.id,
+            ruleAssetStep: ruleAssetStepCopy.id,
+            status: 'ENABLED'
+        }
+        await workflowService.saveSpec(workflowToSave)
+        setList([...list, workflowToSave])
+    }
     return (
         <div>
             <Header />
@@ -37,6 +66,7 @@ const Page: NextPage = () => {
                                 <th>Regla Acciones Posibles</th>
                                 <th>Regla Control de Flujo</th>
                                 <th>Estado</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -62,6 +92,16 @@ const Page: NextPage = () => {
                                         </a>
                                     </td>
                                     <td>{invite.status}</td>
+                                    <td>
+                                        <button
+                                            onClick={e => {
+                                                copyWorkflow(invite.id)
+                                            }}
+                                            className="btn btn-primary"
+                                        >
+                                            Clonar
+                                        </button>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
