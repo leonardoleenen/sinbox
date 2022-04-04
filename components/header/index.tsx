@@ -159,6 +159,7 @@ const Component = (props: Props): JSX.Element => {
                     </a>
                 </div>
                 <div className="navbar-end">
+                    <div className="pr-4">{`${user.name} - ${user.role}`}</div>
                     <div className="dropdown dropdown-end">
                         <label
                             tabIndex={0}

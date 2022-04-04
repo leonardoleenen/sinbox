@@ -27,6 +27,8 @@ const Page: NextPage = () => {
     const [isSaving, setIsSaving] = useState(false)
     const [showPlanificacionActiva, setShowPlanificacionActiva] = useState(true)
     const [preventivos, setPreventivos] = useState<Array<any>>([])
+    const [beneficiarioSeleccionado, setBeneficiarioSeleccionado] =
+        useState(null)
     const [planificacion, setPlanificacion] = useState({
         id: '',
         campania: '',
@@ -129,14 +131,31 @@ const Page: NextPage = () => {
                     calcularMenciones(values[i]) *
                         values[i].segundosSeleccionados *
                         values[i].importe,
-                razonSocial: values[i].razonSocial + '/1'
+                razonSocial: values[i].razonSocial + '/1',
+                cuit: values[i].cuit
             }
         }
 
         return (
             <div className="flex py-8 justify-center">
                 {Object.keys(r).map(k => (
-                    <div key={k} className="stat shadow mx-4">
+                    <div
+                        key={k}
+                        className="stat shadow mx-4"
+                        style={{ width: '350px' }}
+                    >
+                        <div
+                            className="stat-figure text-primary"
+                            onClick={() =>
+                                setBeneficiarioSeleccionado(r[k].cuit)
+                            }
+                        >
+                            {r[k].cuit === beneficiarioSeleccionado ? (
+                                <PencilFilled />
+                            ) : (
+                                <PencilOutLinded />
+                            )}
+                        </div>
                         <div className="stat-desc">ID / Beneficiario</div>
                         <div className="stat-title">{r[k].razonSocial}</div>
                         <div className="stat-value">
@@ -204,88 +223,97 @@ const Page: NextPage = () => {
                     </thead>
 
                     <tbody>
-                        {values.map((v: any, row: number) => (
-                            <tr
-                                className={!v.activo ? 'bg-gray-50' : ''}
-                                key={`${row}`}
-                            >
-                                <td
-                                    className="cursor-pointer"
-                                    onClick={e => {
-                                        setValues(
-                                            values.filter(
-                                                value => value.id !== v.id
-                                            )
-                                        )
-                                    }}
+                        {values
+                            .filter(e =>
+                                !beneficiarioSeleccionado
+                                    ? null
+                                    : e.cuit === beneficiarioSeleccionado
+                            )
+                            .map((v: any, row: number) => (
+                                <tr
+                                    className={!v.activo ? 'bg-gray-50' : ''}
+                                    key={`${row}`}
                                 >
-                                    <Icon stroke={1} type="REMOVE"></Icon>
-                                </td>
-                                <td>{`${v.razonSocial}/1`}</td>
-                                <td>{v.razonSocial}</td>
-                                <td>{v.grupo}</td>
-                                <td>{formatter.format(v.importe)}</td>
-                                <td>{v.programa}</td>
-                                <td>
-                                    <input
-                                        value={v.segundosSeleccionados}
-                                        onChange={e => {
-                                            const cell: any = values[row]
-                                            cell.segundosSeleccionados =
-                                                e.target.value
-                                            const listTemp: [] = Object.assign(
-                                                [],
-                                                values
+                                    <td
+                                        className="cursor-pointer"
+                                        onClick={e => {
+                                            setValues(
+                                                values.filter(
+                                                    value => value.id !== v.id
+                                                )
                                             )
-                                            listTemp[row] = cell
-                                            setValues(listTemp)
                                         }}
-                                        className="input input-bordered input-xs  w-16"
-                                    />
-                                </td>
-
-                                <td>{calcularMenciones(v)}</td>
-                                <td>
-                                    {calcularMenciones(v) *
-                                        v.segundosSeleccionados}
-                                </td>
-                                <td
-                                    className={
-                                        v.segundosSeleccionados !== 0 &&
-                                        calcularMenciones(v) !== 0
-                                            ? 'bg-green-100'
-                                            : ''
-                                    }
-                                >
-                                    {formatter.format(
-                                        calcularMenciones(v) *
-                                            v.segundosSeleccionados *
-                                            v.importe
-                                    )}
-                                </td>
-                                {Array.from(
-                                    { length: 31 },
-                                    (item, index) => index
-                                ).map(day => (
-                                    <td key={`day${day}`}>
+                                    >
+                                        <Icon stroke={1} type="REMOVE"></Icon>
+                                    </td>
+                                    <td>{`${v.razonSocial}/1`}</td>
+                                    <td>{v.razonSocial}</td>
+                                    <td>{v.grupo}</td>
+                                    <td>{formatter.format(v.importe)}</td>
+                                    <td>{v.programa}</td>
+                                    <td>
                                         <input
-                                            type="number"
-                                            value={v.days[day]}
+                                            value={v.segundosSeleccionados}
                                             onChange={e => {
                                                 const cell: any = values[row]
-                                                cell.days[day] = e.target.value
+                                                cell.segundosSeleccionados =
+                                                    e.target.value
                                                 const listTemp: [] =
                                                     Object.assign([], values)
                                                 listTemp[row] = cell
                                                 setValues(listTemp)
                                             }}
-                                            placeholder="0"
-                                            className="input input-bordered input-xs  w-12"
+                                            className="input input-bordered input-xs  w-16"
                                         />
                                     </td>
-                                ))}
-                            </tr>
-                        ))}
+
+                                    <td>{calcularMenciones(v)}</td>
+                                    <td>
+                                        {calcularMenciones(v) *
+                                            v.segundosSeleccionados}
+                                    </td>
+                                    <td
+                                        className={
+                                            v.segundosSeleccionados !== 0 &&
+                                            calcularMenciones(v) !== 0
+                                                ? 'bg-green-100'
+                                                : ''
+                                        }
+                                    >
+                                        {formatter.format(
+                                            calcularMenciones(v) *
+                                                v.segundosSeleccionados *
+                                                v.importe
+                                        )}
+                                    </td>
+                                    {Array.from(
+                                        { length: 31 },
+                                        (item, index) => index
+                                    ).map(day => (
+                                        <td key={`day${day}`}>
+                                            <input
+                                                type="number"
+                                                value={v.days[day]}
+                                                onChange={e => {
+                                                    const cell: any =
+                                                        values[row]
+                                                    cell.days[day] =
+                                                        e.target.value
+                                                    const listTemp: [] =
+                                                        Object.assign(
+                                                            [],
+                                                            values
+                                                        )
+                                                    listTemp[row] = cell
+                                                    setValues(listTemp)
+                                                }}
+                                                placeholder="0"
+                                                className="input input-bordered input-xs  w-12"
+                                            />
+                                        </td>
+                                    ))}
+                                </tr>
+                            ))}
                     </tbody>
                 </table>
             </div>
@@ -352,7 +380,7 @@ const Page: NextPage = () => {
         <ClearContainer
             className=""
             title={planificacion.title}
-            headTitle={'Planificación'}
+            headTitle={'Edición Planificación'}
             onChangeTitle={(val: string) =>
                 setPlanificacion({
                     ...planificacion,
@@ -547,3 +575,35 @@ const Page: NextPage = () => {
 }
 
 export default Page
+
+const PencilFilled = () => {
+    return (
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+        >
+            <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+        </svg>
+    )
+}
+
+const PencilOutLinded = () => {
+    return (
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+        >
+            <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+            />
+        </svg>
+    )
+}

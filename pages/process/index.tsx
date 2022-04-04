@@ -26,6 +26,7 @@ const Page: NextPage = () => {
             })
 
         workflowService.getList().then(async wList => {
+            const _process = []
             for (const index in wList) {
                 const rule = await ruleEngine.execute(wList[index].ruleAsset, {
                     role: tokenDecode(getToken() as string).role,
@@ -33,16 +34,13 @@ const Page: NextPage = () => {
                 })
 
                 if (rule['0'].result) {
-                    setProcesses([
-                        ...processes,
-                        {
-                            ...wList[index]
-                        }
-                    ])
+                    _process.push(wList[index])
                 }
 
                 // console.log(rule)
             }
+
+            setProcesses(_process)
         })
     }, [])
 

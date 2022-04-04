@@ -4,10 +4,7 @@ const table='sessions'
  * @returns { Promise<void> }
  */
 exports.up = function(knex) {
-    return knex.schema.createTable(table,t=>{
-        t.increments('id').primary()
-        t.string('name')
-        t.integer('accessedAt')
+    return knex.schema.alterTable(table,t=>{
         t.string('entityId')
     })
 };
