@@ -9,17 +9,17 @@ import {
     Query
 } from 'firebase/firestore'
 import { firebaseManager } from './firebase.services'
-import { nanoid } from 'nanoid'
+import { customAlphabet } from 'nanoid'
 import { getToken, tokenDecode } from './auth.service'
 import { ruleEngine } from './rule.engine.service'
 import axios from 'axios'
 
 class Workflow {
+    private API_URl = process.env.API_URL
     async getList(): Promise<Array<WorkflowSpec>> {
         const q = query(collection(firebaseManager.getDB(), 'workflowSpec'))
         return await (await getDocs(q)).docs.map(d => d.data() as WorkflowSpec)
     }
-
     async getSpec(id: string): Promise<WorkflowSpec> {
         const docRef = doc(firebaseManager.getDB(), 'workflowSpec', id)
         const docSnap = await getDoc(docRef)
@@ -31,7 +31,7 @@ class Workflow {
 
     async saveSpec(workFlow: WorkflowSpec): Promise<WorkflowSpec> {
         if (!workFlow.id) {
-            workFlow.id = nanoid(10)
+            workFlow.id = customAlphabet('1234567890abcdef', 10)()
         }
 
         return setDoc(
@@ -57,7 +57,7 @@ class Workflow {
 
     async saveFormSpec(formToSave: WorkFlowForm): Promise<WorkFlowForm> {
         if (!formToSave.id) {
-            formToSave.id = nanoid(10)
+            formToSave.id = customAlphabet('1234567890abcdef', 10)()
         }
 
         return setDoc(
@@ -74,7 +74,7 @@ class Workflow {
         data: any,
         formSpec: WorkFlowForm
     ) {
-        const id = nanoid(10)
+        const id = customAlphabet('1234567890abcdef', 10)()
         const ruleResult = await ruleEngine.execute(
             workflowSpec.ruleAssetStep,
             {
@@ -100,7 +100,6 @@ class Workflow {
                 }
             ]
         }
-
         await setDoc(doc(firebaseManager.getDB(), 'process', id), wkfProcess)
     }
 
@@ -108,7 +107,21 @@ class Workflow {
         process: WorkflowProcess,
         isFinalStep: boolean,
         data: any,
-        formSpec: WorkFlowForm
+        formSpec: WorkFlowForm,
+        serviceCallback?: {
+            preCall: null
+            postCall: Array<{
+                url: string
+                evidenceIndex: number
+            }>
+        },
+        tarriffCallback?: {
+            preCall: null
+            postCall: Array<{
+                url: string
+                evidenceIndex: number
+            }>
+        }
     ) {
         const ruleResult = await ruleEngine.execute(
             process.spec.ruleAssetStep,
@@ -133,6 +146,30 @@ class Workflow {
             ],
             processComplete: isFinalStep
         })
+        if (serviceCallback && serviceCallback?.postCall) {
+            serviceCallback?.postCall.forEach(async service => {
+                await axios.post(
+                    `${this.API_URl}/api/engine/callServiceCallback`,
+                    {
+                        url: service.url,
+                        evidenceIndex: service.evidenceIndex,
+                        processId: process.id
+                    }
+                )
+            })
+        }
+        if (tarriffCallback && tarriffCallback.postCall) {
+            tarriffCallback.postCall.forEach(async service => {
+                await axios.post(
+                    `${this.API_URl}/api/engine/callTarriffCallback`,
+                    {
+                        url: service.url,
+                        evidenceIndex: service.evidenceIndex,
+                        processId: process.id
+                    }
+                )
+            })
+        }
     }
 
     async getProcess(id: string): Promise<WorkflowProcess> {
@@ -158,7 +195,6 @@ class Workflow {
 
     async getActionFromProcess(process: WorkflowProcess) {
         const _wfSpec = process.spec
-
         const user = tokenDecode(getToken() as string)
         const ruleResult: any = await ruleEngine.execute(
             _wfSpec.ruleAsset as any,

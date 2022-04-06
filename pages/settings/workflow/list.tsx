@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react'
 import type { NextPage } from 'next'
 import Container from '../../../components/container'
@@ -6,13 +7,16 @@ import InternalPage from '../../../components/container/internal'
 import Header from '../../../components/header'
 import { useRouter } from 'next/router'
 import { ruleEngine } from '../../../services/rule.engine.service'
-import { nanoid, customAlphabet } from 'nanoid'
-
+import { customAlphabet } from 'nanoid'
+import _ from 'lodash'
 const Page: NextPage = () => {
     const [list, setList] = useState<Array<WorkflowSpec>>([])
     const router = useRouter()
     useEffect(() => {
-        workflowService.getList().then(result => setList(result))
+        workflowService.getList().then(result => {
+            const sortedArray = _.orderBy(result, ['ref'], 'asc')
+            setList(sortedArray)
+        })
     }, [])
     const copyWorkflow = async (id: string) => {
         const { ruleAsset, ruleAssetStep, ref } = await workflowService.getSpec(
@@ -40,7 +44,9 @@ const Page: NextPage = () => {
             status: 'ENABLED'
         }
         await workflowService.saveSpec(workflowToSave)
-        setList([...list, workflowToSave])
+        const newList = [...list, workflowToSave]
+        const sortedArray = _.orderBy(newList, ['ref'], 'asc')
+        setList(sortedArray)
     }
     return (
         <div>

@@ -28,6 +28,8 @@ const Page: NextPage = () => {
     const [formSpec, setFormSpec] = useState<WorkFlowForm>()
     const [rule, setRule] = useState<any>()
     const [isFinalStep, setIsFinalStep] = useState(false)
+    const [serviceCallback, setServiceCallback] = useState()
+    const [tarriffCallback, setTarriffCallback] = useState()
     const [dataForm, setDataForm] = useState<{
         id: string
         description: string
@@ -62,9 +64,9 @@ const Page: NextPage = () => {
                     role: user.role
                 }
             )
-
             setRule(ruleResult[0].result)
-
+            setServiceCallback(ruleResult[0].result.serviceCallback)
+            setTarriffCallback(ruleResult[0].result.tarriffCallback)
             if (!ruleResult[0].result && !process.processComplete) {
                 router.push('/403')
                 return
@@ -102,7 +104,9 @@ const Page: NextPage = () => {
             process as WorkflowProcess,
             isFinalStep,
             dataForm,
-            formSpec as WorkFlowForm
+            formSpec as WorkFlowForm,
+            serviceCallback,
+            tarriffCallback
         )
         setShowSuccess(true)
     }
@@ -146,7 +150,6 @@ const Page: NextPage = () => {
                       process?.evidence[evidenceIndex].data.attachements[k]
               )
 
-    console.log(dataForm)
     if (!attachements) attachements = []
 
     return (
