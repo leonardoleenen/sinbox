@@ -146,28 +146,23 @@ class Workflow {
             ],
             processComplete: isFinalStep
         })
+
         if (serviceCallback && serviceCallback?.postCall) {
             serviceCallback?.postCall.forEach(async service => {
-                await axios.post(
-                    `${this.API_URl}/api/engine/callServiceCallback`,
-                    {
-                        url: service.url,
-                        evidenceIndex: service.evidenceIndex,
-                        processId: process.id
-                    }
-                )
+                await axios.post(`/api/engine/callServiceCallback`, {
+                    url: service.url,
+                    evidenceIndex: service.evidenceIndex,
+                    processId: process.id
+                })
             })
         }
         if (tarriffCallback && tarriffCallback.postCall) {
             tarriffCallback.postCall.forEach(async service => {
-                await axios.post(
-                    `${this.API_URl}/api/engine/callTarriffCallback`,
-                    {
-                        url: service.url,
-                        evidenceIndex: service.evidenceIndex,
-                        processId: process.id
-                    }
-                )
+                await axios.post(`/api/engine/callTarriffCallback`, {
+                    url: service.url,
+                    evidenceIndex: service.evidenceIndex,
+                    processId: process.id
+                })
             })
         }
     }

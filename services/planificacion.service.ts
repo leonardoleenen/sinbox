@@ -13,7 +13,7 @@ class PlanificacionService {
     async getPlanificacion(id: string) {
         return axios
             .get(
-                'http://localhost:5001/sinbox-155b2/us-central1/getPlanning?id=' +
+                'https://us-central1-sinbox-155b2.cloudfunctions.net/getPlanning?id=' +
                 id // 'https://us-central1-sinbox-155b2.cloudfunctions.net/getPLannings'
             )
             .then(result => result.data)
@@ -21,7 +21,7 @@ class PlanificacionService {
     async setApprovedPlanning(id: string) {
         return axios
             .post(
-                'http://localhost:5001/sinbox-155b2/us-central1/setApprovedPlanning?id=' +
+                'https://us-central1-sinbox-155b2.cloudfunctions.net/setApprovedPlanning?id=' +
                 id // 'https://us-central1-sinbox-155b2.cloudfunctions.net/getPLannings'
             )
             .then(result => result.data)
@@ -29,7 +29,7 @@ class PlanificacionService {
     async setWaitingPlanning(id: string) {
         return axios
             .post(
-                'http://localhost:5001/sinbox-155b2/us-central1/setWaitingPlanning?id=' +
+                'https://us-central1-sinbox-155b2.cloudfunctions.net/setWaitingPlanning?id=' +
                 id // 'https://us-central1-sinbox-155b2.cloudfunctions.net/getPLannings'
             )
             .then(result => result.data)
@@ -37,7 +37,7 @@ class PlanificacionService {
     async getPanificaciones() {
         return axios
             .get(
-                'http://localhost:5001/sinbox-155b2/us-central1/getPLannings' // 'https://us-central1-sinbox-155b2.cloudfunctions.net/getPLannings'
+                'https://us-central1-sinbox-155b2.cloudfunctions.net/getPLannings' // 'https://us-central1-sinbox-155b2.cloudfunctions.net/getPLannings'
             )
             .then(result => result.data)
     }
@@ -45,7 +45,7 @@ class PlanificacionService {
     async savePlanificacion(planificacion: any) {
         return axios
             .post(
-                'http://localhost:5001/sinbox-155b2/us-central1/savePlanning', //            'https://us-central1-sinbox-155b2.cloudfunctions.net/savePlanning',
+                'https://us-central1-sinbox-155b2.cloudfunctions.net/savePlanning', //            'https://us-central1-sinbox-155b2.cloudfunctions.net/savePlanning',
                 planificacion
             )
             .then(result => result.data)

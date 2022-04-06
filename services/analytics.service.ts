@@ -16,12 +16,9 @@ class AnalyticsService {
         name: string
         entityId: string
     }) {
-        const result = await axios.post(
-            `${process.env.API_URL}/api/analytics/sessions`,
-            {
-                data: data
-            }
-        )
+        const result = await axios.post(`/api/analytics/sessions`, {
+            data: data
+        })
         return result
     }
     async insertWorkflowForm(data: {
@@ -31,12 +28,9 @@ class AnalyticsService {
         createdAt: number
         entityId: string
     }) {
-        const result = await axios.post(
-            `${process.env.API_URL}/api/analytics/workflows`,
-            {
-                data: data
-            }
-        )
+        const result = await axios.post(`/api/analytics/workflows`, {
+            data: data
+        })
         return result
     }
 }
