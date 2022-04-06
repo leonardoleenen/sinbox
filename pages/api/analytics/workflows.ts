@@ -23,7 +23,7 @@ export default async function handler(
         const { data } = req.body
         const result = await db
             .insert(data)
-            .into('workflows')
+            .into('workflow')
             .returning('*')
             .then(rows => {
                 return rows[0]
