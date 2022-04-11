@@ -29,7 +29,9 @@ const Page: NextPage = () => {
             const _process = []
             for (const index in wList) {
                 const rule = await ruleEngine.execute(wList[index].ruleAsset, {
-                    role: tokenDecode(getToken() as string).role,
+                    role: tokenDecode(getToken() as string)
+                        ? tokenDecode(getToken() as string).role
+                        : '',
                     signal: 'START'
                 })
 
