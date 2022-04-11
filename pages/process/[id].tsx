@@ -65,8 +65,14 @@ const Page: NextPage = () => {
                 }
             )
             setRule(ruleResult[0].result)
-            setServiceCallback(ruleResult[0].result.serviceCallback)
-            setTarriffCallback(ruleResult[0].result.tarriffCallback)
+            if (
+                ruleResult[0].result.serviceCallback &&
+                ruleResult[0].result.tarriffCallback
+            ) {
+                setServiceCallback(ruleResult[0].result.serviceCallback)
+                setTarriffCallback(ruleResult[0].result.tarriffCallback)
+            }
+
             if (!ruleResult[0].result && !process.processComplete) {
                 router.push('/403')
                 return

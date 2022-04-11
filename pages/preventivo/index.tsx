@@ -6,13 +6,92 @@ import InternalContainer from '../../components/container/internal'
 import { useRouter } from 'next/router'
 import moment from 'moment'
 import { preventivoService } from '../../services/preventivo.service'
+import Table from '../../components/Table'
 
 const Page: NextPage = () => {
     const router = useRouter()
-    const [preventivos, setPreventivos] = useState<any>([])
+    const [preventivos, setPreventivos] = useState<Array<any>>([])
+    const [x_axis, setXAxis] = useState<Array<any>>([])
+    const y_axis = [
+        {
+            title: 'Nro prev',
+            index: 'nro_prev'
+        },
+        {
+            title: 'Titulo',
+            index: 'titulo'
+        },
+        {
+            title: 'Tipo de medio',
+            index: 'tipo_medio'
+        },
+        {
+            title: 'Estado',
+            index: 'estado'
+        },
+        {
+            title: 'Cuando',
+            index: 'cuando'
+        },
+        {
+            title: 'Creado',
+            index: 'creado'
+        },
+        {
+            title: 'Actualizado',
+            index: 'actualizado'
+        },
+        {
+            title: '',
+            index: 'custom'
+        }
+    ]
     useEffect(() => {
         preventivoService.getPreventivos().then(result => {
             setPreventivos(result)
+            result.forEach((p: any) => {
+                setXAxis([
+                    ...x_axis,
+                    {
+                        nro_prev: p.status !== 'draft' ? p.id : '-',
+                        titulo: p.title,
+                        tipo_medio: p.medio,
+                        estado: p.status,
+                        cuando: `${p.mes} - ${p.anio}`,
+                        creado: moment(p.createdAt).format(
+                            'DD/MM/YYYY HH:mm:ss'
+                        ),
+                        actualizado: moment(p.updatedAt).format(
+                            'DD/MM/YYYY HH:mm:ss'
+                        ),
+                        custom: (
+                            <div>
+                                <button
+                                    className="btn btn-sm"
+                                    onClick={() =>
+                                        router.push(`/preventivo/${p.id}`)
+                                    }
+                                >
+                                    Ver
+                                    {`${
+                                        p.status === 'draft' ? ' y editar' : ''
+                                    } `}
+                                </button>
+                                {p.status === 'approved' && (
+                                    <button
+                                        className="btn btn-sm ml-4"
+                                        onClick={() =>
+                                            router.push(`/preventivo/new`)
+                                        }
+                                    >
+                                        Ampliar
+                                    </button>
+                                )}
+                            </div>
+                        )
+                    }
+                ])
+            })
         })
     }, [])
     return (
@@ -30,79 +109,7 @@ const Page: NextPage = () => {
                         </button>
                     }
                 >
-                    <div>
-                        <div className="overflow-x-auto">
-                            <table className="table w-full table-zebra">
-                                <thead>
-                                    <tr>
-                                        <th>Nro prev</th>
-                                        <th>Titulo</th>
-                                        <th>Tipo de medio</th>
-                                        <th>Estado</th>
-                                        <th>Cuando</th>
-                                        <th>Creado</th>
-                                        <th>Actualizado</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-                                    {preventivos.map((p: any, i: number) => (
-                                        <tr key={`form${i + 1}`}>
-                                            <th>
-                                                {p.status !== 'draft'
-                                                    ? p.id
-                                                    : '-'}
-                                            </th>
-                                            <td>{p.title}</td>
-                                            <td>{p.medio}</td>
-                                            <td>{p.status}</td>
-                                            <td>{`${p.mes} - ${p.anio}`}</td>
-                                            <td>
-                                                {moment(p.createdAt).format(
-                                                    'DD/MM/YYYY HH:mm:ss'
-                                                )}
-                                            </td>
-                                            <td>
-                                                {moment(p.updatedAt).format(
-                                                    'DD/MM/YYYY HH:mm:ss'
-                                                )}
-                                            </td>
-                                            <td>
-                                                <button
-                                                    className="btn btn-sm"
-                                                    onClick={() =>
-                                                        router.push(
-                                                            `/preventivo/${p.id}`
-                                                        )
-                                                    }
-                                                >
-                                                    Ver
-                                                    {`${
-                                                        p.status === 'draft'
-                                                            ? ' y editar'
-                                                            : ''
-                                                    } `}
-                                                </button>
-                                                {p.status === 'approved' && (
-                                                    <button
-                                                        className="btn btn-sm ml-4"
-                                                        onClick={() =>
-                                                            router.push(
-                                                                `/preventivo/new`
-                                                            )
-                                                        }
-                                                    >
-                                                        Ampliar
-                                                    </button>
-                                                )}
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                    <Table y_axis={y_axis} x_axis={x_axis} itemsPerPage={2} />
                 </InternalContainer>
             </Container>
         </div>
