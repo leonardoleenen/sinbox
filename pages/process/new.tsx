@@ -25,7 +25,7 @@ const Page: NextPage = () => {
     const { wfid, processId } = router.query
     const [formSpec, setFormSpec] = useState<WorkFlowForm>()
     const [rule, setRule] = useState<any>()
-    const [dataForm, setDataForm] = useState({})
+    const [dataForm, setDataForm] = useState<any>({})
     const [showSuccess, setShowSuccess] = useState(false)
     const [wfSpec, setWfSpec] = useState<WorkflowSpec | null>(null)
 

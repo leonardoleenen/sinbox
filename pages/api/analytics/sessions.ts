@@ -17,7 +17,8 @@ export default async function handler(
         connection: {
             database: process.env.KNEX_DB_NAME,
             user: process.env.KNEX_DB_USER,
-            password: process.env.KNEX_DB_PASSWORD
+            password: process.env.KNEX_DB_PASSWORD,
+            host: process.env.KNEX_HOST
         }
     })
     if (req.method === 'POST') {

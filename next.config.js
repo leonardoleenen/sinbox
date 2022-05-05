@@ -9,6 +9,7 @@ module.exports = {
         KNEX_DB_NAME: process.env.KNEX_DB_NAME,
         KNEX_DB_USER: process.env.KNEX_DB_USER,
         KNEX_DB_PASSWORD: process.env.KNEX_DB_PASSWORD,
+        KNEX_HOST: process.env.KNEX_HOST,
         API_URL: process.env.API_URL
     }
 }

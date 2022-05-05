@@ -43,7 +43,8 @@ const Page: NextPage = () => {
         spec: null,
         subTitle: '',
         title: 'Sin Titulo',
-        lastUpdated: new Date().getTime()
+        lastUpdated: new Date().getTime(),
+        attachments: []
     })
 
     const { id } = router.query

@@ -18,7 +18,6 @@ const Component = (props: Props): JSX.Element => {
                                 height="1em"
                                 viewBox="0 0 16 16"
                                 className="bi bi-arrow-left-circle"
-                                fill="currentColor"
                                 xmlns="http://www.w3.org/2000/svg"
                             >
                                 <path
@@ -42,7 +41,6 @@ const Component = (props: Props): JSX.Element => {
                                 height="1em"
                                 viewBox="0 0 16 16"
                                 className="bi bi-arrow-right-circle"
-                                fill="currentColor"
                                 xmlns="http://www.w3.org/2000/svg"
                             >
                                 <path

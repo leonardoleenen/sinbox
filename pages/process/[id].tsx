@@ -24,8 +24,8 @@ const Page: NextPage = () => {
     const { id } = router.query
 
     const [showSuccess, setShowSuccess] = useState(false)
-    const [process, setProcess] = useState<WorkflowProcess>()
-    const [formSpec, setFormSpec] = useState<WorkFlowForm>()
+    const [process, setProcess] = useState<WorkflowProcess | any>()
+    const [formSpec, setFormSpec] = useState<WorkFlowForm | any>(null)
     const [rule, setRule] = useState<any>()
     const [isFinalStep, setIsFinalStep] = useState(false)
     const [serviceCallback, setServiceCallback] = useState()
@@ -139,7 +139,7 @@ const Page: NextPage = () => {
     let attachements =
         evidenceIndex === -1
             ? formSpec.attachments &&
-              formSpec.attachments.map(v => {
+              formSpec.attachments.map((v: any) => {
                   return { id: v.fieldId, description: v.fieldName }
               })
             : process?.evidence[evidenceIndex].data.attachements &&
@@ -182,7 +182,7 @@ const Page: NextPage = () => {
             <div className="flex">
                 <div className="w-64 bg-gray-100 mr-4 shadow rounded-lg">
                     <ul className=" steps steps-vertical px-4">
-                        {process?.evidence?.map((e, index: number) => (
+                        {process?.evidence?.map((e: any, index: number) => (
                             <li
                                 onClick={() => setEvidenceIndex(index)}
                                 data-content={
@@ -244,9 +244,10 @@ const Page: NextPage = () => {
                             readonly={evidenceIndex !== -1}
                             onChange={({ data }) => setDataForm(data)}
                         />
+                        )
                     </div>
                     <div className="flex">
-                        {attachements.map((a, index) => (
+                        {attachements.map((a: any, index: any) => (
                             <FileUpload
                                 key={a.id}
                                 defaultFilePath={a.value}

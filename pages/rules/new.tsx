@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import React, { useEffect, useState } from 'react'
 import type { NextPage } from 'next'
 
@@ -23,7 +24,7 @@ const xmlEmpty = `<?xml version="1.0" encoding="UTF-8"?>
         `
 
 const Page: NextPage = () => {
-    const [modeler, setModeler] = useState()
+    const [modeler, setModeler] = useState<any>()
     const [rule, setRule] = useState<RuleAsset>({
         id: nanoid(10),
         description: 'Sin Titulo',
@@ -48,7 +49,7 @@ const Page: NextPage = () => {
     const save = async () => {
         const { xml } = await modeler.getContent()
         setIsSaving(true)
-        modeler.getContent().then(c => {
+        modeler.getContent().then((c: any) => {
             ruleEngine
                 .save({
                     ...rule,

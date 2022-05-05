@@ -8,6 +8,7 @@ module.exports = {
     development: {
         client: 'pg',
         connection: {
+            host: process.env.KNEX_HOST,
             database: process.env.KNEX_DB_NAME,
             user: process.env.KNEX_DB_USER,
             password: process.env.KNEX_DB_PASSWORD
@@ -22,6 +23,7 @@ module.exports = {
     staging: {
         client: 'pg',
         connection: {
+            host: process.env.KNEX_HOST,
             database: process.env.KNEX_DB_NAME,
             user: process.env.KNEX_DB_USER,
             password: process.env.KNEX_DB_PASSWORD
@@ -38,6 +40,7 @@ module.exports = {
     production: {
         client: 'pg',
         connection: {
+            host: process.env.KNEX_HOST,
             database: process.env.KNEX_DB_NAME,
             user: process.env.KNEX_DB_USER,
             password: process.env.KNEX_DB_PASSWORD
