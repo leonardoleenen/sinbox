@@ -24,7 +24,7 @@ export default async function handler(
 ) {
     const { id } = req.query
 
-    const docRef = doc(firebaseManager.getDB(), 'ruleAssets', id)
+    const docRef = doc(firebaseManager.getDB() as any, 'ruleAssets', id as any)
     const docSnap = await getDoc(docRef)
     const ruleAsset = docSnap.data() as any
 

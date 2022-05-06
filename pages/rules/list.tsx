@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react'
 import type { NextPage } from 'next'
 import Header from '../../components/header'
@@ -8,13 +9,15 @@ import { useRouter } from 'next/router'
 import _ from 'lodash'
 
 const Page: NextPage = () => {
-    const [list, setList] = useState([])
+    const [list, setList] = useState<any>([])
     const router = useRouter()
 
     useEffect(() => {
         ruleEngine
             .getAll()
-            .then(result => setList(_.sortBy(result, e => e.description)))
+            .then((result: any) =>
+                setList(_.sortBy(result, (e: any) => e.description))
+            )
     }, [])
 
     return (

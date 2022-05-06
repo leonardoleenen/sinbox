@@ -105,13 +105,14 @@ const Page: NextPage = () => {
     })
 
     const seleccionarProveedor = (selected: boolean, id: string) => {
-        if (selected) setValues([...values, proveedores.find(p => p.id === id)])
+        if (selected)
+            setValues([...values, proveedores.find((p: any) => p.id === id)])
         else {
             setValues(values.filter(p => p.id !== id))
         }
     }
 
-    const calcularMenciones = v => {
+    const calcularMenciones = (v: any) => {
         return v.days
             .filter((d: number) => d !== 0)
             .reduce(
@@ -121,7 +122,7 @@ const Page: NextPage = () => {
     }
 
     const getStats = () => {
-        const r = {}
+        const r: any = {}
 
         for (const i in values) {
             const importe = r[values[i].cuit] ? r[values[i].cuit].total : 0
@@ -181,7 +182,7 @@ const Page: NextPage = () => {
                             <p className="py-6">
                                 No ha seleccionado ningun proveedor. Por favor
                                 haga click en Seleccionar Proveedores o bien en
-                                el boton que dice "Proveedores Disponibles"
+                                el boton que dice Proveedores Disponibles
                             </p>
                             <button
                                 onClick={() =>
@@ -258,7 +259,7 @@ const Page: NextPage = () => {
                                                 const cell: any = values[row]
                                                 cell.segundosSeleccionados =
                                                     e.target.value
-                                                const listTemp: [] =
+                                                const listTemp: any[] =
                                                     Object.assign([], values)
                                                 listTemp[row] = cell
                                                 setValues(listTemp)
@@ -299,7 +300,7 @@ const Page: NextPage = () => {
                                                         values[row]
                                                     cell.days[day] =
                                                         e.target.value
-                                                    const listTemp: [] =
+                                                    const listTemp: any[] =
                                                         Object.assign(
                                                             [],
                                                             values
@@ -351,12 +352,10 @@ const Page: NextPage = () => {
                                         onChange={e => {
                                             const cell: any = proveedores[row]
                                             cell.activo = e.target.checked
-                                            const listTemp: [] = Object.assign(
-                                                [],
-                                                proveedores
-                                            )
+                                            const listTemp: any[] =
+                                                Object.assign([], proveedores)
                                             listTemp[row] = cell
-                                            setProveedores(listTemp)
+                                            setProveedores(listTemp as any)
                                             seleccionarProveedor(
                                                 e.target.checked,
                                                 v.id

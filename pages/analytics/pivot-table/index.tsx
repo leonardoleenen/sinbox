@@ -49,7 +49,9 @@ const Page: NextPage = () => {
 
     const fetchData = (service: AnalyticsServicesRegistered) => {
         service &&
-            analyticsService.getData(service).then(result => setData(result))
+            analyticsService
+                .getData(service)
+                .then(result => setData(result as any))
     }
 
     if (_.isEmpty(data))
@@ -118,18 +120,16 @@ const Page: NextPage = () => {
                         </select>
                     }
                 >
-                    {!_.isEmpty(data) && (
-                        <PivotTableUI
-                            data={data}
-                            onChange={s => setValue(s)}
-                            {...value}
-                            renderers={Object.assign(
-                                {},
-                                TableRenderers,
-                                PlotlyRenderers
-                            )}
-                        />
-                    )}
+                    <PivotTableUI
+                        data={data}
+                        onChange={(s: any) => setValue(s)}
+                        {...value}
+                        renderers={Object.assign(
+                            {},
+                            TableRenderers,
+                            PlotlyRenderers
+                        )}
+                    />
                 </InternalPage>
             </Container>
         </div>

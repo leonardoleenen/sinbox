@@ -1,5 +1,4 @@
 import React from 'react'
-import ReactJson from 'react-json-view'
 
 import JSONInput from 'react-json-editor-ajrm'
 import locale from 'react-json-editor-ajrm/locale/en'

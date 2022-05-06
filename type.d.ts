@@ -1,3 +1,8 @@
+declare module 'react-json-editor-ajrm/locale/en'
+declare module 'react-pivottable/PivotTableUI'
+declare module 'react-pivottable/TableRenderers'
+declare module 'react-pivottable/PlotlyRenderers'
+
 type User = {
     name: string
     iat: number
