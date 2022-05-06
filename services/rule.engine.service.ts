@@ -24,7 +24,7 @@ class RuleEngine {
 
         return axios
             .post(
-                'https://kie-sandbox-extended-services-image-tooling-leonardoleenen-dev.apps.sandbox.x8i5.p1.openshiftapps.com/jitdmn/dmnresult',
+                'https://kie-sandbox-extended-services-image-leonardoleenen-dev.apps.sandbox.x8i5.p1.openshiftapps.com:21345/jitdmn/dmnresult',
                 {
                     context,
                     mainURI: 'regla prueba',

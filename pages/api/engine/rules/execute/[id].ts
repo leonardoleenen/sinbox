@@ -30,7 +30,7 @@ export default async function handler(
 
     const result = await axios
         .post(
-            'https://kie-sandbox-extended-services-image-tooling-leonardoleenen-dev.apps.sandbox.x8i5.p1.openshiftapps.com/jitdmn/dmnresult',
+            'https://kie-sandbox-extended-services-image-leonardoleenen-dev.apps.sandbox.x8i5.p1.openshiftapps.com/jitdmn/dmnresult',
             {
                 context: req.body,
                 mainURI: 'regla prueba',
