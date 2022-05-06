@@ -29,16 +29,19 @@ export default async function handler(
     const ruleAsset = docSnap.data() as any
 
     const result = await axios
-        .post('http://localhost:21345/jitdmn/dmnresult', {
-            context: req.body,
-            mainURI: 'regla prueba',
-            resources: [
-                {
-                    URI: 'regla prueba',
-                    content: ruleAsset.spec
-                }
-            ]
-        })
+        .post(
+            'https://kie-sandbox-extended-services-image-tooling-leonardoleenen-dev.apps.sandbox.x8i5.p1.openshiftapps.com/jitdmn/dmnresult',
+            {
+                context: req.body,
+                mainURI: 'regla prueba',
+                resources: [
+                    {
+                        URI: 'regla prueba',
+                        content: ruleAsset.spec
+                    }
+                ]
+            }
+        )
         .then((result: any) => result.data.decisionResults)
     res.status(200).json({
         result: result
