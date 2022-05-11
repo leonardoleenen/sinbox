@@ -139,6 +139,7 @@ type WorkflowSpec = {
     ruleAssetStep: string
     status: 'ENABLED' | 'DISABLED'
     lastUpdated?: number
+    description?: string
 }
 
 type WorkFlowForm = {

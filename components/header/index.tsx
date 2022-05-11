@@ -62,6 +62,15 @@ const Component = (props: Props): JSX.Element => {
                             <li>
                                 <div
                                     className="flex px-3"
+                                    onClick={() => router.push('/dashboard')}
+                                >
+                                    <Icon type={'HOME'} stroke={1} size={24} />
+                                    <span>Página principal</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div
+                                    className="flex px-3"
                                     onClick={() => router.push('/process')}
                                 >
                                     <Icon
@@ -72,6 +81,7 @@ const Component = (props: Props): JSX.Element => {
                                     <span>Bandeja de entrada</span>
                                 </div>
                             </li>
+
                             <li>
                                 <div
                                     className="flex px-3"
@@ -87,69 +97,91 @@ const Component = (props: Props): JSX.Element => {
                                     <span>Procesos Finalizados</span>
                                 </div>
                             </li>
-                            <li>
-                                <div
-                                    className="flex px-3"
-                                    onClick={() => router.push('/preventivo')}
-                                >
-                                    <Icon
-                                        type={'CALCULATOR'}
-                                        stroke={1}
-                                        size={24}
-                                    />
-                                    <span>Preventivos</span>
-                                </div>
-                            </li>
-                            <li>
-                                <div
-                                    className="flex px-3"
-                                    onClick={() => router.push('/planning')}
-                                >
-                                    <Icon
-                                        type={'PLANNING'}
-                                        stroke={1}
-                                        size={24}
-                                    />
-                                    <span>Planificación</span>
-                                </div>
-                            </li>
+                            {user.role !== 'PROVIDER' && (
+                                <div>
+                                    <li>
+                                        <div
+                                            className="flex px-3"
+                                            onClick={() =>
+                                                router.push('/preventivo')
+                                            }
+                                        >
+                                            <Icon
+                                                type={'CALCULATOR'}
+                                                stroke={1}
+                                                size={24}
+                                            />
+                                            <span>Preventivos</span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div
+                                            className="flex px-3"
+                                            onClick={() =>
+                                                router.push('/planning')
+                                            }
+                                        >
+                                            <Icon
+                                                type={'PLANNING'}
+                                                stroke={1}
+                                                size={24}
+                                            />
+                                            <span>Planificación</span>
+                                        </div>
+                                    </li>
 
-                            <div>
-                                <div className="divider">Settings</div>
-                            </div>
-                            <li>
-                                <div
-                                    className="flex px-3"
-                                    onClick={() => router.push('/forms/list')}
-                                >
-                                    <Icon type={'FORMS'} stroke={1} size={24} />
-                                    <span>Formularios</span>
+                                    <div>
+                                        <div className="divider">Settings</div>
+                                    </div>
+                                    <li>
+                                        <div
+                                            className="flex px-3"
+                                            onClick={() =>
+                                                router.push('/forms/list')
+                                            }
+                                        >
+                                            <Icon
+                                                type={'FORMS'}
+                                                stroke={1}
+                                                size={24}
+                                            />
+                                            <span>Formularios</span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div
+                                            className="flex px-3"
+                                            onClick={() =>
+                                                router.push('/rules/list')
+                                            }
+                                        >
+                                            <Icon
+                                                type={'RULES'}
+                                                stroke={1}
+                                                size={24}
+                                            />
+                                            <span>Reglas</span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div
+                                            className="flex px-3"
+                                            onClick={() =>
+                                                router.push(
+                                                    '/settings/workflow/list'
+                                                )
+                                            }
+                                        >
+                                            <Icon
+                                                type={'WORKFLOW'}
+                                                stroke={1}
+                                                size={24}
+                                            />
+                                            <span>Flujos de trabajo</span>
+                                        </div>
+                                    </li>
                                 </div>
-                            </li>
-                            <li>
-                                <div
-                                    className="flex px-3"
-                                    onClick={() => router.push('/rules/list')}
-                                >
-                                    <Icon type={'RULES'} stroke={1} size={24} />
-                                    <span>Reglas</span>
-                                </div>
-                            </li>
-                            <li>
-                                <div
-                                    className="flex px-3"
-                                    onClick={() =>
-                                        router.push('/settings/workflow/list')
-                                    }
-                                >
-                                    <Icon
-                                        type={'WORKFLOW'}
-                                        stroke={1}
-                                        size={24}
-                                    />
-                                    <span>Flujos de trabajo</span>
-                                </div>
-                            </li>
+                            )}
                         </ul>
                     </div>
                 </div>
@@ -159,7 +191,7 @@ const Component = (props: Props): JSX.Element => {
                     </a>
                 </div>
                 <div className="navbar-end">
-                    <div className="pr-4">{`${user.name} - ${user.role}`}</div>
+                    <div className="pr-4">{` ${user.role}`}</div>
                     <div className="dropdown dropdown-end">
                         <label
                             tabIndex={0}
@@ -175,7 +207,6 @@ const Component = (props: Props): JSX.Element => {
                         >
                             <li>
                                 <a className="justify-between">
-                                    {`${user.name}`}
                                     <span className="badge">User</span>
                                 </a>
                             </li>

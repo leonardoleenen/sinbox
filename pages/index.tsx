@@ -98,9 +98,11 @@ const Home: NextPage = () => {
                     </a>
                     <div className="mt-12 mb-8 p-8 bg-white rounded">
                         <span className="text-sm text-blueGray-400">
-                            Ingreso
+                            Ingresar a
                         </span>
-                        <h4 className="mb-6 text-3xl">Santa Fé </h4>
+                        <h4 className="mb-6 text-3xl">
+                            Portal de Planificación publicitaria y medios
+                        </h4>
                         <select
                             className="select w-full max-w-xs"
                             name="selectedRole"
@@ -116,30 +118,33 @@ const Home: NextPage = () => {
                                     name: decodedToken.name,
                                     entityId: decodedToken.id
                                 })
-                                router.push('/process')
+
+                                if (decodedToken.role === 'PROVIDER')
+                                    router.push('/process')
+                                else router.push('/dashboard')
                             }}
                         >
                             <option disabled selected>
                                 Seleccione un rol{' '}
                             </option>
                             <option value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdGF0dXMiOiJFTkFCTEVEIiwiZW1haWwiOiJsZW9uYXJkb2xlZW5lbkBnbWFpbC5jb20iLCJpZCI6ImQ1c2FFTXNGWmVhVm50cTZIZmZvZ2FCSktFSjIiLCJyb2xlIjoiUFJPVklERVIiLCJpZGVudGl0eVByb3ZpZGVyIjoiZ29vZ2xlIiwiaXNzdWVkQXQiOjE2NDU2ODc1MjY1NDksIm5hbWUiOiJGTSBTdGEgRmUiLCJpYXQiOjE2NDYwNTY2NDd9.moCF3joJzkk-x-IywaYiaIVeYWJXS7kcA1TcLrR5sto">
-                                Proveedor Ej. FM Sta Fe
+                                Proveedor
                             </option>
 
-                            <option value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdGF0dXMiOiJFTkFCTEVEIiwiZW1haWwiOiJsZW9uYXJkb2xlZW5lbkBnbWFpbC5jb20iLCJpZCI6ImQ1c2FFTXNGWmVhVm50cTZIZmZvZ2FCSktFSjIiLCJyb2xlIjoiU0VDUkVUQVJJTyBQUkVOU0EiLCJpZGVudGl0eVByb3ZpZGVyIjoiZ29vZ2xlIiwiaXNzdWVkQXQiOjE2NDU2ODc1MjY1NDksIm5hbWUiOiJBbHRhbWlyYW5vIiwiaWF0IjoxNjQ2MDU2NjQ3fQ.sckr7bkOItvCZu_T7wgf1N6Fqs7vLzjEroQpWElYAgk">
-                                Secretario: Altamirano
+                            <option value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdGF0dXMiOiJFTkFCTEVEIiwiZW1haWwiOiJsZW9uYXJkb2xlZW5lbkBnbWFpbC5jb20iLCJpZCI6ImQ1c2FFTXNGWmVhVm50cTZIZmZvZ2FCSktFSjIiLCJyb2xlIjoiU0VDUkVUQVJJTyIsImlkZW50aXR5UHJvdmlkZXIiOiJnb29nbGUiLCJpc3N1ZWRBdCI6MTY0NTY4NzUyNjU0OSwibmFtZSI6IkNhcmxvcyBBbWVyaWNvIEJlcm11ZGV6IiwiaWF0IjoxNjQ2MDU2NjQ3fQ.vhcILrdZxVa1fPXQly5vqajZ71YHDdi5tS_ovY0nDZI">
+                                Secretario
                             </option>
-                            <option value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdGF0dXMiOiJFTkFCTEVEIiwiZW1haWwiOiJsZW9uYXJkb2xlZW5lbkBnbWFpbC5jb20iLCJpZCI6ImQ1c2FFTXNGWmVhVm50cTZIZmZvZ2FCSktFSjIiLCJyb2xlIjoiU1VCU0VDUkVUQVJJTyBQUkVOU0EiLCJpZGVudGl0eVByb3ZpZGVyIjoiZ29vZ2xlIiwiaXNzdWVkQXQiOjE2NDU2ODc1MjY1NDksIm5hbWUiOiJKdWFuIE1hbnVlbCIsImlhdCI6MTY0NjA1NjY0N30.enntsalKoQePLHrAGa2vsQc1Aa-0A3jJpz7dHeuXqEA">
-                                Subsecretario: Juan Manuel
+                            <option value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdGF0dXMiOiJFTkFCTEVEIiwiZW1haWwiOiJsZW9uYXJkb2xlZW5lbkBnbWFpbC5jb20iLCJpZCI6ImQ1c2FFTXNGWmVhVm50cTZIZmZvZ2FCSktFSjIiLCJyb2xlIjoiU1VCU0VDUkVUQVJJTyIsImlkZW50aXR5UHJvdmlkZXIiOiJnb29nbGUiLCJpc3N1ZWRBdCI6MTY0NTY4NzUyNjU0OSwibmFtZSI6Ikp1YW4gTWFudWVsIiwiaWF0IjoxNjQ2MDU2NjQ3fQ.7PCeHwPiFgMoi2vMIWwUCI0yKpCxiXXVWpNRNE4E3wk">
+                                Subsecretario
                             </option>
-                            <option value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdGF0dXMiOiJFTkFCTEVEIiwiZW1haWwiOiJsZW9uYXJkb2xlZW5lbkBnbWFpbC5jb20iLCJpZCI6ImQ1c2FFTXNGWmVhVm50cTZIZmZvZ2FCSktFSjIiLCJyb2xlIjoiRElSRUNUT1IgUFJFTlNBIiwiaWRlbnRpdHlQcm92aWRlciI6Imdvb2dsZSIsImlzc3VlZEF0IjoxNjQ1Njg3NTI2NTQ5LCJuYW1lIjoiR2FicmllbGEgRnJhbmNvIiwiaWF0IjoxNjQ2MDU2NjQ3fQ.XEB_k7wHIuoUW-x7FIyfwiSPYwds8vMLrWm4bhfBZEU">
-                                Directora General: Gabriela Franco
+                            <option value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdGF0dXMiOiJFTkFCTEVEIiwiZW1haWwiOiJsZW9uYXJkb2xlZW5lbkBnbWFpbC5jb20iLCJpZCI6ImQ1c2FFTXNGWmVhVm50cTZIZmZvZ2FCSktFSjIiLCJyb2xlIjoiRElSRUNUT1IiLCJpZGVudGl0eVByb3ZpZGVyIjoiZ29vZ2xlIiwiaXNzdWVkQXQiOjE2NDU2ODc1MjY1NDksIm5hbWUiOiJHYWJyaWVsYSBGcmFuY28iLCJpYXQiOjE2NDYwNTY2NDd9.UgPj1-M3letdzrDIF844klQ1KfvLFgtaDmywTZ8P1y8">
+                                Directora General
                             </option>
-                            <option value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdGF0dXMiOiJFTkFCTEVEIiwiZW1haWwiOiJsZW9uYXJkb2xlZW5lbkBnbWFpbC5jb20iLCJpZCI6ImQ1c2FFTXNGWmVhVm50cTZIZmZvZ2FCSktFSjIiLCJyb2xlIjoiU1VCRElSRUNUT1IgUFJFTlNBIiwiaWRlbnRpdHlQcm92aWRlciI6Imdvb2dsZSIsImlzc3VlZEF0IjoxNjQ1Njg3NTI2NTQ5LCJuYW1lIjoiQW5hbGlhIFRyaWF5IiwiaWF0IjoxNjQ2MDU2NjQ3fQ.26m3JP1ajHSAuBCgrWVnHghE1ZiPj6LyCpEFO0vbmeA">
-                                Subdirectora: Analia Triay
+                            <option value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdGF0dXMiOiJFTkFCTEVEIiwiZW1haWwiOiJsZW9uYXJkb2xlZW5lbkBnbWFpbC5jb20iLCJpZCI6ImQ1c2FFTXNGWmVhVm50cTZIZmZvZ2FCSktFSjIiLCJyb2xlIjoiU1VCRElSRUNUT1IiLCJpZGVudGl0eVByb3ZpZGVyIjoiZ29vZ2xlIiwiaXNzdWVkQXQiOjE2NDU2ODc1MjY1NDksIm5hbWUiOiJBbmFsaWEgVHJpYXkiLCJpYXQiOjE2NDYwNTY2NDd9.TBDKtPSswdG5Wqbrusu0WY7-grcLLasK2G2gMPiS2Ag">
+                                Subdirectora
                             </option>
-                            <option value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdGF0dXMiOiJFTkFCTEVEIiwiZW1haWwiOiJsZW9uYXJkb2xlZW5lbkBnbWFpbC5jb20iLCJpZCI6ImQ1c2FFTXNGWmVhVm50cTZIZmZvZ2FCSktFSjIiLCJyb2xlIjoiQU5BTElTVEEgUFJFTlNBIiwiaWRlbnRpdHlQcm92aWRlciI6Imdvb2dsZSIsImlzc3VlZEF0IjoxNjQ1Njg3NTI2NTQ5LCJuYW1lIjoiTWFyaWVsYSBQZWxlem9uIiwiaWF0IjoxNjQ2MDU2NjQ3fQ.yYtV-BenacCZDwEBkHJxMoMm2WSD4SsijrLeOXiPaww">
-                                Analista Mariela Pelezon
+                            <option value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdGF0dXMiOiJFTkFCTEVEIiwiZW1haWwiOiJsZW9uYXJkb2xlZW5lbkBnbWFpbC5jb20iLCJpZCI6ImQ1c2FFTXNGWmVhVm50cTZIZmZvZ2FCSktFSjIiLCJyb2xlIjoiQU5BTElTVEEiLCJpZGVudGl0eVByb3ZpZGVyIjoiZ29vZ2xlIiwiaXNzdWVkQXQiOjE2NDU2ODc1MjY1NDksIm5hbWUiOiJNYXJpZWxhIFBlbGVzc29uIiwiaWF0IjoxNjQ2MDU2NjQ3fQ.lHfa4nuDEa0Q1wXhi-5rqk-XOR6ryAHsLBjsEXlVGxo">
+                                Analista
                             </option>
                             <option value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdGF0dXMiOiJFTkFCTEVEIiwiZW1haWwiOiJsZW9uYXJkb2xlZW5lbkBnbWFpbC5jb20iLCJpZCI6ImQ1c2FFTXNGWmVhVm50cTZIZmZvZ2FCSktFSjIiLCJyb2xlIjoiUkVDRVBUSU9OSVNUIiwiaWRlbnRpdHlQcm92aWRlciI6Imdvb2dsZSIsImlzc3VlZEF0IjoxNjQ1Njg3NTI2NTQ5LCJuYW1lIjoiQW5hbGlzdGEgMSIsImlhdCI6MTY0NjA1NjY0N30.FojbLe3LAKpFfE0Fg08Zar6_iEgsCbXaoKGfl-A2Xwc">
                                 Mesa de Entrada
@@ -154,67 +159,6 @@ const Home: NextPage = () => {
                                 Secretario de Coordinacion
                             </option>
                         </select>
-
-                        <p className="my-6 text-xs text-blueGray-400 text-center">
-                            o utilizando una red social
-                        </p>
-                        <button className="flex items-center w-full px-4 py-3 mb-2 text-xs text-blueGray-500 font-semibold leading-none border hover:bg-blueGray-50 rounded">
-                            <img
-                                className="h-6 pr-10"
-                                src="/logos/facebook-sign.svg"
-                            />
-                            <span>Ingresar Facebook</span>
-                        </button>
-                        <button
-                            onClick={signWithGoogle}
-                            className="flex items-center px-4 py-3 w-full text-xs text-blueGray-500 font-semibold leading-none border hover:bg-blueGray-50 rounded"
-                        >
-                            <img
-                                className="h-6 pr-10"
-                                src="/logos/google-sign.svg"
-                            />
-                            <span>Ingresar con Google</span>
-                        </button>
-                        {/* <button
-                            onClick={registerToken}
-                            className="flex items-center px-4 py-3 mt-3 w-full text-xs text-blueGray-500 font-semibold leading-none border hover:bg-blueGray-50 rounded"
-                        >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-6 w-6 mr-10"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="2"
-                                    d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"
-                                />
-                            </svg>
-                            <span>Registrarse con Token de firma </span>
-                        </button>
-                        <button
-                            onClick={signInToken}
-                            className="flex items-center px-4 py-3 mt-3 w-full text-xs text-blueGray-500 font-semibold leading-none border hover:bg-blueGray-50 rounded"
-                        >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-6 w-6 mr-10"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="2"
-                                    d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"
-                                />
-                            </svg>
-                            <span>Ingresar con Token de firma </span>
-                        </button> */}
                     </div>
                     <div>
                         <p className="text-xs text-blue-200 text-center">

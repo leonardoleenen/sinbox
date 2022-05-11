@@ -11,11 +11,12 @@ import MainContainer from '../../components/container/main'
 import Loading from '../../components/loader'
 import { ruleEngine } from '../../services/rule.engine.service'
 import { getToken, tokenDecode } from '../../services/auth.service'
+
 const Page: NextPage = () => {
     const [list, setList] = useState<Array<WorkflowProcess>>()
     const router = useRouter()
     const [processes, setProcesses] = useState<Array<WorkflowSpec>>([])
-
+    const [processesLoaded, setProcessesLoaded] = useState<boolean>(false)
     useEffect(() => {
         workflowService
             .getActiveProcess()
@@ -41,45 +42,54 @@ const Page: NextPage = () => {
 
                 // console.log(rule)
             }
-
-            setProcesses(_process)
+            setProcessesLoaded(true)
+            setProcesses(_process.filter(p => p.status !== 'DISABLED'))
         })
     }, [])
 
     const Empty = () => {
         return (
             <div className="hero min-h-screen bg-gray-100">
-                <div className="text-center hero-content">
-                    <div className="max-w-md">
+                <div className="text-center ">
+                    <div className="">
                         <h1 className="mb-5 text-5xl font-bold">
                             Bienvenido!!{' '}
                         </h1>
                         <p className="mb-5">
-                            Aun no tienes ningun proceso iniciado. Para iniciar
-                            uno, por favor haz click en el boton de Nuevo
-                            Proceso
+                            {processesLoaded &&
+                                _.isEmpty(processes) &&
+                                'No puedes iniciar ningun trámite nuevo aunque puedes recibir trámites derivados de terceros '}
+                            {processesLoaded &&
+                                !_.isEmpty(processes) &&
+                                ' Aun no tienes ningun proceso iniciado. Para iniciar uno, por favor haz click en el boton de Nuevo Proceso'}
                         </p>
-                        <div className="dropdown">
-                            <div tabIndex={0} className="m-1 btn">
-                                Nuevo Proceso
-                            </div>
-                            <ul
-                                tabIndex={0}
-                                className="p-2 shadow menu dropdown-content bg-base-100 rounded-box w-52"
-                            >
-                                {processes.map((p, index: number) => (
-                                    <li
-                                        onClick={() =>
-                                            router.push(
-                                                `/process/new?wfid=${p.id}`
-                                            )
-                                        }
-                                        key={`form${index}`}
-                                    >
-                                        <a>{p.ref}</a>
-                                    </li>
-                                ))}
-                            </ul>
+
+                        <div className="carousel w-full">
+                            {processes.map((p, index: number) => (
+                                <div
+                                    key={`pro${index}`}
+                                    id={`slide${index}`}
+                                    className={`carousel-item relative  card w-96 bg-primary text-primary-content mx-2`}
+                                >
+                                    <div className="card-body">
+                                        <h2 className="card-title">{p.ref}</h2>
+                                        <p>{p.description}</p>
+                                        <div className="card-actions justify-end">
+                                            <button
+                                                className="btn"
+                                                onClick={() =>
+                                                    router.push(
+                                                        `/process/new?wfid=${p.id}`
+                                                    )
+                                                }
+                                                key={`form${index}`}
+                                            >
+                                                Proceder
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>

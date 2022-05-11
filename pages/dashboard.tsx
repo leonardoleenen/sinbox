@@ -3,61 +3,111 @@ import type { NextPage } from 'next'
 import Container from '../components/container'
 import Header from '../components/header'
 import InternalPage from '../components/internalPage'
+import Image from 'next/image'
+import { useRouter } from 'next/router'
 
 const Page: NextPage = () => {
+    const router = useRouter()
     return (
         <div>
             <Header />
             <Container>
                 <InternalPage title="Bienvenido ">
-                    <div>
-                        <div className="w-full shadow stats">
-                            <div className="stat">
-                                <div className="stat-figure text-primary">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        className="inline-block w-8 h-8 stroke-current"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth="2"
-                                            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                                        ></path>
-                                    </svg>
-                                </div>
-                                <div className="stat-title">Total Likes</div>
-                                <div className="stat-value text-primary">
-                                    25.6K
-                                </div>
-                                <div className="stat-desc">
-                                    21% more than last month
-                                </div>
+                    <div className="grid grid-cols-3 gap-4">
+                        <div
+                            className=" cursor-pointer card w-96 bg-lime-50 shadow-xl"
+                            onClick={() => router.push('/process')}
+                        >
+                            <div className="card-body">
+                                <h2 className="card-title">
+                                    Bandeja de trabajo
+                                </h2>
+                                <p>
+                                    Módulo que gestionar los tramites que son
+                                    enviados o bien iniciar uno nuevo
+                                </p>
                             </div>
-                            <div className="stat">
-                                <div className="stat-figure text-info">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        className="inline-block w-8 h-8 stroke-current"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth="2"
-                                            d="M13 10V3L4 14h7v7l9-11h-7z"
-                                        ></path>
-                                    </svg>
-                                </div>
-                                <div className="stat-title">Page Views</div>
-                                <div className="stat-value text-info">2.6M</div>
-                                <div className="stat-desc">
-                                    21% more than last month
-                                </div>
+                            <figure>
+                                <Image
+                                    src={`/illustrations/planificacion.svg`}
+                                    alt={'Analytics'}
+                                    width={250}
+                                    height={250}
+                                />
+                            </figure>
+                        </div>
+                        <div
+                            className=" cursor-pointer card w-96 shadow-xl"
+                            onClick={() => router.push('/preventivo')}
+                        >
+                            <div className="card-body">
+                                <h2 className="card-title">Preventivo</h2>
+                                <p>Módulo que gestionar los preventivos</p>
                             </div>
+                            <figure>
+                                <Image
+                                    src={`/illustrations/planificacion.svg`}
+                                    alt={'Analytics'}
+                                    width={250}
+                                    height={250}
+                                />
+                            </figure>
+                        </div>
+                        <div
+                            className="  cursor-pointer  card w-96  shadow-xl"
+                            onClick={() => router.push('/planning')}
+                        >
+                            <div className="card-body">
+                                <h2 className="card-title">Planificacion</h2>
+                                <p>
+                                    Módulo que gestionar la planificación de las
+                                    pautas publicitarias
+                                </p>
+                            </div>
+                            <figure>
+                                <Image
+                                    src={`/illustrations/planificacion.svg`}
+                                    alt={'Analytics'}
+                                    width={250}
+                                    height={250}
+                                />
+                            </figure>
+                        </div>
+
+                        <div className="  cursor-pointer  card w-96 bg-gray-100  shadow-xl">
+                            <div className="card-body">
+                                <h2 className="card-title">Seguridad</h2>
+                                <p>
+                                    Permite gestionar la seguridad de la
+                                    aplicación
+                                </p>
+                            </div>
+                            <figure>
+                                <Image
+                                    src={`/illustrations/planificacion.svg`}
+                                    alt={'Analytics'}
+                                    width={250}
+                                    height={250}
+                                />
+                            </figure>
+                        </div>
+
+                        <div className="  cursor-pointer  card w-96 bg-gray-100 shadow-xl">
+                            <div className="card-body">
+                                <h2 className="card-title">Analytics</h2>
+                                <p>
+                                    Módulo que permite visualizar los datos
+                                    analiticos de la plataforma
+                                </p>
+                            </div>
+                            <figure>
+                                <Image
+                                    src={`/illustrations/analytics.svg`}
+                                    alt={'Analytics'}
+                                    width={250}
+                                    height={250}
+                                />
+                            </figure>
                         </div>
                     </div>
                 </InternalPage>
