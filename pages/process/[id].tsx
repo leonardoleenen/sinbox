@@ -66,6 +66,7 @@ const Page: NextPage = () => {
             )
             setRule(ruleResult[0].result)
             if (
+                ruleResult[0].result &&
                 ruleResult[0].result.serviceCallback &&
                 ruleResult[0].result.tarriffCallback
             ) {
