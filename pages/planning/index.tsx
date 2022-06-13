@@ -42,6 +42,7 @@ const Page: NextPage = () => {
                                         <th>Creado</th>
                                         <th>Actualizado</th>
                                         <th></th>
+                                        <th></th>
                                     </tr>
                                 </thead>
 
@@ -77,6 +78,11 @@ const Page: NextPage = () => {
                                                             ? ' y editar'
                                                             : ''
                                                     } `}
+                                                </button>
+                                            </td>
+                                            <td>
+                                                <button className="btn btn-sm">
+                                                    Clonar
                                                 </button>
                                             </td>
                                         </tr>

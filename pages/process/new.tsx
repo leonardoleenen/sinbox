@@ -28,7 +28,7 @@ const Page: NextPage = () => {
     const [dataForm, setDataForm] = useState<any>({})
     const [showSuccess, setShowSuccess] = useState(false)
     const [wfSpec, setWfSpec] = useState<WorkflowSpec | null>(null)
-
+    const [fetching, setFetching] = useState(false)
     useEffect(() => {
         ;(async () => {
             if (!wfid) return
@@ -74,6 +74,7 @@ const Page: NextPage = () => {
     if (!formSpec) return <Loading />
 
     const workflowNextStep = async () => {
+        setFetching(true)
         await workflowService.createProcess(
             wfSpec as WorkflowSpec,
             dataForm,
@@ -86,6 +87,7 @@ const Page: NextPage = () => {
             description: formSpec.description,
             createdAt: Date.now()
         })
+        setFetching(false)
         setShowSuccess(true)
     }
 
@@ -125,7 +127,7 @@ const Page: NextPage = () => {
                     </button>
                     <button
                         onClick={workflowNextStep}
-                        className="btn btn-primary"
+                        className={`btn btn-primary ${fetching && 'loading'}`}
                     >
                         {rule.willBeRequiredDescription}
                     </button>

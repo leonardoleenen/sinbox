@@ -30,6 +30,7 @@ const Page: NextPage = () => {
     const [isFinalStep, setIsFinalStep] = useState(false)
     const [serviceCallback, setServiceCallback] = useState()
     const [tarriffCallback, setTarriffCallback] = useState()
+    const [fetching, setFetching] = useState(false)
     const [dataForm, setDataForm] = useState<{
         id: string
         description: string
@@ -107,6 +108,7 @@ const Page: NextPage = () => {
     }, [process])
 
     const workflowNextStep = async () => {
+        setFetching(true)
         await workflowService.moveNext(
             process as WorkflowProcess,
             isFinalStep,
@@ -115,6 +117,7 @@ const Page: NextPage = () => {
             serviceCallback,
             tarriffCallback
         )
+        setFetching(false)
         setShowSuccess(true)
     }
 
@@ -178,7 +181,9 @@ const Page: NextPage = () => {
                     {!process?.processComplete && (
                         <button
                             onClick={workflowNextStep}
-                            className="btn btn-primary "
+                            className={`btn btn-primary ${
+                                fetching && 'loading'
+                            } `}
                         >
                             {rule.willBeRequiredDescription}
                         </button>
@@ -251,7 +256,6 @@ const Page: NextPage = () => {
                             readonly={evidenceIndex !== -1}
                             onChange={({ data }) => setDataForm(data)}
                         />
-                        )
                     </div>
                     <div className="flex">
                         {attachements.map((a: any, index: any) => (
