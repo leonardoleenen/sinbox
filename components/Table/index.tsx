@@ -17,6 +17,7 @@ interface Props {
  * @param  itemsPerPage  How many items you would like to be shown
  */
 const Table = (props: Props) => {
+    console.log(props)
     const [currentPage, setCurrentPage] = useState(0)
     const pages =
         props.x_axis.length >= props.itemsPerPage

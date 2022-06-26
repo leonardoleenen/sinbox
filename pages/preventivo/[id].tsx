@@ -28,7 +28,7 @@ const Page: NextPage = () => {
     const [showPlanificacionActiva, setShowPlanificacionActiva] = useState(true)
     const [preventivo, setPreventivo] = useState({
         id: '',
-        campania: '',
+        referencia: '',
         mes: 'enero',
         anio: '2022',
         title: 'Sin Nombre',
@@ -130,7 +130,7 @@ const Page: NextPage = () => {
         }
 
         return (
-            <div className="flex py-8 justify-center">
+            <div className="flex py-8 justify-center overflow-x-auto w-full">
                 {Object.keys(r).map(k => (
                     <div key={k} className="stat shadow mx-4">
                         <div className="stat-desc">ID / Beneficiario</div>
@@ -352,9 +352,9 @@ const Page: NextPage = () => {
                         <tr>
                             <th></th>
                             <th>Razon Social</th>
+                            <th>Programa</th>
                             <th>Unidad</th>
                             <th>Importe Unit</th>
-                            <th>Programa</th>
                         </tr>
                     </thead>
 
@@ -391,9 +391,9 @@ const Page: NextPage = () => {
                                         />
                                     </td>
                                     <td>{v.razonSocial}</td>
+                                    <td>{v.programa}</td>
                                     <td>{v.unidad}</td>
                                     <td>{formatter.format(v.importe)}</td>
-                                    <td>{v.programa}</td>
                                 </tr>
                             ))}
                     </tbody>
@@ -427,7 +427,7 @@ const Page: NextPage = () => {
                             }`}
                             disabled={
                                 preventivo.title !== '' &&
-                                preventivo.campania !== '' &&
+                                preventivo.referencia !== '' &&
                                 preventivo.anio !== '' &&
                                 preventivo.mes !== '' &&
                                 values.length > 0
@@ -509,12 +509,12 @@ const Page: NextPage = () => {
                         <div>
                             <input
                                 type="text"
-                                placeholder="Campaña"
-                                value={preventivo.campania}
+                                placeholder="Referencia"
+                                value={preventivo.referencia}
                                 onChange={e =>
                                     setPreventivo({
                                         ...preventivo,
-                                        campania: e.target.value
+                                        referencia: e.target.value
                                     })
                                 }
                                 className="input w-full w-64 input-bordered"

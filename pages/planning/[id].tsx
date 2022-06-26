@@ -9,7 +9,7 @@ import TableRenderers from 'react-pivottable/TableRenderers'
 import dynamic from 'next/dynamic'
 import _ from 'lodash'
 import { useRouter } from 'next/router'
-import ReactDataSheet from 'react-datasheet'
+import { MultiSelect } from 'react-multi-select-component'
 import { preventivoService } from '../../services/preventivo.service'
 import { object } from '@jsonforms/examples'
 import { customAlphabet } from 'nanoid'
@@ -17,6 +17,19 @@ import Icon from '../../components/icon/index'
 
 const Plot = dynamic(() => import('react-plotly.js'), { ssr: false })
 const PlotlyRenderers = createPlotlyRenderers(Plot)
+
+const opcionEsCampanias = [
+    { label: 'Billetera Santa Fe', value: 'billeteraSantaFe' },
+    { label: 'COVID19 2022', value: 'covid192022' },
+    { label: 'Genero', value: 'Genero', disabled: true },
+    { label: 'Boleto Educativo', value: 'Boleto Educativo' },
+    { label: 'Primer Empleo', value: 'Primer Empleo' },
+    { label: 'Seguridad 911', value: 'Seguridad 911' },
+    { label: 'Fraude', value: 'Fraude' },
+    { label: 'Turismo Otoño', value: 'turismoOtoño' },
+    { label: 'Partidas Online', value: 'Partidas Online' },
+    { label: 'Obras Caminos Rurales', value: 'Obras Caminos Rurales' }
+]
 
 const Page: NextPage = () => {
     const [tarriffs, setTarriffs] = useState([])
@@ -138,36 +151,62 @@ const Page: NextPage = () => {
         }
 
         return (
-            <div className="flex py-8 justify-center">
-                {Object.keys(r).map(k => (
-                    <div
-                        key={k}
-                        className="stat shadow mx-4"
-                        style={{ width: '350px' }}
-                    >
+            <div className=" w-full overflow-x-auto">
+                <div className="flex py-8 justify-center ">
+                    {Object.keys(r).map(k => (
                         <div
-                            className="stat-figure text-primary"
-                            onClick={() =>
-                                setBeneficiarioSeleccionado(r[k].cuit)
-                            }
+                            key={k}
+                            className="stat shadow mx-4"
+                            style={{ width: '350px' }}
                         >
-                            {r[k].cuit === beneficiarioSeleccionado ? (
-                                <PencilFilled />
-                            ) : (
-                                <PencilOutLinded />
-                            )}
+                            <div
+                                className="stat-figure text-primary"
+                                onClick={() =>
+                                    setBeneficiarioSeleccionado(r[k].cuit)
+                                }
+                            >
+                                {r[k].cuit === beneficiarioSeleccionado ? (
+                                    <PencilFilled />
+                                ) : (
+                                    <PencilOutLinded />
+                                )}
+                            </div>
+                            <div className="stat-desc">ID / Beneficiario</div>
+                            <div className="stat-title">{r[k].razonSocial}</div>
+                            <div className="stat-value">
+                                {formatter.format(r[k].total)}
+                            </div>
                         </div>
-                        <div className="stat-desc">ID / Beneficiario</div>
-                        <div className="stat-title">{r[k].razonSocial}</div>
-                        <div className="stat-value">
-                            {formatter.format(r[k].total)}
-                        </div>
-                    </div>
-                ))}
+                    ))}
+                </div>
             </div>
         )
     }
 
+    const Campaign = ({ row }: any) => {
+        const [selected, setSelected] = useState([])
+
+        return (
+            <div>
+                <MultiSelect
+                    className="w-64"
+                    options={opcionEsCampanias}
+                    value={values[row].campania || []}
+                    onChange={(e: any) => {
+                        const cell: any = values[row]
+                        cell.campania = e
+                        const listTemp: any[] = Object.assign([], values)
+                        listTemp[row] = cell
+                        setValues(listTemp)
+                        console.log(listTemp)
+
+                        setSelected(e)
+                    }}
+                    labelledBy="Select"
+                />
+            </div>
+        )
+    }
     const EnPlanificacion = () => {
         getStats()
 
@@ -199,17 +238,20 @@ const Page: NextPage = () => {
         return (
             <div
                 className="overflow-x-auto overflow-y-auto w-full"
-                style={{ height: '500px', width: '1200px' }}
+                style={{ height: '500px', width: '100%' }}
             >
                 <table className="table w-full table-compac">
                     <thead>
                         <tr>
                             <th></th>
-                            <th>ID/Benef</th>
-                            <th>Razon Social</th>
+                            <th>GE</th>
+                            <th>Medio</th>
+                            <th>Programa</th>
+                            <th>Campañas</th>
+
                             <th>Grupo</th>
                             <th>Importe Unit</th>
-                            <th>Programa</th>
+
                             <th>Segundos</th>
                             <th>Menciones</th>
                             <th>Menciones x Seg</th>
@@ -247,11 +289,17 @@ const Page: NextPage = () => {
                                     >
                                         <Icon stroke={1} type="REMOVE"></Icon>
                                     </td>
-                                    <td>{`${v.razonSocial}/1`}</td>
+
+                                    <td>{`1`}</td>
                                     <td>{v.razonSocial}</td>
+                                    <td>{v.programa}</td>
+                                    <td>
+                                        <Campaign row={row} />
+                                    </td>
+
                                     <td>{v.grupo}</td>
                                     <td>{formatter.format(v.importe)}</td>
-                                    <td>{v.programa}</td>
+
                                     <td>
                                         <input
                                             value={v.segundosSeleccionados}
@@ -463,7 +511,7 @@ const Page: NextPage = () => {
                         <div>
                             <input
                                 type="text"
-                                placeholder="Campaña"
+                                placeholder="Referencia"
                                 value={planificacion.campania}
                                 onChange={e =>
                                     setPlanificacion({

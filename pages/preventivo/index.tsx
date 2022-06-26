@@ -49,49 +49,47 @@ const Page: NextPage = () => {
     useEffect(() => {
         preventivoService.getPreventivos().then(result => {
             setPreventivos(result)
-            result.forEach((p: any) => {
-                setXAxis([
-                    ...x_axis,
-                    {
-                        nro_prev: p.status !== 'draft' ? p.id : '-',
-                        titulo: p.title,
-                        tipo_medio: p.medio,
-                        estado: p.status,
-                        cuando: `${p.mes} - ${p.anio}`,
-                        creado: moment(p.createdAt).format(
-                            'DD/MM/YYYY HH:mm:ss'
-                        ),
-                        actualizado: moment(p.updatedAt).format(
-                            'DD/MM/YYYY HH:mm:ss'
-                        ),
-                        custom: (
-                            <div>
+            // result.forEach((p: any) =>
+            const temp = []
+            for (const i in result) {
+                const p = result[i]
+
+                temp.push({
+                    nro_prev: p.status !== 'draft' ? p.id : '-',
+                    titulo: p.title,
+                    tipo_medio: p.medio,
+                    estado: p.status,
+                    cuando: `${p.mes} - ${p.anio}`,
+                    creado: moment(p.createdAt).format('DD/MM/YYYY HH:mm:ss'),
+                    actualizado: moment(p.updatedAt).format(
+                        'DD/MM/YYYY HH:mm:ss'
+                    ),
+                    custom: (
+                        <div>
+                            <button
+                                className="btn btn-sm"
+                                onClick={() =>
+                                    router.push(`/preventivo/${p.id}`)
+                                }
+                            >
+                                Ver
+                                {`${p.status === 'draft' ? ' y editar' : ''} `}
+                            </button>
+                            {p.status === 'approved' && (
                                 <button
-                                    className="btn btn-sm"
+                                    className="btn btn-sm ml-4"
                                     onClick={() =>
-                                        router.push(`/preventivo/${p.id}`)
+                                        router.push(`/preventivo/new`)
                                     }
                                 >
-                                    Ver
-                                    {`${
-                                        p.status === 'draft' ? ' y editar' : ''
-                                    } `}
+                                    Ampliar
                                 </button>
-                                {p.status === 'approved' && (
-                                    <button
-                                        className="btn btn-sm ml-4"
-                                        onClick={() =>
-                                            router.push(`/preventivo/new`)
-                                        }
-                                    >
-                                        Ampliar
-                                    </button>
-                                )}
-                            </div>
-                        )
-                    }
-                ])
-            })
+                            )}
+                        </div>
+                    )
+                })
+            }
+            setXAxis(temp)
         })
     }, [])
     return (
@@ -109,7 +107,7 @@ const Page: NextPage = () => {
                         </button>
                     }
                 >
-                    <Table y_axis={y_axis} x_axis={x_axis} itemsPerPage={2} />
+                    <Table y_axis={y_axis} x_axis={x_axis} itemsPerPage={10} />
                 </InternalContainer>
             </Container>
         </div>

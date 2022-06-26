@@ -12,7 +12,10 @@ export default async function handler(
     res: NextApiResponse<any>
     // res: NextApiResponse<Data>
 ) {
-    const db = pg({
+    res.status(200).json({
+        result: 'ok'
+    })
+    /* const db = pg({
         client: 'pg',
         connection: {
             database: process.env.KNEX_DB_NAME,
@@ -33,5 +36,5 @@ export default async function handler(
         res.status(200).json({
             result: result
         })
-    }
+    } */
 }
