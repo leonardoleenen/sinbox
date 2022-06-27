@@ -191,11 +191,21 @@ const Page: NextPage = () => {
             s => s.campainsSelected
         )
 
+        const id = rowSelected ? rowSelected.id : ''
+
+        const campaniasSelecionadas = values
+            .filter(v => v.id === id)
+            .map(c => c.campania)
+            .filter(c => c !== undefined)
+            .map(v => v.value)
+
         return (
             <div>
                 <MultiSelect
                     className="w-full"
-                    options={opcionEsCampanias}
+                    options={opcionEsCampanias.filter(
+                        v => campaniasSelecionadas.indexOf(v.value) === -1
+                    )}
                     value={campainSelected}
                     onChange={(e: any) =>
                         UIPlanningStore.update(s => {
@@ -229,6 +239,9 @@ const Page: NextPage = () => {
 
         return (
             <div className="modal-action">
+                <label htmlFor="my-modal" className="btn btn-error">
+                    Cancelar
+                </label>
                 <label
                     htmlFor="my-modal"
                     className="btn"
