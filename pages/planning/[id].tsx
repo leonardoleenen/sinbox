@@ -14,6 +14,7 @@ import { preventivoService } from '../../services/preventivo.service'
 import { object } from '@jsonforms/examples'
 import { customAlphabet } from 'nanoid'
 import Icon from '../../components/icon/index'
+import { UIPlanningStore } from '../../store/planning.store'
 
 const Plot = dynamic(() => import('react-plotly.js'), { ssr: false })
 const PlotlyRenderers = createPlotlyRenderers(Plot)
@@ -33,6 +34,7 @@ const opcionEsCampanias = [
 
 const Page: NextPage = () => {
     const [tarriffs, setTarriffs] = useState([])
+    const [activeTab, setActiveTab] = useState('planificacionActiva')
     const [values, setValues] = useState<Array<any>>([])
     const [proveedores, setProveedores] = useState([])
     const [value, setValue] = useState()
@@ -40,6 +42,7 @@ const Page: NextPage = () => {
     const [isSaving, setIsSaving] = useState(false)
     const [showPlanificacionActiva, setShowPlanificacionActiva] = useState(true)
     const [preventivos, setPreventivos] = useState<Array<any>>([])
+    const [rowSelected, setRowSelected] = useState(null)
     const [beneficiarioSeleccionado, setBeneficiarioSeleccionado] =
         useState(null)
     const [planificacion, setPlanificacion] = useState({
@@ -183,33 +186,73 @@ const Page: NextPage = () => {
         )
     }
 
-    const Campaign = ({ row }: any) => {
-        const [selected, setSelected] = useState([])
+    const Campaign = () => {
+        const campainSelected = UIPlanningStore.useState(
+            s => s.campainsSelected
+        )
 
         return (
             <div>
                 <MultiSelect
-                    className="w-64"
+                    className="w-full"
                     options={opcionEsCampanias}
-                    value={values[row].campania || []}
-                    onChange={(e: any) => {
-                        const cell: any = values[row]
-                        cell.campania = e
-                        const listTemp: any[] = Object.assign([], values)
-                        listTemp[row] = cell
-                        setValues(listTemp)
-                        console.log(listTemp)
-
-                        setSelected(e)
-                    }}
+                    value={campainSelected}
+                    onChange={(e: any) =>
+                        UIPlanningStore.update(s => {
+                            s.campainsSelected = e
+                        })
+                    }
                     labelledBy="Select"
                 />
             </div>
         )
     }
-    const EnPlanificacion = () => {
-        getStats()
 
+    const BottonSeleccionarCampania = () => {
+        const campainSelected = UIPlanningStore.useState(
+            s => s.campainsSelected
+        )
+
+        const split = (rowsFilled: Array<any>) => {
+            const index = values.map(m => m.id).indexOf(rowsFilled[0].id)
+            const copyOfValues = [...values]
+            copyOfValues[index].campania = rowsFilled[0].campania
+
+            setValues(
+                _.sortBy([...copyOfValues, ...rowsFilled.slice(1)], v => v.id)
+            )
+
+            UIPlanningStore.update(s => {
+                s.campainsSelected = []
+            })
+        }
+
+        return (
+            <div className="modal-action">
+                <label
+                    htmlFor="my-modal"
+                    className="btn"
+                    onClick={() => {
+                        const rowsFilled = campainSelected.map(
+                            (c: any, index: number) => {
+                                return {
+                                    ...(rowSelected as any),
+                                    campania: c,
+                                    days: Array(31).fill(0),
+                                    segundosSeleccionados: 0
+                                }
+                            }
+                        )
+                        split(rowsFilled)
+                    }}
+                >
+                    Definir campañas
+                </label>
+            </div>
+        )
+    }
+
+    const EnPlanificacion = () => {
         if (_.isEmpty(values))
             return (
                 <div className="hero py-16 bg-base-200">
@@ -240,15 +283,50 @@ const Page: NextPage = () => {
                 className="overflow-x-auto overflow-y-auto w-full"
                 style={{ height: '500px', width: '100%' }}
             >
+                <input type="checkbox" id="my-modal" className="modal-toggle" />
+                <div className="modal">
+                    <div className="modal-box  w-11/12 max-w-5xl ">
+                        <h3 className="font-bold text-lg">
+                            Configuración de campañas
+                        </h3>
+                        <div className="flex w-full pt-2">
+                            <div className="w-1/2 px-2 prose">
+                                <p>
+                                    Al seleccionar las campañas el sistema
+                                    abrirá (o cerrara) el renglon de acuerdo a
+                                    la cantidad de campañas que haya
+                                    seleccionado
+                                </p>
+                                <p>
+                                    Por ello es importante que tenga en cuenta
+                                    que todos los valores volveran a cero
+                                </p>
+                                <p>
+                                    Es decir, si está agregando campañas las
+                                    nuevas filas quedarán en cero
+                                </p>
+                                <p>
+                                    En caso de quitar campañas el valor de los
+                                    acumulados se agregarán en la primer fila
+                                </p>
+                            </div>
+                            <div className="w-1/2">
+                                <Campaign />
+                            </div>
+                        </div>
+                        <BottonSeleccionarCampania />
+                    </div>
+                </div>
+
                 <table className="table w-full table-compac">
                     <thead>
                         <tr>
                             <th></th>
+                            <th></th>
                             <th>GE</th>
                             <th>Medio</th>
                             <th>Programa</th>
-                            <th>Campañas</th>
-
+                            <th>Campaña</th>
                             <th>Grupo</th>
                             <th>Importe Unit</th>
 
@@ -289,14 +367,29 @@ const Page: NextPage = () => {
                                     >
                                         <Icon stroke={1} type="REMOVE"></Icon>
                                     </td>
+                                    <td>
+                                        <label
+                                            htmlFor="my-modal"
+                                            className="btn modal-button btn-primary btn-sm"
+                                            onClick={() => setRowSelected(v)}
+                                        >
+                                            Definir Campañas
+                                        </label>
+                                    </td>
 
                                     <td>{`1`}</td>
                                     <td>{v.razonSocial}</td>
                                     <td>{v.programa}</td>
                                     <td>
-                                        <Campaign row={row} />
+                                        <div
+                                            className={`${
+                                                v.campania && 'bg-green-300'
+                                            }  w-full h-full px-4 py-2`}
+                                        >
+                                            {(v.campania && v.campania.label) ||
+                                                'Sin Definir'}
+                                        </div>
                                     </td>
-
                                     <td>{v.grupo}</td>
                                     <td>{formatter.format(v.importe)}</td>
 
@@ -424,6 +517,60 @@ const Page: NextPage = () => {
         )
     }
 
+    const TotalBeneficiarios = () => {
+        const r: any = {}
+
+        for (const i in values) {
+            const importe = r[values[i].cuit] ? r[values[i].cuit].total : 0
+            r[values[i].cuit] = {
+                total:
+                    importe +
+                    calcularMenciones(values[i]) *
+                        values[i].segundosSeleccionados *
+                        values[i].importe,
+                razonSocial: values[i].razonSocial + '/1',
+                cuit: values[i].cuit
+            }
+        }
+
+        return (
+            <div>
+                <table className="table w-full table-compac">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Accion</th>
+                            <th>Razon Social</th>
+                            <th>Importe</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {Object.keys(r).map((k: any, index: number) => (
+                            <tr key={index + 1}>
+                                <th>{index + 1}</th>
+                                <th>
+                                    <button
+                                        onClick={() => {
+                                            setBeneficiarioSeleccionado(
+                                                r[k].cuit
+                                            )
+                                            setActiveTab('planificacionActiva')
+                                        }}
+                                        className="btn btn-sm bt-primary"
+                                    >
+                                        Planificar
+                                    </button>
+                                </th>
+                                <td>{r[k].razonSocial}</td>
+                                <td>{formatter.format(r[k].total)}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        )
+    }
+
     return (
         <ClearContainer
             className=""
@@ -522,74 +669,8 @@ const Page: NextPage = () => {
                                 className="input w-full w-64 input-bordered"
                             />
                         </div>
-
-                        {/*<select
-                            onChange={e => {
-                                setPlanificacion({
-                                    ...planificacion,
-                                    mes: e.target.value
-                                })
-                            }}
-                            value={planificacion.mes}
-                            className="select w-full max-w-xs select-bordered ml-4"
-                        >
-                            <option disabled selected>
-                                Mes
-                            </option>
-                            <option value="Enero">Enero</option>
-                            <option value="Febrero">Febrero</option>
-                            <option value="Marzo">Marzo</option>
-                            <option value="Abril">Abril</option>
-                            <option value="Mayo">Mayo</option>
-                            <option value="Junio">Junio</option>
-                            <option value="Junio">Junio</option>
-                            <option value="Agosto">Agosto</option>
-                            <option value="Septiembre">Septiembre</option>
-                            <option value="Octubre">Octubre</option>
-                            <option value="Noviembre">Noviembre</option>
-                            <option value="Diciembre">Diciembre</option>
-                        </select>
-                        <select
-                            onChange={e => {
-                                setPlanificacion({
-                                    ...planificacion,
-                                    anio: e.target.value
-                                })
-                            }}
-                            value={planificacion.anio}
-                            className="select w-full max-w-xs select-bordered ml-4"
-                        >
-                            <option disabled selected>
-                                Año
-                            </option>
-                            <option value="2022">2022</option>
-                            <option value="2023">2023</option>
-                            <option value="2024">2024</option>
-                            <option value="2025">2025</option>
-                        </select>*/}
                     </div>
                 </div>
-                {/* <div className="text-2xl font-semibold  pt-8 pb-4">
-                    Simulador
-                </div>
-                <div className="flex ">
-                    
-
-                    <div>
-                        <PivotTableUI
-                            data={values.filter(v => v.activo)}
-                            onChange={s => setValue(s)}
-                            {...value}
-                            renderers={Object.assign(
-                                {},
-                                TableRenderers,
-                                PlotlyRenderers
-                            )}
-                        />
-                    </div>
-                            </div> */}
-
-                {getStats()}
 
                 <div className="text-2xl font-semibold pt-8 pb-4">
                     Cuadros Tarifarios
@@ -597,26 +678,33 @@ const Page: NextPage = () => {
                 <div className="tabs tabs-boxed mb-8 bg-white">
                     <a
                         className={`tab ${
-                            showPlanificacionActiva && 'tab-active'
+                            activeTab === 'totalBeneficiarios' && 'tab-active'
                         }`}
-                        onClick={() => setShowPlanificacionActiva(true)}
+                        onClick={() => setActiveTab('totalBeneficiarios')}
+                    >
+                        Total Beneficiarios
+                    </a>
+                    <a
+                        className={`tab ${
+                            activeTab === 'planificacionActiva' && 'tab-active'
+                        }`}
+                        onClick={() => setActiveTab('planificacionActiva')}
                     >
                         Planficacion Activa
                     </a>
                     <a
                         className={`tab ${
-                            !showPlanificacionActiva && 'tab-active'
+                            activeTab === 'proveedoresDisponibles' &&
+                            'tab-active'
                         }`}
-                        onClick={() => setShowPlanificacionActiva(false)}
+                        onClick={() => setActiveTab('proveedoresDisponibles')}
                     >
                         Proveedores Disponibles
                     </a>
                 </div>
-                {showPlanificacionActiva ? (
-                    <EnPlanificacion />
-                ) : (
-                    <ListaProveedores />
-                )}
+                {activeTab === 'totalBeneficiarios' && <TotalBeneficiarios />}
+                {activeTab === 'planificacionActiva' && <EnPlanificacion />}
+                {activeTab === 'proveedoresDisponibles' && <ListaProveedores />}
             </div>
         </ClearContainer>
     )
@@ -651,6 +739,25 @@ const PencilOutLinded = () => {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+            />
+        </svg>
+    )
+}
+
+const Adjustment = () => {
+    return (
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={1}
+        >
+            <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
             />
         </svg>
     )
