@@ -4,7 +4,6 @@ import type { NextPage } from 'next'
 const Page: NextPage = () => {
     return (
         <div>
-            {/*--HEADER--*/}
             <div className="border-slate-200 border-b-2 p-4 px-8 flex flex-row items-center">
                 <div className="basis-1/2">
                     <img
@@ -23,11 +22,10 @@ const Page: NextPage = () => {
                 </div>
                 <div className="basis-1/2 text-right">
                     <h4 className="font-bold text-base">
-                        Santa Fe, "Cuna de la Constitución Nacional"
+                        Santa Fe, Cuna de la Constitución Nacional
                     </h4>
                 </div>
             </div>
-            {/*--SUB HEADER--*/}
             <div className="border-slate-200 border-b-2 p-4 px-8 border-dashed flex text-xs  text-slate-600">
                 <div className="basis-1/2">
                     Campaña:
@@ -46,11 +44,11 @@ const Page: NextPage = () => {
                         <strong className="ml-2">4797/2022</strong>
                     </div>
                     <div>
-                        Fecha:<strong className="ml-2">12/12/2020</strong>
+                        Fecha:
+                        <strong className="ml-2">{{ fechaRegistro }}</strong>
                     </div>
                 </div>
             </div>
-            {/*--BODY--*/}
             <div className=" p-4  text-xs px-8  text-slate-600">
                 <h4 className="font-bold mb-4">
                     Señor Gerente o Administrador de:

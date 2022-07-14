@@ -12,6 +12,8 @@ import Success from '../../components/success'
 import FileUpload from '../../components/fileupload/fileUpload'
 import moment from 'moment'
 import axios from 'axios'
+import { format } from 'path/posix'
+import { sortedIndexBy } from 'lodash'
 
 interface FilesOpts {
     type: string
@@ -88,18 +90,7 @@ const Page: NextPage = () => {
             !process.processComplete &&
                 ruleResult[0].result.isFinalStep &&
                 setIsFinalStep(ruleResult[0].result.isFinalStep)
-            const { data } = await axios.post(
-                `/api/htmlEngine?id=${formSpecResult.id}`,
-                {
-                    name: 'Alan',
-                    hometown: 'Somewhere, TX',
-                    kids: [
-                        { name: 'Jimmy', age: '12' },
-                        { name: 'Sally', age: '4' }
-                    ]
-                }
-            )
-            setMyHtml(data.html)
+
             setFormSpec({
                 ...formSpecResult,
                 spec: {
@@ -114,11 +105,23 @@ const Page: NextPage = () => {
                         formSpecResult.spec.schema
                 }
             })
-
             process.processComplete && setEvidenceIndex(0)
+            if (process) {
+                await getPDFString(formSpecResult, evidenceIndex)
+            }
         })()
     }, [process])
-
+    const getPDFString = async (formSpec: any, index: number) => {
+        const { data } = await axios.post(`/api/htmlEngine`, {
+            schema:
+                evidenceIndex === -1
+                    ? formSpec.spec.pdfschema
+                    : process?.evidence[index].form.spec.pdfschema,
+            data:
+                evidenceIndex === -1 ? dataForm : process?.evidence[index].data
+        })
+        setMyHtml(data.html)
+    }
     const workflowNextStep = async () => {
         setFetching(true)
         await workflowService.moveNext(
@@ -173,7 +176,6 @@ const Page: NextPage = () => {
               )
 
     if (!attachements) attachements = []
-
     return (
         <ClearContainer
             title={formSpec.title}
@@ -208,7 +210,10 @@ const Page: NextPage = () => {
                     <ul className=" steps steps-vertical px-4">
                         {process?.evidence?.map((e: any, index: number) => (
                             <li
-                                onClick={() => setEvidenceIndex(index)}
+                                onClick={() => {
+                                    setEvidenceIndex(index)
+                                    getPDFString(formSpec, index)
+                                }}
                                 data-content={
                                     index === evidenceIndex ? '★' : index + 1
                                 }

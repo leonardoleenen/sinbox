@@ -11,14 +11,10 @@ export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse<Data>
 ) {
-    const { id } = req.query
-    const docRef = doc(firebaseManager.getDB(), 'workflowForm', id as string)
-    const docSnap = await getDoc(docRef)
-    const workflowData = (await docSnap.data()) as WorkFlowForm
-    const source = workflowData.spec?.pdfschema
+    const source = req.body.schema
     const template = Handlebars.compile(source)
     const data = {
-        ...req.body
+        ...req.body.data
     }
     const result = template(data)
     res.status(200).send({ html: result })
