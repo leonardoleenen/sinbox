@@ -15,7 +15,6 @@ const Page: NextPage = () => {
             <section className="mt-16">
                 <div className=" flex justify-between">
                     <div className="w-2/4 ">
-                        {' '}
                         <PDFDownloadLink document={<Opp />} fileName="OPP.pdf">
                             {({ blob, url, loading, error }) => {
                                 console.log(Opp)
@@ -23,7 +22,7 @@ const Page: NextPage = () => {
                                     ? 'Loading document...'
                                     : 'Descargar OPP'
                             }}
-                        </PDFDownloadLink>{' '}
+                        </PDFDownloadLink>
                     </div>
                 </div>
             </section>

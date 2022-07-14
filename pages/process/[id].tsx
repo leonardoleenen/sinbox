@@ -11,6 +11,7 @@ import Loading from '../../components/loader'
 import Success from '../../components/success'
 import FileUpload from '../../components/fileupload/fileUpload'
 import moment from 'moment'
+import axios from 'axios'
 
 interface FilesOpts {
     type: string
@@ -22,10 +23,10 @@ interface FilesOpts {
 const Page: NextPage = () => {
     const router = useRouter()
     const { id } = router.query
-
     const [showSuccess, setShowSuccess] = useState(false)
     const [process, setProcess] = useState<WorkflowProcess | any>()
     const [formSpec, setFormSpec] = useState<WorkFlowForm | any>(null)
+    const [myHtml, setMyHtml] = useState('')
     const [rule, setRule] = useState<any>()
     const [isFinalStep, setIsFinalStep] = useState(false)
     const [serviceCallback, setServiceCallback] = useState()
@@ -43,7 +44,6 @@ const Page: NextPage = () => {
         attachements: {}
     })
     const [evidenceIndex, setEvidenceIndex] = useState(-1)
-
     useEffect(() => {
         ;(async () => {
             if (!id) return
@@ -88,10 +88,22 @@ const Page: NextPage = () => {
             !process.processComplete &&
                 ruleResult[0].result.isFinalStep &&
                 setIsFinalStep(ruleResult[0].result.isFinalStep)
-
+            const { data } = await axios.post(
+                `/api/htmlEngine?id=${formSpecResult.id}`,
+                {
+                    name: 'Alan',
+                    hometown: 'Somewhere, TX',
+                    kids: [
+                        { name: 'Jimmy', age: '12' },
+                        { name: 'Sally', age: '4' }
+                    ]
+                }
+            )
+            setMyHtml(data.html)
             setFormSpec({
                 ...formSpecResult,
                 spec: {
+                    pdfschema: formSpecResult.spec.pdfschema,
                     uischema:
                         formSpecResult &&
                         formSpecResult.spec &&
@@ -233,7 +245,12 @@ const Page: NextPage = () => {
                 </div>
                 <div className="w-full">
                     <div className="w-full">
-                        <JsonForms
+                        <div
+                            dangerouslySetInnerHTML={{
+                                __html: myHtml
+                            }}
+                        ></div>
+                        {/* <JsonForms
                             schema={
                                 evidenceIndex === -1
                                     ? formSpec.spec.schema
@@ -255,7 +272,7 @@ const Page: NextPage = () => {
                             cells={materialCells}
                             readonly={evidenceIndex !== -1}
                             onChange={({ data }) => setDataForm(data)}
-                        />
+                        /> */}
                     </div>
                     <div className="flex">
                         {attachements.map((a: any, index: any) => (

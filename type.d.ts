@@ -148,6 +148,7 @@ type WorkFlowForm = {
     title: string
     subTitle?: string
     spec: {
+        pdfschema: string
         schema: any
         uischema: schema
     } | null
