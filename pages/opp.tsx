@@ -51,8 +51,6 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center',
-        textAlign: 'center',
         margin: 10
     },
     sectionContentHead0: {
@@ -69,6 +67,23 @@ const styles = StyleSheet.create({
         fontSize: '10px',
         display: 'flex',
         flexDirection: 'row'
+    },
+    sectionContentHeader: {
+        fontSize: '10px',
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        borderBottom: '1px solid #F5F5F5'
+    },
+    sectionContentSubHeader: {
+        fontSize: '10px',
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        borderBottom: '1px dashed #F5F5F5',
+        padding: 10,
+        paddingLeft: 20,
+        paddingRight: 20
     },
     sectionContentHeadTitle: {
         marginLeft: 10,
@@ -95,8 +110,7 @@ const styles = StyleSheet.create({
         fontSize: '10px',
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        padding: 20
+        justifyContent: 'space-between'
     },
     sectionContentHeadRight: {
         color: '#5b5b5f',
@@ -116,13 +130,15 @@ const styles = StyleSheet.create({
         padding: 10
     },
     size: {
-        marginTop: 10,
         color: '#5b5b5f',
         fontSize: '13px',
-        textAlign: 'center',
-        padding: 10,
+        textAlign: 'right',
         paddingLeft: 20,
-        paddingRight: 20
+        paddingRight: 20,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        fontWeight: 'bold'
     },
     sectionContentHead3: {
         marginTop: 10,
@@ -149,7 +165,7 @@ const styles = StyleSheet.create({
     sectionContentHeadColumn3: {
         display: 'flex',
         flexDirection: 'column',
-        textAlign: 'right'
+        textAlign: 'left'
     },
 
     m_b_5: {
@@ -167,7 +183,19 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     bold: {
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        marginBottom: 5
+    },
+    contenido: {
+        marginTop: 10,
+        color: '#5b5b5f',
+        fontSize: '10px',
+        backgroundColor: '#F5F5F5',
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        padding: 20,
+        borderRadius: 5
     }
 })
 
@@ -176,35 +204,34 @@ export default () => {
     return (
         <Document>
             <Page size="A4" style={styles.page}>
-                <View style={styles.sectionContentLOGO}>
-                    <Image
-                        src="logos/escudo.jpg/"
-                        style={{ width: '80px', height: '80px' }}
-                    />
+                <View style={styles.sectionContentHeader}>
+                    <View style={styles.sectionContentLOGO}>
+                        <Image
+                            src="logos/escudo.jpg/"
+                            style={{ width: '80px', height: '80px' }}
+                        />
 
-                    <View style={styles.sectionContentHeadTitle}>
-                        <Text style={styles.sectionFooterBold}>
-                            Ministerio de Gobierno y Reforma del Estado
-                        </Text>
-                        <Text>Secretaría de Comunicación Social</Text>
+                        <View style={styles.sectionContentHeadTitle}>
+                            <Text style={styles.sectionFooterBold}>
+                                Ministerio de Gestión Publica
+                            </Text>
+                            <Text>Secretaría de Comunicación Social</Text>
+                            <Text>
+                                Dirección General de Publicitaria y
+                                Administrativa
+                            </Text>
+                        </View>
+                    </View>
+                    <View style={styles.size}>
                         <Text>
-                            Dirección General de Publicitaria y Administrativa
+                            Santa Fe, "Cuna de la Constitución Nacional"
                         </Text>
                     </View>
                 </View>
-                <View style={styles.size}>
-                    <Text>
-                        Santa Fe, "Cuna de la Constitución Nacional", 25 de
-                        Abril de 2022
-                    </Text>
-                </View>
-                <View style={styles.sectionContentHeadRight}>
+                <View style={styles.sectionContentSubHeader}>
                     <View style={styles.sectionContentHeadColumn3}>
-                        <Text style={styles.textRight}>ORIGINAL</Text>
+                        <Text>Campaña:</Text>
                     </View>
-                </View>
-
-                <View style={styles.sectionContentHeadRight}>
                     <View style={styles.sectionContentHeadColumn3}>
                         <Text style={styles.m_b_5}>
                             ORDEN DE PUBLICIDAD N° : 4797/2022
@@ -212,8 +239,12 @@ export default () => {
                         <Text style={styles.m_b_5}>Expediente Nro.: - -</Text>
                     </View>
                 </View>
+
+                <View style={styles.sectionContentHeadRight}></View>
                 <View style={styles.sectionContentHeadLeft}>
-                    <Text>Señor Gerente o Administrador de:</Text>
+                    <Text style={{ fontWeight: 'bold' }}>
+                        Señor Gerente o Administrador de:
+                    </Text>
                 </View>
 
                 <View style={styles.sectionContentHead2}>
@@ -234,29 +265,38 @@ export default () => {
                     <Text style={styles.m_r_10}>TEMA: Institucional </Text>
                     <Text>DETALLE: WEB MAYO API</Text>
                 </View>
-                <View style={styles.sectionContentHead1}>
-                    <View style={styles.sectionContentHeadColumn3}>
-                        <Text style={styles.m_b_15}>
-                            Facturar a: ADMINISTRAC. PROV. DE IMPUESTOS
-                        </Text>
-                        <Text style={styles.m_b_5}>
-                            Fecha de Publicación: MAYO
-                        </Text>
-                        <Text style={styles.m_b_5}>
-                            Detalle: API MORATORIA 2022 -
-                        </Text>
-                        <Text style={styles.m_b_5}>
-                            Medidas: BANNER LATERAL DERECHO 300 X 420 PX
-                        </Text>
-                        <Text style={styles.m_b_15}>Monto: $ 25.000,00</Text>
-                        <Text style={styles.m_b_15}>
-                            Tarifa: $ 25.000,00 = $ 25000,00
-                        </Text>
-                        <Text style={styles.m_b_15}>
-                            Resolución N°: 0560/2021
-                        </Text>
+                <View style={styles.contenido}>
+                    <View style={styles.sectionContentHead1}>
+                        <View style={styles.sectionContentHeadColumn3}>
+                            <Text style={styles.m_b_5}>
+                                Ubicacion: ADMINISTRAC. PROV. DE IMPUESTOS
+                            </Text>
+                            <Text style={styles.m_b_5}>Tema: MAYO</Text>
+                            <Text style={styles.m_b_5}>
+                                Cant/Aviso: API MORATORIA 2022 -
+                            </Text>
+                            <Text style={styles.m_b_5}>Bruto: $10.000,00</Text>
+                            <Text style={styles.bold}>Total: $ 25.000,00</Text>
+                        </View>
+                    </View>
+                    <View style={styles.sectionContentHead1}>
+                        <View style={styles.sectionContentHeadColumn3}>
+                            <Text style={styles.m_b_5}>
+                                Medio: ADMINISTRAC. PROV. DE IMPUESTOS
+                            </Text>
+                            <Text style={styles.m_b_5}>
+                                Dias de emision: MAYO
+                            </Text>
+                            <Text style={styles.m_b_5}>
+                                Tarifa: API MORATORIA 2022 -
+                            </Text>
+                            <Text style={styles.m_b_5}>
+                                Descuento: API MORATORIA 2022 -
+                            </Text>
+                        </View>
                     </View>
                 </View>
+
                 <View style={styles.sectionContentHeadLeft}>
                     <Text>Saludo atte.-</Text>
                 </View>
