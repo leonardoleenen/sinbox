@@ -1,3 +1,4 @@
+import axios from 'axios'
 import React, { useState } from 'react'
 import JSONInput from 'react-json-editor-ajrm'
 import locale from 'react-json-editor-ajrm/locale/en'
@@ -5,25 +6,38 @@ import locale from 'react-json-editor-ajrm/locale/en'
 interface Props {
     schema: any
     onChange: (e: any) => void
+    onDataChange: (e: any) => void
+    jsonData: any
 }
 
 const Component = (props: Props): JSX.Element => {
     const [showPreview, setShowPreview] = useState(false)
-
+    const [parsedHtml, setParsedHtml] = useState('')
+    const [loadingParser, setLoadingParser] = useState(false)
     const Preview = () => {
+        if (loadingParser) return <div>Parser is loading ...</div>
         return (
             <div
                 dangerouslySetInnerHTML={{
-                    __html: props.schema
+                    __html: parsedHtml
                 }}
             />
         )
     }
-
-    const data = {}
     return (
         <div>
-            <div onClick={() => setShowPreview(!showPreview)}>
+            <div
+                onClick={async () => {
+                    setLoadingParser(true)
+                    setShowPreview(!showPreview)
+                    const { data } = await axios.post('/api/htmlEngine', {
+                        schema: props.schema,
+                        data: { ...props.jsonData }
+                    })
+                    setLoadingParser(false)
+                    setParsedHtml(data.html)
+                }}
+            >
                 <button className="btn btn-small btn-outline">
                     {showPreview ? 'Volver al editor' : 'Previsualizar'}{' '}
                 </button>
@@ -44,9 +58,11 @@ const Component = (props: Props): JSX.Element => {
                     <div className="w-1/3">
                         <JSONInput
                             id="html_data"
-                            placeholder={data}
+                            placeholder={props.jsonData}
                             locale={locale}
-                            onChange={(e: any) => console.log(e)}
+                            onChange={(e: any) =>
+                                props.onDataChange(e.jsObject)
+                            }
                         />
                     </div>
                 </div>

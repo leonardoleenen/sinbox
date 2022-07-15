@@ -21,6 +21,7 @@ const DynamicComponentWithNoSSR = dynamic(
 
 const Page: NextPage = () => {
     const [activeTab, setActiveTab] = useState(2)
+    const [examplePdfData, setExamplePdfData] = useState({})
     const [isSaving, setIsSaving] = useState(false)
     const [isLoading, setIsLoading] = useState(true)
     const [htmlSchema, setHtmlSchema] = useState<string | null>('')
@@ -62,6 +63,7 @@ const Page: NextPage = () => {
                 setUISchema(fspec.spec?.uischema)
                 setSchema(fspec.spec?.schema)
                 setHtmlSchema(fspec.spec?.pdfschema as any)
+                setExamplePdfData(fspec.spec?.examplePdfData || {})
             })
         }
     }, [id])
@@ -74,7 +76,8 @@ const Page: NextPage = () => {
                 spec: {
                     schema,
                     uischema: uiSchema,
-                    pdfschema: htmlSchema
+                    pdfschema: htmlSchema,
+                    examplePdfData
                 }
             })
             .then(r => {
@@ -82,7 +85,6 @@ const Page: NextPage = () => {
                 setIsSaving(false)
             })
     }
-
     if (isLoading) return <Loading />
     return (
         <ClearContainer
@@ -153,6 +155,8 @@ const Page: NextPage = () => {
                     )}
                     {activeTab === 3 && (
                         <EditorForm
+                            onDataChange={e => setExamplePdfData(e)}
+                            jsonData={examplePdfData}
                             schema={htmlSchema}
                             onChange={setHtmlSchema}
                         />
