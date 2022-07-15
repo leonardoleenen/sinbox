@@ -1,8 +1,11 @@
 import axios from 'axios'
+import dynamic from 'next/dynamic'
 import React, { useState } from 'react'
 import JSONInput from 'react-json-editor-ajrm'
 import locale from 'react-json-editor-ajrm/locale/en'
-
+const TextEditor = dynamic(import('../../../components/textEditor/index'), {
+    ssr: false
+})
 interface Props {
     schema: any
     onChange: (e: any) => void
@@ -30,6 +33,10 @@ const Component = (props: Props): JSX.Element => {
                 onClick={async () => {
                     setLoadingParser(true)
                     setShowPreview(!showPreview)
+                    if (props.schema === '' || props.schema === undefined) {
+                        setParsedHtml('<h1>No schema specified</h1>')
+                        return
+                    }
                     const { data } = await axios.post('/api/htmlEngine', {
                         schema: props.schema,
                         data: { ...props.jsonData }
@@ -47,13 +54,17 @@ const Component = (props: Props): JSX.Element => {
             {!showPreview && (
                 <div className="flex">
                     <div className="w-2/3">
-                        <textarea
+                        <TextEditor
+                            value={props.schema}
+                            onChange={props.onChange}
+                        />
+                        {/* <textarea
                             onChange={e => props.onChange(e.target.value)}
                             value={props.schema}
                             className="textarea"
                             placeholder="Bio"
                             cols={80}
-                        ></textarea>
+                        ></textarea> */}
                     </div>
                     <div className="w-1/3">
                         <JSONInput
