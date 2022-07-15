@@ -10,7 +10,7 @@ import Loading from '../../components/loader'
 
 import { useRouter } from 'next/router'
 import { workflowService } from '../../services/workflow.service'
-import { format } from 'path/posix'
+import EditorForm from '../../sections/editorForm/htmlEditor'
 
 const DynamicComponentWithNoSSR = dynamic(
     () => import('../../components/jsoneditor'),
@@ -23,6 +23,8 @@ const Page: NextPage = () => {
     const [activeTab, setActiveTab] = useState(2)
     const [isSaving, setIsSaving] = useState(false)
     const [isLoading, setIsLoading] = useState(true)
+    const [htmlSchema, setHtmlSchema] = useState<string | null>('')
+
     const [uiSchema, setUISchema] = useState({
         type: 'Group',
         elements: [
@@ -59,6 +61,7 @@ const Page: NextPage = () => {
                 setWfForm(fspec)
                 setUISchema(fspec.spec?.uischema)
                 setSchema(fspec.spec?.schema)
+                setHtmlSchema(fspec.spec?.pdfschema as any)
             })
         }
     }, [id])
@@ -70,7 +73,8 @@ const Page: NextPage = () => {
                 ...wfForm,
                 spec: {
                     schema,
-                    uischema: uiSchema
+                    uischema: uiSchema,
+                    pdfschema: htmlSchema
                 }
             })
             .then(r => {
@@ -107,7 +111,7 @@ const Page: NextPage = () => {
             }
         >
             <div className="flex">
-                <div className="w-1/3">
+                <div className={activeTab !== 3 ? 'w-1/3' : 'w-full'}>
                     <div className={`tabs mb-8 `}>
                         <a
                             onClick={() => setActiveTab(2)}
@@ -125,6 +129,14 @@ const Page: NextPage = () => {
                         >
                             <div>Definición de esquema</div>
                         </a>
+                        <a
+                            onClick={() => setActiveTab(3)}
+                            className={`tab tab-bordered ${
+                                activeTab === 3 && 'tab-active'
+                            }`}
+                        >
+                            <div>Vista PDF</div>
+                        </a>
                     </div>
 
                     {activeTab === 1 && (
@@ -139,20 +151,28 @@ const Page: NextPage = () => {
                             updateFunction={setUISchema}
                         />
                     )}
+                    {activeTab === 3 && (
+                        <EditorForm
+                            schema={htmlSchema}
+                            onChange={setHtmlSchema}
+                        />
+                    )}
                 </div>
 
-                <div className="w-2/3">
-                    <JsonForms
-                        schema={schema}
-                        uischema={uiSchema as UISchemaElement}
-                        data={dataForm}
-                        renderers={materialRenderers}
-                        cells={materialCells}
-                        onChange={({ data }) => {
-                            setDataForm(data)
-                        }}
-                    />
-                </div>
+                {activeTab !== 3 && (
+                    <div className="w-2/3">
+                        <JsonForms
+                            schema={schema}
+                            uischema={uiSchema as UISchemaElement}
+                            data={dataForm}
+                            renderers={materialRenderers}
+                            cells={materialCells}
+                            onChange={({ data }) => {
+                                setDataForm(data)
+                            }}
+                        />
+                    </div>
+                )}
             </div>
         </ClearContainer>
     )
