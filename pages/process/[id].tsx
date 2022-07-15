@@ -11,6 +11,9 @@ import Loading from '../../components/loader'
 import Success from '../../components/success'
 import FileUpload from '../../components/fileupload/fileUpload'
 import moment from 'moment'
+import axios from 'axios'
+import { format } from 'path/posix'
+import { sortedIndexBy } from 'lodash'
 
 interface FilesOpts {
     type: string
@@ -22,10 +25,10 @@ interface FilesOpts {
 const Page: NextPage = () => {
     const router = useRouter()
     const { id } = router.query
-
     const [showSuccess, setShowSuccess] = useState(false)
     const [process, setProcess] = useState<WorkflowProcess | any>()
     const [formSpec, setFormSpec] = useState<WorkFlowForm | any>(null)
+    const [myHtml, setMyHtml] = useState('')
     const [rule, setRule] = useState<any>()
     const [isFinalStep, setIsFinalStep] = useState(false)
     const [serviceCallback, setServiceCallback] = useState()
@@ -43,7 +46,6 @@ const Page: NextPage = () => {
         attachements: {}
     })
     const [evidenceIndex, setEvidenceIndex] = useState(-1)
-
     useEffect(() => {
         ;(async () => {
             if (!id) return
@@ -92,6 +94,7 @@ const Page: NextPage = () => {
             setFormSpec({
                 ...formSpecResult,
                 spec: {
+                    pdfschema: formSpecResult.spec.pdfschema,
                     uischema:
                         formSpecResult &&
                         formSpecResult.spec &&
@@ -102,11 +105,23 @@ const Page: NextPage = () => {
                         formSpecResult.spec.schema
                 }
             })
-
             process.processComplete && setEvidenceIndex(0)
+            if (process) {
+                await getPDFString(formSpecResult, evidenceIndex)
+            }
         })()
     }, [process])
-
+    const getPDFString = async (formSpec: any, index: number) => {
+        const { data } = await axios.post(`/api/htmlEngine`, {
+            schema:
+                evidenceIndex === -1
+                    ? formSpec.spec.pdfschema
+                    : process?.evidence[index].form.spec.pdfschema,
+            data:
+                evidenceIndex === -1 ? dataForm : process?.evidence[index].data
+        })
+        setMyHtml(data.html)
+    }
     const workflowNextStep = async () => {
         setFetching(true)
         await workflowService.moveNext(
@@ -161,7 +176,6 @@ const Page: NextPage = () => {
               )
 
     if (!attachements) attachements = []
-
     return (
         <ClearContainer
             title={formSpec.title}
@@ -196,7 +210,10 @@ const Page: NextPage = () => {
                     <ul className=" steps steps-vertical px-4">
                         {process?.evidence?.map((e: any, index: number) => (
                             <li
-                                onClick={() => setEvidenceIndex(index)}
+                                onClick={() => {
+                                    setEvidenceIndex(index)
+                                    getPDFString(formSpec, index)
+                                }}
                                 data-content={
                                     index === evidenceIndex ? '★' : index + 1
                                 }
@@ -233,7 +250,12 @@ const Page: NextPage = () => {
                 </div>
                 <div className="w-full">
                     <div className="w-full">
-                        <JsonForms
+                        <div
+                            dangerouslySetInnerHTML={{
+                                __html: myHtml
+                            }}
+                        ></div>
+                        {/* <JsonForms
                             schema={
                                 evidenceIndex === -1
                                     ? formSpec.spec.schema
@@ -255,7 +277,7 @@ const Page: NextPage = () => {
                             cells={materialCells}
                             readonly={evidenceIndex !== -1}
                             onChange={({ data }) => setDataForm(data)}
-                        />
+                        /> */}
                     </div>
                     <div className="flex">
                         {attachements.map((a: any, index: any) => (

@@ -39,8 +39,6 @@ const Page: NextPage = () => {
                 if (rule['0'].result) {
                     _process.push(wList[index])
                 }
-
-                // console.log(rule)
             }
             setProcessesLoaded(true)
             setProcesses(_process.filter(p => p.status !== 'DISABLED'))
@@ -131,7 +129,7 @@ const Page: NextPage = () => {
                 }
             >
                 <div>
-                    <div className="overflow-x-auto">
+                    <div className="o1flow-x-auto">
                         <table className="table w-full table-zebra">
                             <thead>
                                 <tr>

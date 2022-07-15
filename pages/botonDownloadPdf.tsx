@@ -22,7 +22,7 @@ const Page: NextPage = () => {
                                     ? 'Loading document...'
                                     : 'Descargar OPP'
                             }}
-                        </PDFDownloadLink>{' '}
+                        </PDFDownloadLink>
                     </div>
                 </div>
             </section>
