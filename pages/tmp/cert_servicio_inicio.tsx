@@ -4,41 +4,38 @@ import type { NextPage } from 'next'
 const Page: NextPage = () => {
     return (
         <div>
-            {/*--HEADER--*/}
-            <div class="border-slate-200 border-b-2 p-4 px-8 flex flex-row items-center">
-                <div class="basis-1/2">
+            <div className="border-slate-200 border-b-2 p-4 px-8 flex flex-row items-center">
+                <div className="basis-1/2">
                     <img
                         src="../logos/SantaFe_Marca_blanco.png"
-                        class="float-left pr-4"
+                        className="float-left pr-4"
                     />
-                    <h4 class="font-bold text-base">
+                    <h4 className="font-bold text-base">
                         Ministerio de Gestión Publica
                     </h4>
-                    <p class="text-xs text-slate-500">
+                    <p className="text-xs text-slate-500">
                         Secretaría de Comunicación Social
                     </p>
-                    <p class="text-xs text-slate-500">
+                    <p className="text-xs text-slate-500">
                         Dirección General de Publicitaria y Administrativa
                     </p>
                 </div>
-                <div class="basis-1/2 text-right">
-                    <h4 class="font-bold text-base ">
+                <div className="basis-1/2 text-right">
+                    <h4 className="font-bold text-base ">
                         Santa Fe,
                         <br /> "Cuna de la Constitución Nacional"
                     </h4>
                 </div>
             </div>
-            {/*--SUB HEADER--*/}
-            <div class=" p-4 px-8  text-xs  text-slate-600">
-                <div class=" text-right">
+            <div className=" p-4 px-8  text-xs  text-slate-600">
+                <div className=" text-right">
                     <div>
-                        Fecha:<strong class="ml-2">12/12/2020</strong>
+                        Fecha:<strong className="ml-2"></strong>
                     </div>
                 </div>
             </div>
-            {/*--BODY--*/}
-            <div class=" p-4  text-xs px-8  mb-4 text-slate-600">
-                <h4 class="font-bold mb-4">
+            <div className=" p-4  text-xs px-8  mb-4 text-slate-600">
+                <h4 className="font-bold mb-4">
                     Señor Gerente o Administrador de:
                 </h4>
                 <p>
@@ -48,44 +45,59 @@ const Page: NextPage = () => {
                     las modalidades que a continuación se detallan:
                 </p>
             </div>
-            <h4 class="font-bold mb-2 text-base text-base mx-8">
-                Datos de la orden de publicidad
+            <h4 className="font-bold mb-2 text-base text-base mx-8">
+                Datos de la campaña
             </h4>
-            <div class=" bg-slate-100  p-4 rounded-lg text-xs mx-8  text-slate-600">
-                <div class="flex flex-row">
-                    <div class="basis-1/2 mr-8">
-                        <p class="mb-2">
-                            Nro de Orden:
-                            <strong class="ml-3">Radio mitre</strong>
+            <div className=" bg-slate-100  p-4 rounded-lg text-xs mx-8  text-slate-600">
+                <div className="flex flex-row">
+                    <div className="basis-1/2 mr-8">
+                        <p className="mb-2">
+                            Tipo:
+                            <strong className="ml-3"></strong>
+                        </p>
+                        <p className="mb-2">
+                            Año:
+                            <strong className="ml-3"></strong>
                         </p>
                     </div>
-                    <div class="basis-1/2 pl-4  ">
-                        <p class="mb-2">
-                            Monto Total:
-                            <strong class="ml-3">12312312321</strong>
-                        </p>
-                    </div>
-                </div>
-                <h4 class="text-base font-bold mb-2 mt-4">Evidencia</h4>
-                <div class="flex flex-row">
-                    <div class="basis-1/2 mr-8">
-                        <p class="mb-2">
-                            Url:
-                            <strong class="ml-3">Radio mitre</strong>
-                        </p>
-                    </div>
-                    <div class="basis-1/2 pl-4  ">
-                        <p class="mb-2">
-                            Fecha:
-                            <strong class="ml-3">12312312321</strong>
+                    <div className="basis-1/2 pl-4  ">
+                        <p className="mb-2">
+                            mes:
+                            <strong className="ml-3"></strong>
                         </p>
                     </div>
                 </div>
-            </div>
-            <div class="border-slate-200 border-t p-4 px-8 grid grid-cols-3 w-full gap-4 items-center absolute bottom-0 text-center">
-                <div>va el codigo de barras</div>
-                <div class="uppercase font-bold text-sm">Original</div>
-                <div>va el codigo el QR</div>
+                <h4 className="text-base  font-bold mb-2 mt-4">Distribucion</h4>
+                <div className="flex flex-row border-dashed border-slate-200 border-b-2">
+                    <div className="basis-1/2 mr-8">
+                        <p className="mb-2">
+                            Grupo Econimico:
+                            <strong className="ml-3"></strong>
+                        </p>
+                        <p className="mb-2">
+                            Valor Segundo:
+                            <strong className="ml-3"></strong>
+                        </p>
+                        <p className="mb-2">
+                            Segundos:
+                            <strong className="ml-3"></strong>
+                        </p>
+                    </div>
+                    <div className="basis-1/2 pl-4  ">
+                        <p className="mb-2">
+                            Menciones:
+                            <strong className="ml-3"></strong>
+                        </p>
+                        <p className="mb-2">
+                            Medio:
+                            <strong className="ml-3"></strong>
+                        </p>
+                        <p className="mb-2">
+                            Programa:
+                            <strong className="ml-3"></strong>
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
     )

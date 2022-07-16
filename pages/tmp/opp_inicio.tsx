@@ -113,10 +113,24 @@ const Page: NextPage = () => {
                     </div>
                 </div>
             </div>
-            <div className="border-slate-200 border-t p-4 px-8 grid grid-cols-3 w-full gap-4 items-center absolute bottom-0 text-center">
-                <div>va el codigo de barras</div>
-                <div className="uppercase font-bold text-sm">Original</div>
-                <div>va el codigo el QR</div>
+            <h4 className="font-bold mb-2 text-base text-base mt-4 mx-8">
+                Medios Asignados
+            </h4>
+            <div className=" bg-slate-100  p-4 rounded-lg text-xs mx-8  text-slate-600">
+                <div className="flex flex-row border-dashed border-slate-200 border-b-2 mt-4">
+                    <div className="basis-1/2 mr-8">
+                        <p className="mb-2">
+                            Monto Asignado:
+                            <strong className="ml-3">Radio mitre</strong>
+                        </p>
+                    </div>
+                    <div className="basis-1/2 pl-4  ">
+                        <p className="mb-2">
+                            Medio:
+                            <strong className="ml-3">12312312321</strong>
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
     )
