@@ -91,19 +91,279 @@ const FormHorizontal: NextPage = () => {
                         </strong>
                     </p>
                 </div>
-                <div className="flex flex-row">
-                    <div className="">
-                        <p className="mb-2">
-                            Tema / Tamaño:
-                            <strong className="ml-3">1X1(1)</strong>
+                <div className="flex">
+                    <div className="mb-2 mr-4 ">
+                        Tema/Tamaño:
+                        <p>
+                            <strong>1X1(1)</strong>
                         </p>
-                        <p className="mb-2">
-                            Rat:
-                            <strong className="ml-3">0,00</strong>
+                    </div>
+                    <div className="mb-2 mr-4 ">
+                        Rat:
+                        <p>
+                            <strong>0,00</strong>
                         </p>
-                        <p className="mb-2">
-                            CPR:
-                            <strong className="ml-3">0,00</strong>
+                    </div>
+                    <div className="mb-2 mr-4 ">
+                        CPR:
+                        <p>
+                            <strong>0,00</strong>
+                        </p>
+                    </div>
+                    <div className="ml-2 mr-2">
+                        <table className="table-fixed border-slate-200 border-2 broder-dashed p-4 border-collapse border-spacing-2 ">
+                            <thead>
+                                <tr className="p-4">
+                                    <th className="border border-slate-300 p-2 ">
+                                        1
+                                    </th>
+                                    <th className="border border-slate-300 p-2 ">
+                                        2
+                                    </th>
+                                    <th className="border border-slate-300 p-2 ">
+                                        3
+                                    </th>
+                                    <th className="border border-slate-300 p-2 ">
+                                        4
+                                    </th>
+                                    <th className="border border-slate-300 p-2 ">
+                                        5
+                                    </th>
+                                    <th className="border border-slate-300 p-2 ">
+                                        6
+                                    </th>
+                                    <th className="border border-slate-300 p-2 ">
+                                        7
+                                    </th>
+                                    <th className="border border-slate-300 p-2 ">
+                                        8
+                                    </th>
+                                    <th className="border border-slate-300 p-2 ">
+                                        9
+                                    </th>
+                                    <th className="border border-slate-300 p-2 ">
+                                        10
+                                    </th>
+                                    <th className="border border-slate-300 p-2 ">
+                                        11
+                                    </th>
+                                    <th className="border border-slate-300 p-2 ">
+                                        12
+                                    </th>
+                                    <th className="border border-slate-300 p-2 ">
+                                        13
+                                    </th>
+                                    <th className="border border-slate-300 p-2 ">
+                                        14
+                                    </th>
+                                    <th className="border border-slate-300 p-2 ">
+                                        15
+                                    </th>
+                                    <th className="border border-slate-300 p-2 ">
+                                        16
+                                    </th>
+                                    <th className="border border-slate-300 p-2 ">
+                                        17
+                                    </th>
+                                    <th className="border border-slate-300 p-2 ">
+                                        18
+                                    </th>
+                                    <th className="border border-slate-300 p-2 ">
+                                        19
+                                    </th>
+                                    <th className="border border-slate-300 p-2 ">
+                                        20
+                                    </th>
+                                    <th className="border border-slate-300 p-2 ">
+                                        21
+                                    </th>
+                                    <th className="border border-slate-300 p-2 ">
+                                        22
+                                    </th>
+                                    <th className="border border-slate-300 p-2 ">
+                                        23
+                                    </th>
+                                    <th className="border border-slate-300 p-2 ">
+                                        24
+                                    </th>
+                                    <th className="border border-slate-300 p-2 ">
+                                        25
+                                    </th>
+                                    <th className="border border-slate-300 p-2 ">
+                                        26
+                                    </th>
+                                    <th className="border border-slate-300 p-2 ">
+                                        27
+                                    </th>
+                                    <th className="border border-slate-300 p-2 ">
+                                        28
+                                    </th>
+                                    <th className="border border-slate-300 p-2 ">
+                                        29
+                                    </th>
+                                    <th className="border border-slate-300 p-2 ">
+                                        30
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr className="border border-slate-300 p-4 ">
+                                    <td className="border border-slate-300 p-2 ">
+                                        1
+                                    </td>
+                                    <td className="border border-slate-300 p-2 "></td>
+                                    <td className="border border-slate-300 p-2 "></td>
+                                    <td className="border border-slate-300 p-2 "></td>
+                                    <td className="border border-slate-300 p-2 "></td>
+                                    <td className="border border-slate-300 p-2 "></td>
+                                    <td className="border border-slate-300 p-2 "></td>
+                                    <td className="border border-slate-300 p-2 "></td>
+                                    <td className="border border-slate-300 p-2 "></td>
+                                    <td className="border border-slate-300 p-2 "></td>
+                                    <td className="border border-slate-300 p-2 "></td>
+                                    <td className="border border-slate-300 p-2 "></td>
+                                    <td className="border border-slate-300 p-2 "></td>
+                                    <td className="border border-slate-300 p-2 "></td>
+                                    <td className="border border-slate-300 p-2 "></td>
+                                    <td className="border border-slate-300 p-2 "></td>
+                                    <td className="border border-slate-300 p-2 "></td>
+                                    <td className="border border-slate-300 p-2 "></td>
+                                    <td className="border border-slate-300 p-2 "></td>
+                                    <td className="border border-slate-300 p-2 "></td>
+                                    <td className="border border-slate-300 p-2 "></td>
+                                    <td className="border border-slate-300 p-2 "></td>
+                                    <td className="border border-slate-300 p-2 "></td>
+                                    <td className="border border-slate-300 p-2 "></td>
+                                    <td className="border border-slate-300 p-2 "></td>
+                                    <td className="border border-slate-300 p-2 "></td>
+                                    <td className="border border-slate-300 p-2 "></td>
+                                    <td className="border border-slate-300 p-2 "></td>
+                                    <td className="border border-slate-300 p-2 "></td>
+                                    <td className="border border-slate-300 p-2 "></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div className="mb-2 mr-4 ">
+                        Cantidad:
+                        <p>
+                            <strong>11</strong>
+                        </p>
+                    </div>
+                    <div className="mb-2 mr-4 ">
+                        Unidad:
+                        <p>
+                            <strong>21</strong>
+                        </p>
+                    </div>
+                    <div className="mb-2 mr-4 ">
+                        GPR:
+                        <p>
+                            <strong>131</strong>
+                        </p>
+                    </div>
+                </div>
+
+                <div className="flex mt-4">
+                    <div className="mb-2 mr-4 ">
+                        Costo Unit:
+                        <p>
+                            <strong>1X1(1)</strong>
+                        </p>
+                    </div>
+                    <div className="mb-2 mr-4 ">
+                        Costo Bruto:
+                        <p>
+                            <strong>1X1(1)</strong>
+                        </p>
+                    </div>
+                    <div className="ml-2 mr-2">
+                        <table className="table-fixed border-slate-200 border-2 broder-dashed p-4 border-collapse border-spacing-2 ">
+                            <thead>
+                                <tr className="p-4">
+                                    <th
+                                        className="border border-slate-300 p-2 "
+                                        colSpan={7}
+                                    >
+                                        % Descuento
+                                    </th>
+                                    <th
+                                        className="border border-slate-300 p-2 "
+                                        colSpan={2}
+                                    >
+                                        % Rec
+                                    </th>
+                                </tr>
+                            </thead>
+                            <thead>
+                                <tr className="p-4">
+                                    <th className="border bg-slate-100 border-slate-300 p-2 ">
+                                        (1)
+                                    </th>
+                                    <th className="border border-slate-300 p-2 ">
+                                        (2)
+                                    </th>
+                                    <th className="border  bg-slate-100 border-slate-300 p-2 ">
+                                        (3)
+                                    </th>
+                                    <th className="border  bg-slate-100  border-slate-300 p-2 ">
+                                        (4)
+                                    </th>
+                                    <th className="border  border-slate-300 p-2 ">
+                                        (5)
+                                    </th>
+                                    <th className="border  bg-slate-100 border-slate-300 p-2 ">
+                                        (6)
+                                    </th>
+                                    <th className="border border-slate-300 p-2 ">
+                                        (7)
+                                    </th>
+                                    <th className="border  bg-slate-100 border-slate-300 p-2 ">
+                                        (1)
+                                    </th>
+                                    <th className="border  bg-slate-100 border-slate-300 p-2 ">
+                                        (2)
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr className="border border-slate-300 p-2 ">
+                                    <td className="border border-slate-300 p-2 "></td>
+                                    <td className="border border-slate-300 p-2 "></td>
+                                    <td className="border border-slate-300 p-2 "></td>
+                                    <td className="border border-slate-300 p-2 "></td>
+                                    <td className="border border-slate-300 p-2 "></td>
+                                    <td className="border border-slate-300 p-2 "></td>
+                                    <td className="border border-slate-300 p-2 "></td>
+                                    <td className="border border-slate-300 p-2 "></td>
+                                    <td className="border border-slate-300 p-2 "></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div className="mb-2 mr-4 ">
+                        Total:
+                        <p>
+                            <strong>1X1(1)</strong>
+                        </p>
+                    </div>
+                    <div className="mb-2 mr-4 ">
+                        Vencimiento:
+                        <p>
+                            <strong>1X1(1)</strong>
+                        </p>
+                    </div>
+                    <div className="mb-2 mr-4 ">
+                        Material:
+                        <p>
+                            <strong>1X1(1)</strong>
+                        </p>
+                    </div>
+                    <div className="mb-2 mr-4 ">
+                        Observaciones:
+                        <p>
+                            <strong>1X1(1)</strong>
                         </p>
                     </div>
                 </div>
