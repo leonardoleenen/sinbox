@@ -377,7 +377,7 @@ const FormHorizontal: NextPage = () => {
                 </div>
             </div>
 
-            <div className="border-slate-200 border-t-2 p-4 px-8   text-center  font-bold mt-8 fixed w-full bottom-0 text-xs">
+            <div className="border-slate-200 border-t-2 p-4 px-8   text-center  font-bold mt-8  w-full bottom-0 text-xs">
                 ORIGINAL
             </div>
         </div>
