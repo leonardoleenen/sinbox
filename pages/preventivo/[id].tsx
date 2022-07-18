@@ -51,7 +51,7 @@ const Page: NextPage = () => {
                         provincia: r.provincia,
                         cuit: r.cuit,
                         activo: false,
-                        cantidadAsignada: t.cantidad,
+                        cantidadAsignada: t.cantidad || 0,
                         index,
                         grupo: 'GE1',
                         ...t,
@@ -143,7 +143,7 @@ const Page: NextPage = () => {
             </div>
         )
     }
-    console.log(proveedores)
+
     const EnPlanificacion = () => {
         getStats()
 
@@ -470,6 +470,8 @@ const Page: NextPage = () => {
                                         ? r[values[i].cuit].total
                                         : 0
                                     data.mediosAsignados.push({
+                                        cuit: values[i].cuit,
+                                        programa: values[i].programa,
                                         montoAsignado:
                                             importe +
                                             calcularMenciones(values[i]) *
@@ -535,8 +537,8 @@ const Page: NextPage = () => {
                             </option>
                             <option value="TV">TV</option>
                             <option value="RADIO">RADIO</option>
-                            <option value="WEB">WEB</option>
-                            <option value="VIA PUBLICA">VIA PUBLICA</option>
+                            {/* <option value="WEB">WEB</option>
+                            <option value="VIA PUBLICA">VIA PUBLICA</option>*/}
                         </select>
                         <select
                             onChange={e => {

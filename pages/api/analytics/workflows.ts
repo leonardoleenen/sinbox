@@ -6,6 +6,8 @@ type Data = {
     name: string
 }
 
+//TODO: Se comentan las siguientes lineas a la espera de definciion del módulo de analitics.
+
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse<any>
@@ -21,15 +23,15 @@ export default async function handler(
     })
     if (req.method === 'POST') {
         const { data } = req.body
-        const result = await db
+        /* const result = await db
             .insert(data)
             .into('workflow')
             .returning('*')
             .then(rows => {
                 return rows[0]
-            })
+            }) */
         res.status(200).json({
-            result: result
+            result: 'Done' // result
         })
     }
 }

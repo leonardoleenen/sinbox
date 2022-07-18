@@ -149,10 +149,9 @@ class Workflow {
 
         if (serviceCallback && serviceCallback?.postCall) {
             serviceCallback?.postCall.forEach(async service => {
-                await axios.post(`/api/engine/callServiceCallback`, {
-                    url: service.url,
-                    evidenceIndex: service.evidenceIndex,
-                    processId: process.id
+                await axios.post(service.url, {
+                    processId: process.id,
+                    evidenceIndex: service.evidenceIndex
                 })
             })
         }

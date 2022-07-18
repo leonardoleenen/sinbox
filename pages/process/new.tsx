@@ -65,7 +65,11 @@ const Page: NextPage = () => {
                     schema:
                         formSpecResult &&
                         formSpecResult.spec &&
-                        formSpecResult.spec.schema
+                        formSpecResult.spec.schema,
+                    pdfschema:
+                        formSpecResult &&
+                        formSpecResult.spec &&
+                        formSpecResult.spec.pdfschema
                 }
             })
         })()

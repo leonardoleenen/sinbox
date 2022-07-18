@@ -12,8 +12,6 @@ import Success from '../../components/success'
 import FileUpload from '../../components/fileupload/fileUpload'
 import moment from 'moment'
 import axios from 'axios'
-import { format } from 'path/posix'
-import { sortedIndexBy } from 'lodash'
 
 interface FilesOpts {
     type: string
@@ -68,14 +66,9 @@ const Page: NextPage = () => {
                 }
             )
             setRule(ruleResult[0].result)
-            if (
-                ruleResult[0].result &&
-                ruleResult[0].result.serviceCallback &&
-                ruleResult[0].result.tarriffCallback
-            ) {
+
+            if (ruleResult[0].result)
                 setServiceCallback(ruleResult[0].result.serviceCallback)
-                setTarriffCallback(ruleResult[0].result.tarriffCallback)
-            }
 
             if (!ruleResult[0].result && !process.processComplete) {
                 router.push('/403')
@@ -111,19 +104,29 @@ const Page: NextPage = () => {
             }
         })()
     }, [process])
+
     const getPDFString = async (formSpec: any, index: number) => {
         const { data } = await axios.post(`/api/htmlEngine`, {
             schema:
-                evidenceIndex === -1
+                index === -1
                     ? formSpec.spec.pdfschema
                     : process?.evidence[index].form.spec.pdfschema,
             data:
-                evidenceIndex === -1 ? dataForm : process?.evidence[index].data
+                index === -1
+                    ? dataForm
+                    : {
+                          ...process?.evidence[index].data,
+                          date: moment(process?.evidence[index].date).format(
+                              'LL'
+                          )
+                      }
         })
         setMyHtml(data.html)
     }
+
     const workflowNextStep = async () => {
         setFetching(true)
+
         await workflowService.moveNext(
             process as WorkflowProcess,
             isFinalStep,
@@ -176,6 +179,7 @@ const Page: NextPage = () => {
               )
 
     if (!attachements) attachements = []
+
     return (
         <ClearContainer
             title={formSpec.title}
@@ -250,34 +254,38 @@ const Page: NextPage = () => {
                 </div>
                 <div className="w-full">
                     <div className="w-full">
-                        <div
-                            dangerouslySetInnerHTML={{
-                                __html: myHtml
-                            }}
-                        ></div>
-                        {/* <JsonForms
-                            schema={
-                                evidenceIndex === -1
-                                    ? formSpec.spec.schema
-                                    : process?.evidence[evidenceIndex].form.spec
-                                          .schema
-                            }
-                            uischema={
-                                evidenceIndex === -1
-                                    ? formSpec.spec.uischema
-                                    : process?.evidence[evidenceIndex].form.spec
-                                          .uischema
-                            }
-                            data={
-                                evidenceIndex === -1
-                                    ? dataForm
-                                    : process?.evidence[evidenceIndex].data
-                            }
-                            renderers={materialRenderers}
-                            cells={materialCells}
-                            readonly={evidenceIndex !== -1}
-                            onChange={({ data }) => setDataForm(data)}
-                        /> */}
+                        {evidenceIndex !== -1 && (
+                            <div
+                                dangerouslySetInnerHTML={{
+                                    __html: myHtml
+                                }}
+                            ></div>
+                        )}
+                        {evidenceIndex === -1 && (
+                            <JsonForms
+                                schema={
+                                    evidenceIndex === -1
+                                        ? formSpec.spec.schema
+                                        : process?.evidence[evidenceIndex].form
+                                              .spec.schema
+                                }
+                                uischema={
+                                    evidenceIndex === -1
+                                        ? formSpec.spec.uischema
+                                        : process?.evidence[evidenceIndex].form
+                                              .spec.uischema
+                                }
+                                data={
+                                    evidenceIndex === -1
+                                        ? dataForm
+                                        : process?.evidence[evidenceIndex].data
+                                }
+                                renderers={materialRenderers}
+                                cells={materialCells}
+                                readonly={evidenceIndex !== -1}
+                                onChange={({ data }) => setDataForm(data)}
+                            />
+                        )}
                     </div>
                     <div className="flex">
                         {attachements.map((a: any, index: any) => (

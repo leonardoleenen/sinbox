@@ -4,7 +4,6 @@ import type { NextPage } from 'next'
 const FormHorizontal: NextPage = () => {
     return (
         <div>
-            {/*--HEADER--*/}
             <div className="border-slate-200 border-b-2 p-4 px-8 flex flex-row items-center">
                 <div className="basis-1/2">
                     <img
@@ -27,7 +26,7 @@ const FormHorizontal: NextPage = () => {
                     </h4>
                 </div>
             </div>
-            {/*--SUB HEADER--*/}
+
             <div className="border-slate-200 border-b-2 p-4 px-8 border-dashed flex text-xs  text-slate-600">
                 <div className="basis-1/2">
                     Campaña:
@@ -54,7 +53,6 @@ const FormHorizontal: NextPage = () => {
                     </div>
                 </div>
             </div>
-            {/*--BODY--*/}
 
             <div className=" p-4  text-xs px-8  mb-4 text-slate-600">
                 <h4 className="font-bold mb-4">

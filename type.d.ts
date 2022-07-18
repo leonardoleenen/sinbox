@@ -151,7 +151,7 @@ type WorkFlowForm = {
         pdfschema: string | null
         schema: any
         uischema: schema
-        examplePdfData: any
+        examplePdfData?: any
     } | null
     data?: any
     lastUpdated: number

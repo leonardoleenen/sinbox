@@ -15,6 +15,7 @@ import { object } from '@jsonforms/examples'
 import { customAlphabet } from 'nanoid'
 import Icon from '../../components/icon/index'
 import { UIPlanningStore } from '../../store/planning.store'
+import { workflowService } from '../../services/workflow.service'
 
 const Plot = dynamic(() => import('react-plotly.js'), { ssr: false })
 const PlotlyRenderers = createPlotlyRenderers(Plot)
@@ -43,6 +44,7 @@ const Page: NextPage = () => {
     const [showPlanificacionActiva, setShowPlanificacionActiva] = useState(true)
     const [preventivos, setPreventivos] = useState<Array<any>>([])
     const [rowSelected, setRowSelected] = useState(null)
+    const [procesandoOrdenes, setProcesandoOrdenes] = useState(false)
     const [beneficiarioSeleccionado, setBeneficiarioSeleccionado] =
         useState(null)
     const [planificacion, setPlanificacion] = useState({
@@ -357,118 +359,107 @@ const Page: NextPage = () => {
                     </thead>
 
                     <tbody>
-                        {values
-                            .filter(e =>
-                                !beneficiarioSeleccionado
-                                    ? null
-                                    : e.cuit === beneficiarioSeleccionado
-                            )
-                            .map((v: any, row: number) => (
-                                <tr
-                                    className={!v.activo ? 'bg-gray-50' : ''}
-                                    key={`${row}`}
-                                >
-                                    <td
-                                        className="cursor-pointer"
-                                        onClick={e => {
-                                            setValues(
-                                                values.filter(
-                                                    value => value.id !== v.id
-                                                )
+                        {values.map((v: any, row: number) => (
+                            <tr
+                                className={!v.activo ? 'bg-gray-50' : ''}
+                                key={`${row}`}
+                            >
+                                <td
+                                    className="cursor-pointer"
+                                    onClick={e => {
+                                        setValues(
+                                            values.filter(
+                                                value => value.id !== v.id
                                             )
-                                        }}
+                                        )
+                                    }}
+                                >
+                                    <Icon stroke={1} type="REMOVE"></Icon>
+                                </td>
+                                <td>
+                                    <label
+                                        htmlFor="my-modal"
+                                        className="btn modal-button btn-primary btn-sm"
+                                        onClick={() => setRowSelected(v)}
                                     >
-                                        <Icon stroke={1} type="REMOVE"></Icon>
-                                    </td>
-                                    <td>
-                                        <label
-                                            htmlFor="my-modal"
-                                            className="btn modal-button btn-primary btn-sm"
-                                            onClick={() => setRowSelected(v)}
-                                        >
-                                            Definir Campañas
-                                        </label>
-                                    </td>
+                                        Definir Campañas
+                                    </label>
+                                </td>
 
-                                    <td>{`1`}</td>
-                                    <td>{v.razonSocial}</td>
-                                    <td>{v.programa}</td>
-                                    <td>
-                                        <div
-                                            className={`${
-                                                v.campania && 'bg-green-300'
-                                            }  w-full h-full px-4 py-2`}
-                                        >
-                                            {(v.campania && v.campania.label) ||
-                                                'Sin Definir'}
-                                        </div>
-                                    </td>
-                                    <td>{v.grupo}</td>
-                                    <td>{formatter.format(v.importe)}</td>
+                                <td>{`1`}</td>
+                                <td>{v.razonSocial}</td>
+                                <td>{v.programa}</td>
+                                <td>
+                                    <div
+                                        className={`${
+                                            v.campania && 'bg-green-300'
+                                        }  w-full h-full px-4 py-2`}
+                                    >
+                                        {(v.campania && v.campania.label) ||
+                                            'Sin Definir'}
+                                    </div>
+                                </td>
+                                <td>{v.grupo}</td>
+                                <td>{formatter.format(v.importe)}</td>
 
-                                    <td>
+                                <td>
+                                    <input
+                                        value={v.segundosSeleccionados}
+                                        onChange={e => {
+                                            const cell: any = values[row]
+                                            cell.segundosSeleccionados =
+                                                e.target.value
+                                            const listTemp: any[] =
+                                                Object.assign([], values)
+                                            listTemp[row] = cell
+                                            setValues(listTemp)
+                                        }}
+                                        className="input input-bordered input-xs  w-16"
+                                    />
+                                </td>
+
+                                <td>{calcularMenciones(v)}</td>
+                                <td>
+                                    {calcularMenciones(v) *
+                                        v.segundosSeleccionados}
+                                </td>
+                                <td
+                                    className={
+                                        v.segundosSeleccionados !== 0 &&
+                                        calcularMenciones(v) !== 0
+                                            ? 'bg-green-100'
+                                            : ''
+                                    }
+                                >
+                                    {formatter.format(
+                                        calcularMenciones(v) *
+                                            v.segundosSeleccionados *
+                                            v.importe
+                                    )}
+                                </td>
+                                {Array.from(
+                                    { length: 31 },
+                                    (item, index) => index
+                                ).map(day => (
+                                    <td key={`day${day}`}>
                                         <input
-                                            value={v.segundosSeleccionados}
+                                            type="number"
+                                            value={v.days[day]}
                                             onChange={e => {
                                                 const cell: any = values[row]
-                                                cell.segundosSeleccionados =
-                                                    e.target.value
+                                                cell.days[day] = e.target.value
                                                 const listTemp: any[] =
                                                     Object.assign([], values)
                                                 listTemp[row] = cell
                                                 setValues(listTemp)
                                             }}
-                                            className="input input-bordered input-xs  w-16"
+                                            placeholder="0"
+                                            className="input input-bordered input-xs  w-12"
                                         />
                                     </td>
-
-                                    <td>{calcularMenciones(v)}</td>
-                                    <td>
-                                        {calcularMenciones(v) *
-                                            v.segundosSeleccionados}
-                                    </td>
-                                    <td
-                                        className={
-                                            v.segundosSeleccionados !== 0 &&
-                                            calcularMenciones(v) !== 0
-                                                ? 'bg-green-100'
-                                                : ''
-                                        }
-                                    >
-                                        {formatter.format(
-                                            calcularMenciones(v) *
-                                                v.segundosSeleccionados *
-                                                v.importe
-                                        )}
-                                    </td>
-                                    {Array.from(
-                                        { length: 31 },
-                                        (item, index) => index
-                                    ).map(day => (
-                                        <td key={`day${day}`}>
-                                            <input
-                                                type="number"
-                                                value={v.days[day]}
-                                                onChange={e => {
-                                                    const cell: any =
-                                                        values[row]
-                                                    cell.days[day] =
-                                                        e.target.value
-                                                    const listTemp: any[] =
-                                                        Object.assign(
-                                                            [],
-                                                            values
-                                                        )
-                                                    listTemp[row] = cell
-                                                    setValues(listTemp)
-                                                }}
-                                                placeholder="0"
-                                                className="input input-bordered input-xs  w-12"
-                                            />
-                                        </td>
-                                    ))}
-                                </tr>
-                            ))}
+                                ))}
+                            </tr>
+                        ))}
                     </tbody>
                 </table>
             </div>
@@ -584,6 +575,44 @@ const Page: NextPage = () => {
         )
     }
 
+    const havePlanificacionSinCampania = () => {
+        return !_.isEmpty(values.filter(v => v.campania === undefined))
+    }
+
+    const iniciarOrdenesPublicidad = async () => {
+        setProcesandoOrdenes(true)
+
+        for (const k in values) {
+            if (values[k].campania) {
+                const data = {
+                    referencia: `Ord. Pub. ${values[k].razonSocial} ${values[k].campania.label}`,
+                    campania: values[k].campania.label,
+                    medio: values[k].razonSocial,
+                    mes: planificacion.mes,
+                    cuit: values[k].cuit,
+                    cuadroTarifario: [
+                        {
+                            importeUnitario: values[k].importe,
+                            menciones: calcularMenciones(values[k]),
+                            programa: values[k].programa,
+                            medio: values[k].razonSocial
+                        }
+                    ],
+                    nroOrdenPublicidad: planificacion.id
+                }
+
+                await workflowService.createProcess(
+                    await workflowService.getSpec('6667f352b3'),
+                    data,
+                    await workflowService.getFormSpec('c4b50fc96d')
+                )
+                await planificacionService.setWaitingPlanning(planificacion.id)
+            }
+        }
+        router.push('/planning')
+        // setProcesandoOrdenes(false)
+    }
+
     return (
         <ClearContainer
             className=""
@@ -621,16 +650,16 @@ const Page: NextPage = () => {
                     )}
                     {planificacion.status === 'draft' && (
                         <button
-                            disabled={planificacion.id === ''}
-                            onClick={async e => {
-                                if (!id) return
-                                await planificacionService.setWaitingPlanning(
-                                    id?.toString()
-                                )
-                                router.back()
-                            }}
-                            className="btn btn-active mx-3"
+                            disabled={
+                                planificacion.id === '' ||
+                                havePlanificacionSinCampania()
+                            }
+                            onClick={iniciarOrdenesPublicidad}
+                            className={`btn btn-active mx-3 ${
+                                procesandoOrdenes && 'loading'
+                            }`}
                         >
+                            <AlertIcon />
                             Iniciar Ordenes de publicidad
                         </button>
                     )}
@@ -752,6 +781,23 @@ const PencilOutLinded = () => {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+            />
+        </svg>
+    )
+}
+
+const AlertIcon = () => {
+    return (
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5 mx-2"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+        >
+            <path
+                fillRule="evenodd"
+                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                clipRule="evenodd"
             />
         </svg>
     )

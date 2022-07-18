@@ -49,18 +49,18 @@ const FormVertical: NextPage = () => {
                     </div>
                 </div>
             </div>
-            {/*--BODY--*/}
 
             <div className=" p-4  text-xs px-8  mb-4 text-slate-600">
                 <h4 className="font-bold mb-4">
                     Señor Gerente o Administrador de:
                 </h4>
                 <p>
-                    Sírvase ordenar la publicación del texto cuyo original se
-                    acompaña de acuerdo con la tarifa de ese medio, registrada
-                    y/u oficializada ante organismos provinciales, ajustándose a
-                    las modalidades que a continuación se detallan:
+                    Por la presente adjunto evidencia sobre los servicios
+                    prestados para vuestro organismo. Por favor, sirvase a
+                    realizar el control pertinente.
                 </p>
+                <p>Quedo atento a su respuesta</p>
+                <p className="pt-4">Cordinalmente</p>
             </div>
             <h4 className="font-bold mb-2 text-base text-base mx-8">
                 Proveedor
@@ -85,26 +85,47 @@ const FormVertical: NextPage = () => {
             </div>
 
             <h4 className="font-bold mb-2 text-base text-base mt-6 mx-8">
-                Presupuesto aprobado
+                Evidencia
             </h4>
             <div className=" bg-slate-100  p-4 rounded-lg text-xs mx-8  text-slate-600">
                 <div className="flex flex-row border-dashed border-slate-200 border-b-2 mt-4">
                     <div className="basis-1/3 mr-8">
                         <p className="mb-2">
-                            Programa:
-                            <strong className="ml-3">Por la tarde</strong>
+                            URL:
+                            <strong className="ml-3">http://youtube.com</strong>
                         </p>
                     </div>
                     <div className="basis-1/3 pl-4  ">
                         <p className="mb-2">
                             Importe:
-                            <strong className="ml-3">$ 8,900</strong>
+                            <strong className="ml-3">$ 890,00</strong>
                         </p>
                     </div>
                     <div className="basis-1/3 pl-4  ">
                         <p className="mb-2">
                             Menciones diarias:
                             <strong className="ml-3">16</strong>
+                        </p>
+                    </div>
+                </div>
+
+                <div className="flex flex-row border-dashed border-slate-200 border-b-2 mt-4">
+                    <div className="basis-1/3 mr-8">
+                        <p className="mb-2">
+                            URL:
+                            <strong className="ml-3">http://google.com</strong>
+                        </p>
+                    </div>
+                    <div className="basis-1/3 pl-4  ">
+                        <p className="mb-2">
+                            Importe:
+                            <strong className="ml-3">$ 1890,00</strong>
+                        </p>
+                    </div>
+                    <div className="basis-1/3 pl-4  ">
+                        <p className="mb-2">
+                            Menciones diarias:
+                            <strong className="ml-3">36</strong>
                         </p>
                     </div>
                 </div>
