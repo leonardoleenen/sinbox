@@ -12,7 +12,7 @@ import Success from '../../components/success'
 import FileUpload from '../../components/fileupload/fileUpload'
 import moment from 'moment'
 import axios from 'axios'
-
+import PDFRenderer from '../../components/pdfRenderer/index'
 interface FilesOpts {
     type: string
     size: number
@@ -255,11 +255,24 @@ const Page: NextPage = () => {
                 <div className="w-full">
                     <div className="w-full">
                         {evidenceIndex !== -1 && (
-                            <div
-                                dangerouslySetInnerHTML={{
-                                    __html: myHtml
-                                }}
-                            ></div>
+                            <div>
+                                <PDFRenderer
+                                    downloadable={true}
+                                    pdf_name="test"
+                                    node_reference={
+                                        document.querySelector(
+                                            '#PDForm'
+                                        ) as HTMLElement
+                                    }
+                                    button_label="Generate PDF"
+                                ></PDFRenderer>
+                                <div
+                                    id="PDForm"
+                                    dangerouslySetInnerHTML={{
+                                        __html: myHtml
+                                    }}
+                                ></div>
+                            </div>
                         )}
                         {evidenceIndex === -1 && (
                             <JsonForms

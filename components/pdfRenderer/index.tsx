@@ -1,47 +1,32 @@
-import axios from 'axios'
 import jsPDF from 'jspdf'
 import React from 'react'
+import * as htmlToImage from 'html-to-image'
 
 interface Props {
     downloadable: boolean
-    pages: Array<{
-        html: string
-        data: any
-    }>
+    node_reference: HTMLElement
     pdf_name: string
     button_label: string
 }
 
 const Component = (props: Props): JSX.Element => {
-    const doc = new jsPDF('p', 'pt', 'letter')
-    const [myPages, setMyPages] = React.useState([])
+    const printDocument = async () => {
+        console.log(props.node_reference)
+        htmlToImage
+            .toPng(props.node_reference, {
+                quality: 1
+            })
+            .then(function (dataUrl) {
+                const link = document.createElement('a')
+                link.download = 'my-image-name.jpeg'
+                const pdf = new jsPDF()
+                pdf.addImage(dataUrl, 'PNG', 0, 0, 180, 0)
+                pdf.save(`${props.pdf_name}.pdf`)
+            })
+    }
     return (
         <div>
-            <button
-                onClick={async () => {
-                    const {
-                        data: { pages }
-                    } = await axios.post('/api/htmlToPdf', {
-                        pages: props.pages
-                    })
-                    setMyPages(pages)
-                    await doc.html(pages[0])
-                    if (pages.length > 1) {
-                        for (let index = 0; index < pages.length; index++) {
-                            if (index > 0) {
-                                doc.addPage('letter', 'p')
-                                await doc.html(pages[index], {
-                                    callback: function (doc) {
-                                        //staff
-                                    },
-                                    y: 792
-                                })
-                            }
-                        }
-                    }
-                    doc.save(`${props.pdf_name}.pdf`)
-                }}
-            >
+            <button onClick={printDocument} className="btn btn-primary">
                 {props.button_label}
             </button>
         </div>

@@ -17,6 +17,7 @@ export default async function handler(
     for (let index = 0; index < pages.length; index++) {
         if (_.startsWith(pages[index].html, 'http')) {
             const res = await axios.get(pages[index].html)
+            console.log(res)
             parsedPages.push(res.data)
         } else {
             const template = Handlebars.compile(pages[index].html)

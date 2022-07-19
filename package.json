@@ -44,6 +44,7 @@
         "dotenv": "^16.0.0",
         "firebase": "^9.3.0",
         "handlebars": "^4.7.7",
+        "html-to-image": "^1.9.0",
         "jsonwebtoken": "^8.5.1",
         "jspdf": "^2.5.1",
         "knex": "^1.0.4",

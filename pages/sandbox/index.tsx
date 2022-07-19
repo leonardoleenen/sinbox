@@ -1,29 +1,13 @@
-import React, { useEffect } from 'react'
-import { jsPDF } from 'jspdf'
-import axios from 'axios'
-import PDFRenderer from '../../components/pdfRenderer/index'
+import React from 'react'
 const Sandbox: any = () => {
     return (
         <div>
-            <PDFRenderer
-                downloadable={true}
-                pages={[
-                    {
-                        html: 'http://localhost:3000/tmp/form_vertical',
-                        data: {
-                            foo: 'bar'
-                        }
-                    },
-                    {
-                        html: '<h1>{{foo}}</h1>',
-                        data: {
-                            foo: 'bar'
-                        }
-                    }
-                ]}
-                pdf_name="test"
-                button_label="Generate PDF"
-            ></PDFRenderer>
+            <div id="divToPrint">
+                <div className="bg-red-700 text-white">
+                    Note: Here the dimensions of div are same as A4
+                </div>
+                <div>You Can add any component here</div>
+            </div>
         </div>
     )
 }
