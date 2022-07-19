@@ -109,135 +109,135 @@ const FormHorizontal: NextPage = () => {
                         </p>
                     </div>
                     <div className="ml-2 mr-2">
-                        <table className="table-fixed border-slate-200 border-2 broder-dashed p-4 border-collapse border-spacing-2 ">
+                        <table className="table-fixed  border-dashed border-slate-200 border-2 broder-dashed p-4 border-collapse border-spacing-2 ">
                             <thead>
                                 <tr className="p-4">
-                                    <th className="border border-slate-300 p-2 ">
+                                    <th className="border  border-dashed border-slate-300 p-2 ">
                                         1
                                     </th>
-                                    <th className="border border-slate-300 p-2 ">
+                                    <th className="border  border-dashed border-slate-300 p-2 ">
                                         2
                                     </th>
-                                    <th className="border border-slate-300 p-2 ">
+                                    <th className="border  border-dashed border-slate-300 p-2 ">
                                         3
                                     </th>
                                     <th className="border border-slate-300 p-2 ">
                                         4
                                     </th>
-                                    <th className="border border-slate-300 p-2 ">
+                                    <th className="border  border-dashed border-slate-300 p-2 ">
                                         5
                                     </th>
-                                    <th className="border border-slate-300 p-2 ">
+                                    <th className="border  border-dashed border-slate-300 p-2 ">
                                         6
                                     </th>
-                                    <th className="border border-slate-300 p-2 ">
+                                    <th className="border border-dashed border-slate-300 p-2 ">
                                         7
                                     </th>
-                                    <th className="border border-slate-300 p-2 ">
+                                    <th className="border  border-dashed border-slate-300 p-2 ">
                                         8
                                     </th>
-                                    <th className="border border-slate-300 p-2 ">
+                                    <th className="border border-dashed border-slate-300 p-2 ">
                                         9
                                     </th>
-                                    <th className="border border-slate-300 p-2 ">
+                                    <th className="border border-dashed border-slate-300 p-2 ">
                                         10
                                     </th>
-                                    <th className="border border-slate-300 p-2 ">
+                                    <th className="border  border-dashed border-slate-300 p-2 ">
                                         11
                                     </th>
-                                    <th className="border border-slate-300 p-2 ">
+                                    <th className="border border-dashed border-slate-300 p-2 ">
                                         12
                                     </th>
-                                    <th className="border border-slate-300 p-2 ">
+                                    <th className="border border-dashed border-slate-300 p-2 ">
                                         13
                                     </th>
-                                    <th className="border border-slate-300 p-2 ">
+                                    <th className="border border-dashed border-slate-300 p-2 ">
                                         14
                                     </th>
-                                    <th className="border border-slate-300 p-2 ">
+                                    <th className="border border-dashed border-slate-300 p-2 ">
                                         15
                                     </th>
-                                    <th className="border border-slate-300 p-2 ">
+                                    <th className="border border-dashed border-slate-300 p-2 ">
                                         16
                                     </th>
-                                    <th className="border border-slate-300 p-2 ">
+                                    <th className="border border-dashed border-slate-300 p-2 ">
                                         17
                                     </th>
-                                    <th className="border border-slate-300 p-2 ">
+                                    <th className="border border-dashed border-slate-300 p-2 ">
                                         18
                                     </th>
-                                    <th className="border border-slate-300 p-2 ">
+                                    <th className="border border-dashed border-slate-300 p-2 ">
                                         19
                                     </th>
-                                    <th className="border border-slate-300 p-2 ">
+                                    <th className="border border-dashed border-slate-300 p-2 ">
                                         20
                                     </th>
-                                    <th className="border border-slate-300 p-2 ">
+                                    <th className="border border-dashed border-slate-300 p-2 ">
                                         21
                                     </th>
-                                    <th className="border border-slate-300 p-2 ">
+                                    <th className="border border-dashed border-slate-300 p-2 ">
                                         22
                                     </th>
-                                    <th className="border border-slate-300 p-2 ">
+                                    <th className="border border-dashed border-slate-300 p-2 ">
                                         23
                                     </th>
-                                    <th className="border border-slate-300 p-2 ">
+                                    <th className="border border-dashed border-slate-300 p-2 ">
                                         24
                                     </th>
-                                    <th className="border border-slate-300 p-2 ">
+                                    <th className="border border-dashed border-slate-300 p-2 ">
                                         25
                                     </th>
-                                    <th className="border border-slate-300 p-2 ">
+                                    <th className="border border-dashed border-slate-300 p-2 ">
                                         26
                                     </th>
-                                    <th className="border border-slate-300 p-2 ">
+                                    <th className="border border-dashed border-slate-300 p-2 ">
                                         27
                                     </th>
-                                    <th className="border border-slate-300 p-2 ">
+                                    <th className="border border-dashed border-slate-300 p-2 ">
                                         28
                                     </th>
-                                    <th className="border border-slate-300 p-2 ">
+                                    <th className="border border-dashed border-slate-300 p-2 ">
                                         29
                                     </th>
-                                    <th className="border border-slate-300 p-2 ">
+                                    <th className="border border-dashed border-slate-300 p-2 ">
                                         30
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr className="border border-slate-300 p-4 ">
-                                    <td className="border border-slate-300 p-2 ">
+                                    <td className="border  border-dashed border-slate-300 p-2 ">
                                         1
                                     </td>
-                                    <td className="border border-slate-300 p-2 "></td>
-                                    <td className="border border-slate-300 p-2 "></td>
-                                    <td className="border border-slate-300 p-2 "></td>
-                                    <td className="border border-slate-300 p-2 "></td>
-                                    <td className="border border-slate-300 p-2 "></td>
-                                    <td className="border border-slate-300 p-2 "></td>
-                                    <td className="border border-slate-300 p-2 "></td>
-                                    <td className="border border-slate-300 p-2 "></td>
-                                    <td className="border border-slate-300 p-2 "></td>
-                                    <td className="border border-slate-300 p-2 "></td>
-                                    <td className="border border-slate-300 p-2 "></td>
-                                    <td className="border border-slate-300 p-2 "></td>
-                                    <td className="border border-slate-300 p-2 "></td>
-                                    <td className="border border-slate-300 p-2 "></td>
-                                    <td className="border border-slate-300 p-2 "></td>
-                                    <td className="border border-slate-300 p-2 "></td>
-                                    <td className="border border-slate-300 p-2 "></td>
-                                    <td className="border border-slate-300 p-2 "></td>
-                                    <td className="border border-slate-300 p-2 "></td>
-                                    <td className="border border-slate-300 p-2 "></td>
-                                    <td className="border border-slate-300 p-2 "></td>
-                                    <td className="border border-slate-300 p-2 "></td>
-                                    <td className="border border-slate-300 p-2 "></td>
-                                    <td className="border border-slate-300 p-2 "></td>
-                                    <td className="border border-slate-300 p-2 "></td>
-                                    <td className="border border-slate-300 p-2 "></td>
-                                    <td className="border border-slate-300 p-2 "></td>
-                                    <td className="border border-slate-300 p-2 "></td>
-                                    <td className="border border-slate-300 p-2 "></td>
+                                    <td className="border  border-dashed border-slate-300 p-2 "></td>
+                                    <td className="border  border-dashed border-slate-300 p-2 "></td>
+                                    <td className="border  border-dashed border-slate-300 p-2 "></td>
+                                    <td className="border  border-dashed border-slate-300 p-2 "></td>
+                                    <td className="border  border-dashed border-slate-300 p-2 "></td>
+                                    <td className="border  border-dashed border-slate-300 p-2 "></td>
+                                    <td className="border  border-dashed border-slate-300 p-2 "></td>
+                                    <td className="border  border-dashed border-slate-300 p-2 "></td>
+                                    <td className="border  border-dashed border-slate-300 p-2 "></td>
+                                    <td className="border  border-dashed border-slate-300 p-2 "></td>
+                                    <td className="border  border-dashed border-slate-300 p-2 "></td>
+                                    <td className="border  border-dashed border-slate-300 p-2 "></td>
+                                    <td className="border  border-dashed border-slate-300 p-2 "></td>
+                                    <td className="border  border-dashed border-slate-300 p-2 "></td>
+                                    <td className="border  border-dashed border-slate-300 p-2 "></td>
+                                    <td className="border  border-dashed border-slate-300 p-2 "></td>
+                                    <td className="border  border-dashed border-slate-300 p-2 "></td>
+                                    <td className="border  border-dashed border-slate-300 p-2 "></td>
+                                    <td className="border  border-dashed border-slate-300 p-2 "></td>
+                                    <td className="border  border-dashed border-slate-300 p-2 "></td>
+                                    <td className="border  border-dashed border-slate-300 p-2 "></td>
+                                    <td className="border  border-dashed border-slate-300 p-2 "></td>
+                                    <td className="border  border-dashed border-slate-300 p-2 "></td>
+                                    <td className="border  border-dashed border-slate-300 p-2 "></td>
+                                    <td className="border  border-dashed border-slate-300 p-2 "></td>
+                                    <td className="border  border-dashed border-slate-300 p-2 "></td>
+                                    <td className="border  border-dashed border-slate-300 p-2 "></td>
+                                    <td className="border  border-dashed border-slate-300 p-2 "></td>
+                                    <td className="border  border-dashed border-slate-300 p-2 "></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -263,31 +263,31 @@ const FormHorizontal: NextPage = () => {
                     </div>
                 </div>
 
-                <div className="flex mt-4">
+                <div className="flex   mt-4">
                     <div className="mb-2 mr-4 ">
                         Costo Unit:
                         <p>
-                            <strong>1X1(1)</strong>
+                            <strong>$240.000,00</strong>
                         </p>
                     </div>
-                    <div className="mb-2 mr-4 ">
+                    <div className="mb-2 mr-4 pr-2 ">
                         Costo Bruto:
                         <p>
-                            <strong>1X1(1)</strong>
+                            <strong>$240.000,00</strong>
                         </p>
                     </div>
-                    <div className="ml-2 mr-2">
-                        <table className="table-fixed border-slate-200 border-2 broder-dashed p-4 border-collapse border-spacing-2 ">
+                    <div className="ml-2 mr-2  ">
+                        <table className="table-fixed border-slate-200 border-2 border-dashed text-xs rounded p-4 border-collapse border-spacing-2 ">
                             <thead>
                                 <tr className="p-4">
                                     <th
-                                        className="border border-slate-300 p-2 "
+                                        className="border  border-dashed border-slate-300 p-2 "
                                         colSpan={7}
                                     >
                                         % Descuento
                                     </th>
                                     <th
-                                        className="border border-slate-300 p-2 "
+                                        className="border  border-dashed border-slate-300 p-2 "
                                         colSpan={2}
                                     >
                                         % Rec
@@ -296,78 +296,86 @@ const FormHorizontal: NextPage = () => {
                             </thead>
                             <thead>
                                 <tr className="p-4">
-                                    <th className="border bg-slate-100 border-slate-300 p-2 ">
+                                    <th className="border  border-dashed bg-slate-100 border-slate-300 p-2 ">
                                         (1)
                                     </th>
-                                    <th className="border border-slate-300 p-2 ">
+                                    <th className="border  border-dashed border-slate-300 p-2 ">
                                         (2)
                                     </th>
-                                    <th className="border  bg-slate-100 border-slate-300 p-2 ">
+                                    <th className="border  border-dashed  bg-slate-100 border-slate-300 p-2 ">
                                         (3)
                                     </th>
-                                    <th className="border  bg-slate-100  border-slate-300 p-2 ">
+                                    <th className="border  border-dashed  bg-slate-100  border-slate-300 p-2 ">
                                         (4)
                                     </th>
-                                    <th className="border  border-slate-300 p-2 ">
+                                    <th className="border  border-dashed  border-slate-300 p-2 ">
                                         (5)
                                     </th>
-                                    <th className="border  bg-slate-100 border-slate-300 p-2 ">
+                                    <th className="border  border-dashed  bg-slate-100 border-slate-300 p-2 ">
                                         (6)
                                     </th>
-                                    <th className="border border-slate-300 p-2 ">
+                                    <th className="border  border-dashed border-slate-300 p-2 ">
                                         (7)
                                     </th>
-                                    <th className="border  bg-slate-100 border-slate-300 p-2 ">
+                                    <th className="border  border-dashed  bg-slate-100 border-slate-300 p-2 ">
                                         (1)
                                     </th>
-                                    <th className="border  bg-slate-100 border-slate-300 p-2 ">
+                                    <th className="border  border-dashed  bg-slate-100 border-slate-300 p-2 ">
                                         (2)
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr className="border border-slate-300 p-2 ">
-                                    <td className="border border-slate-300 p-2 "></td>
-                                    <td className="border border-slate-300 p-2 "></td>
-                                    <td className="border border-slate-300 p-2 "></td>
-                                    <td className="border border-slate-300 p-2 "></td>
-                                    <td className="border border-slate-300 p-2 "></td>
-                                    <td className="border border-slate-300 p-2 "></td>
-                                    <td className="border border-slate-300 p-2 "></td>
-                                    <td className="border border-slate-300 p-2 "></td>
-                                    <td className="border border-slate-300 p-2 "></td>
+                                <tr className="border  border-dashed border-slate-300 p-2 ">
+                                    <td className="border   border-dashed border-slate-300 p-2 "></td>
+                                    <td className="border  border-dashed border-slate-300 p-2 ">
+                                        5
+                                    </td>
+                                    <td className="border border-slate-300  border-dashed p-2 "></td>
+                                    <td className="border border-slate-300  border-dashed p-2 ">
+                                        10
+                                    </td>
+                                    <td className="border  border-dashed border-slate-300 p-2 "></td>
+                                    <td className="border  border-dashed border-slate-300 p-2 "></td>
+                                    <td className="border  border-dashed border-slate-300 p-2 "></td>
+                                    <td className="border  border-dashed border-slate-300 p-2 "></td>
+                                    <td className="border  border-dashed border-slate-300 p-2 "></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                     <div className="mb-2 mr-4 ">
-                        Total:
+                        <strong>Total:</strong>
                         <p>
-                            <strong>1X1(1)</strong>
+                            <strong>$40.000,00</strong>
                         </p>
                     </div>
                     <div className="mb-2 mr-4 ">
                         Vencimiento:
                         <p>
-                            <strong>1X1(1)</strong>
+                            <strong>15/08/2022</strong>
                         </p>
                     </div>
                     <div className="mb-2 mr-4 ">
                         Material:
                         <p>
-                            <strong>1X1(1)</strong>
-                        </p>
-                    </div>
-                    <div className="mb-2 mr-4 ">
-                        Observaciones:
-                        <p>
-                            <strong>1X1(1)</strong>
+                            <strong></strong>
                         </p>
                     </div>
                 </div>
+                <div className="mb-2 mr-4 ">
+                    Observaciones:
+                    <p>
+                        <strong>
+                            Conforme al proceso acordado con los proveedores, la
+                            facturación debe realizarse directo a YPF, bajo la
+                            razón social y CUIT de YPF S.A. 30-54668997-9
+                        </strong>
+                    </p>
+                </div>
             </div>
 
-            <div className="border-slate-200 border-t-2 p-4 px-8 flex flex-row  text-center items-center mt-8 fixed w-full bottom-0">
+            <div className="border-slate-200 border-t-2 p-4 px-8   text-center  font-bold mt-8  w-full bottom-0 text-xs">
                 ORIGINAL
             </div>
         </div>

@@ -4,8 +4,6 @@ type Data = {
     html: string
 }
 import Handlebars from 'handlebars'
-import { firebaseManager } from '../../services/firebase.services'
-import { doc, getDoc } from 'firebase/firestore'
 
 export default async function handler(
     req: NextApiRequest,
