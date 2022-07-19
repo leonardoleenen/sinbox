@@ -22,7 +22,7 @@ const FormVertical: NextPage = () => {
                 </div>
                 <div className="basis-1/2 text-right">
                     <h4 className="font-bold text-base">
-                        Santa Fe, "Cuna de la Constitución Nacional"
+                        Santa Fe, Cuna de la Constitución Nacional
                     </h4>
                 </div>
             </div>

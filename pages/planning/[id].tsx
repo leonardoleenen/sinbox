@@ -2,16 +2,16 @@ import React, { useEffect, useState } from 'react'
 import type { NextPage } from 'next'
 import ClearContainer from '../../components/container/clear'
 import { planificacionService } from '../../services/planificacion.service'
-import PivotTableUI from 'react-pivottable/PivotTableUI'
+
 import createPlotlyRenderers from 'react-pivottable/PlotlyRenderers'
 import 'react-pivottable/pivottable.css'
-import TableRenderers from 'react-pivottable/TableRenderers'
+
 import dynamic from 'next/dynamic'
 import _ from 'lodash'
 import { useRouter } from 'next/router'
 import { MultiSelect } from 'react-multi-select-component'
 import { preventivoService } from '../../services/preventivo.service'
-import { object } from '@jsonforms/examples'
+
 import { customAlphabet } from 'nanoid'
 import Icon from '../../components/icon/index'
 import { UIPlanningStore } from '../../store/planning.store'
@@ -43,7 +43,7 @@ const Page: NextPage = () => {
     const [isSaving, setIsSaving] = useState(false)
     const [showPlanificacionActiva, setShowPlanificacionActiva] = useState(true)
     const [preventivos, setPreventivos] = useState<Array<any>>([])
-    const [rowSelected, setRowSelected] = useState(null)
+    const [rowSelected, setRowSelected] = useState<any>(null)
     const [procesandoOrdenes, setProcesandoOrdenes] = useState(false)
     const [beneficiarioSeleccionado, setBeneficiarioSeleccionado] =
         useState(null)
@@ -66,7 +66,7 @@ const Page: NextPage = () => {
             setPreventivos(retrievedPreventivos)
         })()
         planificacionService.getTarriffs().then(result => {
-            setTarriffs(result)
+            setTarriffs(result as any)
             const temp: any = []
             result.forEach((r: any, index: number) => {
                 r.tarifas.forEach((t: any) => {

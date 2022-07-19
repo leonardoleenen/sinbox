@@ -16,8 +16,9 @@ export default async function handler(
         processId as string
     )
     const docSnap = await getDoc(docRef)
+    const _process = docSnap.data() as any
 
-    const evidence = docSnap.data().evidence[0].data
+    const evidence = _process.evidence[0].data
 
     await updateDoc(
         doc(firebaseManager.getDB(), 'preventivos', evidence.preventivoNro),

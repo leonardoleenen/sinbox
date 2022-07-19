@@ -17,13 +17,14 @@ export default async function handler(
     )
     const docSnap = await getDoc(docRef)
 
-    const evidence = docSnap ? docSnap.data().evidence[evidenceIndex].data : []
+    const _process = docSnap.data() as any
+    const evidence = _process.evidence[evidenceIndex].data
 
     const id = nanoid()
     await setDoc(doc(firebaseManager.getDB(), 'tarriff', id), {
         cuit: evidence.datosBasicos.cuit_datosBasicos,
         razonSocial: evidence.datosBasicos.nombre_datosBasicos,
-        tarifas: evidence.programa.map(p => ({
+        tarifas: evidence.programa.map((p: any) => ({
             importe: p.importe,
             programa: p.nombre
         }))
@@ -33,7 +34,7 @@ export default async function handler(
         result: {
             cuit: evidence.datosBasicos.cuit_datosBasicos,
             razonSocial: evidence.datosBasicos.nombre_datosBasicos,
-            tarifas: evidence.programa.map(p => ({
+            tarifas: evidence.programa.map((p: any) => ({
                 importe: p.importe,
                 programa: p.nombre
             }))

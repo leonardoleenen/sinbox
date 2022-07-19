@@ -22,7 +22,7 @@ const FormHorizontal: NextPage = () => {
                 </div>
                 <div className="basis-1/2 text-right">
                     <h4 className="font-bold text-base">
-                        Santa Fe, "Cuna de la Constitución Nacional"
+                        Santa Fe, Cuna de la Constitución Nacional
                     </h4>
                 </div>
             </div>
@@ -83,9 +83,9 @@ const FormHorizontal: NextPage = () => {
                         <strong className="ml-3">
                             LA CALLE Tipo de formato: OTRO 0,00 Exhibición
                             Pantalla LED - PEATONAL SAN MARTÍN ESQUINA URQUIZA
-                            (GALERÍA ALMENDRAL) - 12 salidas de 15" diarios -
-                            204 spot diarios - Total 3060" diarios 40.000,00
-                            hasta 10/11
+                            (GALERÍA ALMENDRAL) - 12 salidas de 15 diarios - 204
+                            spot diarios - Total 3060 diarios 40.000,00 hasta
+                            10/11
                         </strong>
                     </p>
                 </div>

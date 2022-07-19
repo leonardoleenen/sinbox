@@ -41,7 +41,7 @@ const Page: NextPage = () => {
     const { id } = router.query
     useEffect(() => {
         planificacionService.getTarriffs().then(result => {
-            setTarriffs(result)
+            setTarriffs(result as any)
             const temp: any = []
             result.forEach((r: any, index: number) => {
                 r.tarifas.forEach((t: any) => {

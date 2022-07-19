@@ -13,7 +13,7 @@ const Page: NextPage = () => {
     useEffect(() => {
         planificacionService
             .getPanificaciones()
-            .then(result => setPlanificaciones(result))
+            .then(result => setPlanificaciones(result as any))
     }, [])
     return (
         <div>
