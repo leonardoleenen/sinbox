@@ -155,7 +155,10 @@ const Page: NextPage = () => {
                                             <td>
                                                 {wp.evidence[0].data
                                                     .referencia ||
-                                                    wp.evidence[0].data.cuit}
+                                                    wp.evidence[0].data.cuit ||
+                                                    wp.evidence[0].data
+                                                        .datosBasicos
+                                                        ?.nombre_datosBasicos}
                                             </td>
                                             <td>
                                                 {moment(wp.createdAt).format(
