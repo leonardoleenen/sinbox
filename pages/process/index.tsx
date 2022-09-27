@@ -17,6 +17,7 @@ const Page: NextPage = () => {
     const router = useRouter()
     const [processes, setProcesses] = useState<Array<WorkflowSpec>>([])
     const [processesLoaded, setProcessesLoaded] = useState<boolean>(false)
+
     useEffect(() => {
         workflowService
             .getActiveProcess()

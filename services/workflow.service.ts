@@ -6,7 +6,8 @@ import {
     setDoc,
     query,
     where,
-    Query
+    Query,
+    limit
 } from 'firebase/firestore'
 import { firebaseManager } from './firebase.services'
 import { customAlphabet } from 'nanoid'
@@ -211,7 +212,10 @@ class Workflow {
     }
 
     async getActiveProcess() {
-        const q = query(collection(firebaseManager.getDB(), 'process'))
+        const q = query(
+            collection(firebaseManager.getDB(), 'process'),
+            limit(10)
+        )
 
         const processes: Array<WorkflowProcess> = (await getDocs(q)).docs.map(
             d => d.data() as WorkflowProcess
