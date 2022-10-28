@@ -31,14 +31,13 @@ const FormHorizontal: NextPage = () => {
                 <div className="basis-1/2">
                     Campaña:
                     <strong className="ml-2">
-                        Secretaria de Medios y Comunicacion Publica -
                         Coronavirus-Nuevas Medidas de Aislamiento Octubre/2020
                     </strong>
                 </div>
                 <div className="basis-1/2 text-right">
                     <div>
                         Orden de Publicidad N°:
-                        <strong className="ml-2">12/12/2020</strong>
+                        <strong className="ml-2">3232323-AF</strong>
                     </div>
                 </div>
                 <div className="basis-1/2 text-right">
@@ -55,9 +54,7 @@ const FormHorizontal: NextPage = () => {
             </div>
 
             <div className=" p-4  text-xs px-8  mb-4 text-slate-600">
-                <h4 className="font-bold mb-4">
-                    Señor Gerente o Administrador de:
-                </h4>
+                <h4 className="font-bold mb-4">Proveedor: Radio Santa Fe</h4>
                 <p>
                     Sírvase ordenar la publicación del texto cuyo original se
                     acompaña de acuerdo con la tarifa de ese medio, registrada
@@ -67,7 +64,7 @@ const FormHorizontal: NextPage = () => {
             </div>
             <div className="border-slate-200 border-b-2 p-4 px-8 mb-4  flex text-xs  text-slate-600">
                 <div className="basis-1/4  font-bold">
-                    MES DE PUBLICIDAD: 11/2022
+                    MES DE INICIO PUBLICIDAD: 11/2022
                 </div>
                 <div className="basis-1/2 text-center font-bold">
                     <div>
@@ -79,13 +76,11 @@ const FormHorizontal: NextPage = () => {
             <div className=" bg-slate-100  p-4 rounded-lg text-xs mx-8  text-slate-600">
                 <div className=" ">
                     <p className="mb-2">
-                        Soporte:
+                        Descripción de Servicio:
                         <strong className="ml-3">
-                            LA CALLE Tipo de formato: OTRO 0,00 Exhibición
-                            Pantalla LED - PEATONAL SAN MARTÍN ESQUINA URQUIZA
-                            (GALERÍA ALMENDRAL) - 12 salidas de 15 diarios - 204
-                            spot diarios - Total 3060 diarios 40.000,00 hasta
-                            10/11
+                            Tipo de formato: Exhibición Pantalla LED - Esquina
+                            Oroño - 12 salidas de 15seg diarios - 204 spot
+                            diarios - Total 3060 diarios 40.000,00 hasta 10/11
                         </strong>
                     </p>
                 </div>
@@ -207,20 +202,44 @@ const FormHorizontal: NextPage = () => {
                             <tbody>
                                 <tr className="border border-slate-300 p-4 ">
                                     <td className="border  border-dashed border-slate-300 p-2 ">
-                                        1
+                                        23
                                     </td>
-                                    <td className="border  border-dashed border-slate-300 p-2 "></td>
-                                    <td className="border  border-dashed border-slate-300 p-2 "></td>
-                                    <td className="border  border-dashed border-slate-300 p-2 "></td>
-                                    <td className="border  border-dashed border-slate-300 p-2 "></td>
-                                    <td className="border  border-dashed border-slate-300 p-2 "></td>
-                                    <td className="border  border-dashed border-slate-300 p-2 "></td>
-                                    <td className="border  border-dashed border-slate-300 p-2 "></td>
-                                    <td className="border  border-dashed border-slate-300 p-2 "></td>
-                                    <td className="border  border-dashed border-slate-300 p-2 "></td>
-                                    <td className="border  border-dashed border-slate-300 p-2 "></td>
-                                    <td className="border  border-dashed border-slate-300 p-2 "></td>
-                                    <td className="border  border-dashed border-slate-300 p-2 "></td>
+                                    <td className="border  border-dashed border-slate-300 p-2 ">
+                                        3
+                                    </td>
+                                    <td className="border  border-dashed border-slate-300 p-2 ">
+                                        22
+                                    </td>
+                                    <td className="border  border-dashed border-slate-300 p-2 ">
+                                        4
+                                    </td>
+                                    <td className="border  border-dashed border-slate-300 p-2 ">
+                                        67
+                                    </td>
+                                    <td className="border  border-dashed border-slate-300 p-2 ">
+                                        43
+                                    </td>
+                                    <td className="border  border-dashed border-slate-300 p-2 ">
+                                        54
+                                    </td>
+                                    <td className="border  border-dashed border-slate-300 p-2 ">
+                                        66
+                                    </td>
+                                    <td className="border  border-dashed border-slate-300 p-2 ">
+                                        5
+                                    </td>
+                                    <td className="border  border-dashed border-slate-300 p-2 ">
+                                        56
+                                    </td>
+                                    <td className="border  border-dashed border-slate-300 p-2 ">
+                                        67
+                                    </td>
+                                    <td className="border  border-dashed border-slate-300 p-2 ">
+                                        90
+                                    </td>
+                                    <td className="border  border-dashed border-slate-300 p-2 ">
+                                        32
+                                    </td>
                                     <td className="border  border-dashed border-slate-300 p-2 "></td>
                                     <td className="border  border-dashed border-slate-300 p-2 "></td>
                                     <td className="border  border-dashed border-slate-300 p-2 "></td>
@@ -368,8 +387,8 @@ const FormHorizontal: NextPage = () => {
                     <p>
                         <strong>
                             Conforme al proceso acordado con los proveedores, la
-                            facturación debe realizarse directo a YPF, bajo la
-                            razón social y CUIT de YPF S.A. 30-54668997-9
+                            facturación debe realizarse directo a ESPECIFICAR
+                            LOS DATOS DE FACTURACION DEL ORGANISMO
                         </strong>
                     </p>
                 </div>

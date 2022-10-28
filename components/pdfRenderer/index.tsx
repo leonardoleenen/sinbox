@@ -11,7 +11,6 @@ interface Props {
 
 const Component = (props: Props): JSX.Element => {
     const printDocument = async () => {
-        console.log(props.node_reference)
         htmlToImage
             .toPng(props.node_reference, {
                 quality: 1

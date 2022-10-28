@@ -45,6 +45,12 @@ const Page: NextPage = () => {
     const [preventivos, setPreventivos] = useState<Array<any>>([])
     const [rowSelected, setRowSelected] = useState<any>(null)
     const [procesandoOrdenes, setProcesandoOrdenes] = useState(false)
+    const [entidadesPagadoras, setEntidadesPagadoras] = useState<
+        Array<{
+            id: string
+            descripcion: string
+        }>
+    >([])
     const [beneficiarioSeleccionado, setBeneficiarioSeleccionado] =
         useState(null)
     const [planificacion, setPlanificacion] = useState({
@@ -54,7 +60,9 @@ const Page: NextPage = () => {
         anio: '',
         title: 'Sin Nombre',
         payload: [],
-        status: 'draft'
+        status: 'draft',
+        entidadPagadora: null as any,
+        preventivo: ''
     })
 
     const router = useRouter()
@@ -64,6 +72,10 @@ const Page: NextPage = () => {
             const retrievedPreventivos =
                 await preventivoService.getPreventivos()
             setPreventivos(retrievedPreventivos)
+            const _entidadesPagadoras =
+                await planificacionService.getEntidadesPagadoras()
+
+            setEntidadesPagadoras(_entidadesPagadoras)
         })()
         planificacionService.getTarriffs().then(result => {
             setTarriffs(result as any)
@@ -594,11 +606,13 @@ const Page: NextPage = () => {
                         {
                             importeUnitario: values[k].importe,
                             menciones: calcularMenciones(values[k]),
+                            dias: values[k].days,
                             programa: values[k].programa,
                             medio: values[k].razonSocial
                         }
                     ],
-                    nroOrdenPublicidad: planificacion.id
+                    nroOrdenPublicidad: planificacion.id,
+                    entidadPagadora: planificacion.entidadPagadora
                 }
 
                 await workflowService.createProcess(
@@ -672,7 +686,7 @@ const Page: NextPage = () => {
                         Datos de Cabecera
                     </div>
 
-                    <div className="flex">
+                    <div className="flex space-x-4">
                         <select
                             onChange={e => {
                                 preventivos?.filter(p => {
@@ -680,18 +694,32 @@ const Page: NextPage = () => {
                                         setValues(p.payload)
                                     }
                                 })
+                                setPlanificacion({
+                                    ...planificacion,
+                                    preventivo: e.target.value
+                                })
                             }}
-                            className="select w-full max-w-xs select-bordered mr-4"
+                            className="select w-full max-w-xs select-bordered"
                             defaultValue=""
                         >
-                            <option disabled selected>
+                            <option
+                                disabled
+                                selected={!planificacion.preventivo}
+                            >
                                 Preventivo
                             </option>
                             {preventivos
                                 ?.filter(p => p.status === 'approved')
                                 .map(p => {
                                     return (
-                                        <option key={p.id} value={p.id}>
+                                        <option
+                                            selected={
+                                                planificacion.preventivo ===
+                                                p.id
+                                            }
+                                            key={p.id}
+                                            value={p.id}
+                                        >
                                             {`${p.medio} - ${p.mes} ${p.anio}`}
                                         </option>
                                     )
@@ -711,6 +739,36 @@ const Page: NextPage = () => {
                                 className="input w-full w-64 input-bordered"
                             />
                         </div>
+                        <select
+                            onChange={e => {
+                                setPlanificacion({
+                                    ...planificacion,
+                                    entidadPagadora: entidadesPagadoras.find(
+                                        ep => ep.id === e.target.value
+                                    )
+                                })
+                            }}
+                            className="select w-full max-w-xs select-bordered "
+                        >
+                            <option
+                                disabled
+                                selected={!planificacion.entidadPagadora}
+                            >
+                                Seleccione una entidad pagadora
+                            </option>
+                            {entidadesPagadoras.map(e => (
+                                <option
+                                    selected={
+                                        planificacion.entidadPagadora &&
+                                        planificacion.entidadPagadora === e.id
+                                    }
+                                    key={e.id}
+                                    value={e.id}
+                                >
+                                    {e.descripcion}
+                                </option>
+                            ))}
+                        </select>
                     </div>
                 </div>
 

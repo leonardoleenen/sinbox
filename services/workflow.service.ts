@@ -14,6 +14,7 @@ import { customAlphabet } from 'nanoid'
 import { getToken, tokenDecode } from './auth.service'
 import { ruleEngine } from './rule.engine.service'
 import axios from 'axios'
+import _ from 'lodash'
 
 class Workflow {
     private API_URl = process.env.API_URL
@@ -211,6 +212,33 @@ class Workflow {
         } as WorkflowProcess
     }
 
+    async getActiveProcessBySpecId(specId: string) {
+        const q = query(
+            collection(firebaseManager.getDB(), 'process'),
+            where('spec.id', '==', specId),
+            limit(10)
+        )
+
+        const processes: Array<WorkflowProcess> = (await getDocs(q)).docs.map(
+            d => d.data() as WorkflowProcess
+        )
+
+        const filteredProcesses = []
+
+        for (const p in processes) {
+            if (await this.validateProcessForUser(processes[p])) {
+                filteredProcesses.push(processes[p])
+            }
+        }
+
+        const result = []
+        for (const d in filteredProcesses) {
+            result.push(await this.parseProcess(filteredProcesses[d]))
+        }
+
+        return result
+    }
+
     async getActiveProcess() {
         const q = query(
             collection(firebaseManager.getDB(), 'process'),
@@ -235,6 +263,16 @@ class Workflow {
         }
 
         return result
+    }
+
+    async getTypesActiveProcess() {
+        const q = query(collection(firebaseManager.getDB(), 'process'))
+
+        const processes: Array<WorkflowProcess> = (await getDocs(q)).docs.map(
+            d => d.data() as WorkflowProcess
+        )
+
+        return _.uniqBy(processes, 'spec.id')
     }
 
     async getCompletedProcess(): Promise<Array<WorkflowProcess>> {

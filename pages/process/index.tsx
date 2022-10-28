@@ -13,19 +13,25 @@ import { ruleEngine } from '../../services/rule.engine.service'
 import { getToken, tokenDecode } from '../../services/auth.service'
 
 const Page: NextPage = () => {
-    const [list, setList] = useState<Array<WorkflowProcess>>()
+    const [list, setList] = useState<Array<WorkflowProcess>>([])
     const router = useRouter()
     const [processes, setProcesses] = useState<Array<WorkflowSpec>>([])
     const [processesLoaded, setProcessesLoaded] = useState<boolean>(false)
-
+    const [processTypes, setProcessTypes] = useState<Array<WorkflowSpec>>([])
+    const [isLoading, setIsLoading] = useState<boolean>(true)
     useEffect(() => {
-        workflowService
+        workflowService.getTypesActiveProcess().then(res => {
+            setProcessTypes(res.map(r => r.spec))
+            setIsLoading(false)
+        })
+
+        /* workflowService
             .getActiveProcess()
             .then(result => setList(result))
             .catch(err => {
                 router.push('/503')
                 return
-            })
+            }) */
 
         workflowService.getList().then(async wList => {
             const _process = []
@@ -45,6 +51,18 @@ const Page: NextPage = () => {
             setProcesses(_process.filter(p => p.status !== 'DISABLED'))
         })
     }, [])
+
+    const filterByProcessType = async (id: string) => {
+        let _processes = []
+        setIsLoading(true)
+        if (!id) {
+            _processes = await workflowService.getActiveProcess()
+        } else {
+            _processes = await workflowService.getActiveProcessBySpecId(id)
+        }
+        setList(_processes)
+        setIsLoading(false)
+    }
 
     const Empty = () => {
         return (
@@ -130,7 +148,22 @@ const Page: NextPage = () => {
                 }
             >
                 <div>
-                    <div className="o1flow-x-auto">
+                    <select
+                        onChange={e => filterByProcessType(e.target.value)}
+                        className="select w-full max-w-xs mb-8"
+                    >
+                        <option disabled selected>
+                            Filtrar por tipo de proceso
+                        </option>
+                        <option value="">Todos</option>
+                        {processTypes.map((p, index: number) => (
+                            <option key={p.id} value={p.id}>
+                                {p.ref}
+                            </option>
+                        ))}
+                    </select>
+
+                    <div className="overflow-x-auto">
                         <table className="table w-full table-zebra">
                             <thead>
                                 <tr>
@@ -187,18 +220,11 @@ const Page: NextPage = () => {
             </InternalContainer>
         )
     }
+
     return (
         <MainContainer>
             <Header />
-            <Container>
-                {!list ? (
-                    <Loading />
-                ) : _.isEmpty(list) ? (
-                    <Empty />
-                ) : (
-                    <FilledTable />
-                )}
-            </Container>
+            <Container>{isLoading ? <Loading /> : <FilledTable />}</Container>
         </MainContainer>
     )
 }

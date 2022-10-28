@@ -253,7 +253,12 @@ const Page: NextPage = () => {
                     </ul>
                 </div>
                 <div className="w-full">
-                    <div className="w-full">
+                    <div
+                        className="w-full overflow-auto"
+                        style={{
+                            width: '1200px'
+                        }}
+                    >
                         {evidenceIndex !== -1 && (
                             <div>
                                 <PDFRenderer

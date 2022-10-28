@@ -37,7 +37,7 @@ const Page: NextPage = () => {
                                     <tr>
                                         <th>Tipo Medio</th>
                                         <th>Titulo</th>
-                                        <th>Campaña</th>
+                                        <th>Referencia</th>
                                         <th>Estado</th>
                                         <th>Creado</th>
                                         <th>Actualizado</th>

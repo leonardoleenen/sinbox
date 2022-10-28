@@ -48,7 +48,7 @@ const Page: NextPage = () => {
                     temp.push({
                         id: r.razonSocial + r.cuit + t.programa,
                         razonSocial: r.razonSocial,
-                        provincia: r.provincia,
+                        provincia: r.provincia || '',
                         cuit: r.cuit,
                         activo: false,
                         cantidadAsignada: t.cantidad || 0,
@@ -79,6 +79,7 @@ const Page: NextPage = () => {
     const save = () => {
         setIsSaving(true)
         const nanoid = customAlphabet('1234567890abcdef', 6)
+
         preventivoService
             .savePreventivo({
                 ...preventivo,
@@ -132,7 +133,10 @@ const Page: NextPage = () => {
         return (
             <div className="flex py-8 justify-center overflow-x-auto w-full">
                 {Object.keys(r).map(k => (
-                    <div key={k} className="stat shadow mx-4">
+                    <div
+                        key={k}
+                        className="stat shadow-lg rounded-lg bg-green-50 mx-4 w-64"
+                    >
                         <div className="stat-desc">ID / Beneficiario</div>
                         <div className="stat-title">{r[k].razonSocial}</div>
                         <div className="stat-value">
@@ -202,7 +206,7 @@ const Page: NextPage = () => {
                         {values.map((v: any, row: number) => (
                             <tr
                                 className={!v.activo ? 'bg-gray-50' : ''}
-                                key={`${row}`}
+                                key={`${v.id}`}
                             >
                                 <td>{`${v.razonSocial}/1`}</td>
                                 <td>{v.razonSocial}</td>
@@ -272,6 +276,12 @@ const Page: NextPage = () => {
             </div>
         )
     }
+
+    const isProveedorEnPlanificacion = (id: string) => {
+        const _proveedor: any = proveedores.find((p: any) => p.id === id)
+        return _proveedor ? _proveedor.activo : false
+    }
+
     const ListaProveedores = () => {
         const filterByProvincia = (e: any) => {
             if (e.provincia === selectedProvincia || selectedProvincia == '')
@@ -281,12 +291,16 @@ const Page: NextPage = () => {
             if (e.cuit === selectedProveedor || selectedProveedor === '')
                 return e
         }
+
+        // console.log(_.uniqBy(proveedores, 'cuit'))
+
         return (
             <div
                 className="overflow-x-auto overflow-y-auto w-full"
                 style={{ height: '500px' }}
             >
-                <div className="flex w-full justify-between mb-4">
+                <div className="flex w-full  mb-4 space-x-3">
+                    {/* Combo  provincias*/}
                     <select
                         className="select select-bordered w-full max-w-xs"
                         defaultValue={selectedProvincia}
@@ -299,6 +313,8 @@ const Page: NextPage = () => {
                         <option>Santa Fe</option>
                         <option>Buenos Aires</option>
                     </select>
+
+                    {/* Combo proveedores*/}
                     <select
                         className="select select-bordered w-full max-w-xs"
                         defaultValue={selectedProveedor}
@@ -310,7 +326,7 @@ const Page: NextPage = () => {
                             Listar por Proveedores
                         </option>
                         <option value="">Todos</option>
-                        {proveedores.map((proveedor: any) => {
+                        {_.uniqBy(proveedores, 'cuit').map((proveedor: any) => {
                             return (
                                 <option
                                     key={proveedor.cuit}
@@ -321,7 +337,7 @@ const Page: NextPage = () => {
                             )
                         })}
                     </select>
-                    <div className="w-64 flex">
+                    {/* <div className="w-64 flex">
                         <div className="input-group">
                             <input
                                 type="text"
@@ -345,7 +361,7 @@ const Page: NextPage = () => {
                                 </svg>
                             </button>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
                 <table className="table w-full table-compac">
                     <thead>
@@ -365,16 +381,21 @@ const Page: NextPage = () => {
                             .map((v: any, row: number) => (
                                 <tr
                                     className={!v.activo ? 'bg-gray-50' : ''}
-                                    key={`${row}`}
+                                    key={`${v.id}`}
                                 >
                                     <td>
                                         <input
                                             type="checkbox"
                                             className="toggle"
-                                            checked={v.activo}
+                                            checked={isProveedorEnPlanificacion(
+                                                v.id
+                                            )}
                                             onChange={e => {
                                                 const cell: any =
-                                                    proveedores[row]
+                                                    proveedores.find(
+                                                        (p: any) =>
+                                                            p.id === v.id
+                                                    )
                                                 cell.activo = e.target.checked
                                                 const listTemp: any[] =
                                                     Object.assign(
@@ -392,7 +413,7 @@ const Page: NextPage = () => {
                                     </td>
                                     <td>{v.razonSocial}</td>
                                     <td>{v.programa}</td>
-                                    <td>{v.unidad}</td>
+                                    <td>{v.id}</td>
                                     <td>{formatter.format(v.importe)}</td>
                                 </tr>
                             ))}
@@ -401,6 +422,7 @@ const Page: NextPage = () => {
             </div>
         )
     }
+
     return (
         <ClearContainer
             className=""

@@ -68,6 +68,12 @@ class PlanificacionService {
             .then(result => result.data) */
     }
 
+    async getEntidadesPagadoras() {
+        const q = query(
+            collection(firebaseManager.getDB(), 'entidadesPagadoras')
+        )
+        return (await getDocs(q)).docs.map(d => d.data() as any)
+    }
     async savePlanificacion(planificacion: any) {
         setDoc(
             doc(firebaseManager.getDB(), 'planning', planificacion.id),
