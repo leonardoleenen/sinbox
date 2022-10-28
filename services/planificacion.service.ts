@@ -77,7 +77,10 @@ class PlanificacionService {
     async savePlanificacion(planificacion: any) {
         setDoc(
             doc(firebaseManager.getDB(), 'planning', planificacion.id),
-            planificacion
+            {
+                ...planificacion,
+                createdAt: new Date().getTime()
+            }
         )
 
         return planificacion

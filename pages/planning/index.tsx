@@ -15,6 +15,8 @@ const Page: NextPage = () => {
             .getPanificaciones()
             .then(result => setPlanificaciones(result as any))
     }, [])
+
+    console.log(planificaciones)
     return (
         <div>
             <Header />

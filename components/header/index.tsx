@@ -99,85 +99,111 @@ const Component = (props: Props): JSX.Element => {
                             </li>
                             {user.role !== 'PROVIDER' && (
                                 <div>
-                                    <li>
-                                        <div
-                                            className="flex px-3"
-                                            onClick={() =>
-                                                router.push('/preventivo')
-                                            }
-                                        >
-                                            <Icon
-                                                type={'CALCULATOR'}
-                                                stroke={1}
-                                                size={24}
-                                            />
-                                            <span>Preventivos</span>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div
-                                            className="flex px-3"
-                                            onClick={() =>
-                                                router.push('/planning')
-                                            }
-                                        >
-                                            <Icon
-                                                type={'PLANNING'}
-                                                stroke={1}
-                                                size={24}
-                                            />
-                                            <span>Planificación</span>
-                                        </div>
-                                    </li>
+                                    {user.role !== 'COORDINADOR ARTE' && (
+                                        <li>
+                                            <div
+                                                className="flex px-3"
+                                                onClick={() =>
+                                                    router.push('/preventivo')
+                                                }
+                                            >
+                                                <Icon
+                                                    type={'CALCULATOR'}
+                                                    stroke={1}
+                                                    size={24}
+                                                />
+                                                <span>Preventivos</span>
+                                            </div>
+                                        </li>
+                                    )}
+
+                                    {user.role !== 'COORDINADOR ARTE' && (
+                                        <li>
+                                            <div
+                                                className="flex px-3"
+                                                onClick={() =>
+                                                    router.push('/planning')
+                                                }
+                                            >
+                                                <Icon
+                                                    type={'PLANNING'}
+                                                    stroke={1}
+                                                    size={24}
+                                                />
+                                                <span>Planificación</span>
+                                            </div>
+                                        </li>
+                                    )}
 
                                     <div>
                                         <div className="divider">Settings</div>
                                     </div>
+                                    {user.role !== 'COORDINADOR ARTE' && (
+                                        <li>
+                                            <div
+                                                className="flex px-3"
+                                                onClick={() =>
+                                                    router.push('/forms/list')
+                                                }
+                                            >
+                                                <Icon
+                                                    type={'FORMS'}
+                                                    stroke={1}
+                                                    size={24}
+                                                />
+                                                <span>Formularios</span>
+                                            </div>
+                                        </li>
+                                    )}
+                                    {user.role !== 'COORDINADOR ARTE' && (
+                                        <li>
+                                            <div
+                                                className="flex px-3"
+                                                onClick={() =>
+                                                    router.push('/rules/list')
+                                                }
+                                            >
+                                                <Icon
+                                                    type={'RULES'}
+                                                    stroke={1}
+                                                    size={24}
+                                                />
+                                                <span>Reglas</span>
+                                            </div>
+                                        </li>
+                                    )}
+                                    {user.role !== 'COORDINADOR ARTE' && (
+                                        <li>
+                                            <div
+                                                className="flex px-3"
+                                                onClick={() =>
+                                                    router.push(
+                                                        '/settings/workflow/list'
+                                                    )
+                                                }
+                                            >
+                                                <Icon
+                                                    type={'WORKFLOW'}
+                                                    stroke={1}
+                                                    size={24}
+                                                />
+                                                <span>Flujos de trabajo</span>
+                                            </div>
+                                        </li>
+                                    )}
                                     <li>
                                         <div
                                             className="flex px-3"
                                             onClick={() =>
-                                                router.push('/forms/list')
+                                                router.push('/campania')
                                             }
                                         >
                                             <Icon
-                                                type={'FORMS'}
+                                                type={'CAMPAIGN'}
                                                 stroke={1}
                                                 size={24}
                                             />
-                                            <span>Formularios</span>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div
-                                            className="flex px-3"
-                                            onClick={() =>
-                                                router.push('/rules/list')
-                                            }
-                                        >
-                                            <Icon
-                                                type={'RULES'}
-                                                stroke={1}
-                                                size={24}
-                                            />
-                                            <span>Reglas</span>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div
-                                            className="flex px-3"
-                                            onClick={() =>
-                                                router.push(
-                                                    '/settings/workflow/list'
-                                                )
-                                            }
-                                        >
-                                            <Icon
-                                                type={'WORKFLOW'}
-                                                stroke={1}
-                                                size={24}
-                                            />
-                                            <span>Flujos de trabajo</span>
+                                            <span>Campañas</span>
                                         </div>
                                     </li>
                                 </div>

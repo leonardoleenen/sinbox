@@ -16,7 +16,6 @@ const Page: NextPage = () => {
         })
     }, [])
 
-    console.log(list)
     return (
         <div>
             <Header />
@@ -53,7 +52,14 @@ const Page: NextPage = () => {
                                         <td>{item.fechaFin}</td>
                                         <td>{item.suspendida ? 'Si' : 'No'}</td>
                                         <td>
-                                            <button className="btn btn-sm btn-primary">
+                                            <button
+                                                className="btn btn-sm btn-primary"
+                                                onClick={() =>
+                                                    router.push(
+                                                        `/campania/${item.id}`
+                                                    )
+                                                }
+                                            >
                                                 Editar
                                             </button>
                                         </td>

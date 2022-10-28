@@ -16,11 +16,12 @@ import { customAlphabet } from 'nanoid'
 import Icon from '../../components/icon/index'
 import { UIPlanningStore } from '../../store/planning.store'
 import { workflowService } from '../../services/workflow.service'
+import { campaniaService } from '../../services/campania.service'
 
 const Plot = dynamic(() => import('react-plotly.js'), { ssr: false })
 const PlotlyRenderers = createPlotlyRenderers(Plot)
 
-const opcionEsCampanias = [
+/* const opcionEsCampanias = [
     { label: 'Billetera Santa Fe', value: 'billeteraSantaFe' },
     { label: 'COVID19 2022', value: 'covid192022' },
     { label: 'Genero', value: 'Genero', disabled: true },
@@ -31,7 +32,7 @@ const opcionEsCampanias = [
     { label: 'Turismo Otoño', value: 'turismoOtoño' },
     { label: 'Partidas Online', value: 'Partidas Online' },
     { label: 'Obras Caminos Rurales', value: 'Obras Caminos Rurales' }
-]
+] */
 
 const Page: NextPage = () => {
     const [tarriffs, setTarriffs] = useState([])
@@ -41,6 +42,7 @@ const Page: NextPage = () => {
     const [value, setValue] = useState()
     const [grid, setGrid] = useState([])
     const [isSaving, setIsSaving] = useState(false)
+    const [opcionesCampanias, setOpcionesCampanias] = useState([])
     const [showPlanificacionActiva, setShowPlanificacionActiva] = useState(true)
     const [preventivos, setPreventivos] = useState<Array<any>>([])
     const [rowSelected, setRowSelected] = useState<any>(null)
@@ -67,6 +69,14 @@ const Page: NextPage = () => {
 
     const router = useRouter()
     const { id } = router.query
+
+    const parseCampania = (c: any) => {
+        return {
+            label: c.titulo,
+            value: c.id,
+            disabled: c.pausada
+        }
+    }
     useEffect(() => {
         ;(async () => {
             const retrievedPreventivos =
@@ -76,6 +86,9 @@ const Page: NextPage = () => {
                 await planificacionService.getEntidadesPagadoras()
 
             setEntidadesPagadoras(_entidadesPagadoras)
+            const listaCampanias = await campaniaService.getAll()
+
+            setOpcionesCampanias(listaCampanias.map(parseCampania) as [])
         })()
         planificacionService.getTarriffs().then(result => {
             setTarriffs(result as any)
@@ -217,8 +230,10 @@ const Page: NextPage = () => {
             <div>
                 <MultiSelect
                     className="w-full"
-                    options={opcionEsCampanias.filter(
-                        v => campaniasSelecionadas.indexOf(v.value) === -1
+                    options={opcionesCampanias.filter(
+                        (v: any) =>
+                            campaniasSelecionadas.indexOf(v.value as string) ===
+                            -1
                     )}
                     value={campainSelected}
                     onChange={(e: any) =>

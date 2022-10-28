@@ -16,6 +16,7 @@ type User = {
         | 'RECEPTIONIST'
         | 'CERT RECEPTIONIST'
         | 'CERT SUPERVISOR'
+        | 'COORDINADOR ARTE'
     issuedAt: number
     status: 'ENABLED' | 'DISABLED'
     email: string

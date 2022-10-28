@@ -186,6 +186,9 @@ const Home: NextPage = () => {
                                     <option value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdGF0dXMiOiJFTkFCTEVEIiwiZW1haWwiOiJsZW9uYXJkb2xlZW5lbkBnbWFpbC5jb20iLCJpZCI6ImQ1c2FFTXNGWmVhVm50cTZIZmZvZ2FCSktFSjIiLCJyb2xlIjoiQ09PUkRJTkFET1JBIFBVQkxJQ0lEQUQiLCJpZGVudGl0eVByb3ZpZGVyIjoiZ29vZ2xlIiwiaXNzdWVkQXQiOjE2NDU2ODc1MjY1NDksIm5hbWUiOiJWaXJnaW5pYSBwYXoiLCJpYXQiOjE2NDYwNTY2NDd9.9NWkXZMe_LLp0FALxjfYN2G8BZdFXJw98ZT6wsrtU48">
                                         Coordinadora Publicidad
                                     </option>
+                                    <option value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdGF0dXMiOiJFTkFCTEVEIiwiZW1haWwiOiJsZW9uYXJkb2xlZW5lbkBnbWFpbC5jb20iLCJpZCI6ImQ1c2FFTXNGWmVhVm50cTZIZmZvZ2FCSktFSjIiLCJyb2xlIjoiQ09PUkRJTkFET1IgQVJURSIsImlkZW50aXR5UHJvdmlkZXIiOiJnb29nbGUiLCJpc3N1ZWRBdCI6MTY0NTY4NzUyNjU0OSwibmFtZSI6IlZpcmdpbmlhIHBheiIsImlhdCI6MTY0NjA1NjY0N30.7nT2EUAQLcbFYhE3B7gXmR-SSooEE1HvdjeKjVPuFNg">
+                                        Coordinador de Arte
+                                    </option>
 
                                     <option value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdGF0dXMiOiJFTkFCTEVEIiwiZW1haWwiOiJsZW9uYXJkb2xlZW5lbkBnbWFpbC5jb20iLCJpZCI6ImQ1c2FFTXNGWmVhVm50cTZIZmZvZ2FCSktFSjIiLCJyb2xlIjoiRElSRUNUT1IiLCJpZGVudGl0eVByb3ZpZGVyIjoiZ29vZ2xlIiwiaXNzdWVkQXQiOjE2NDU2ODc1MjY1NDksIm5hbWUiOiJHYWJyaWVsYSBGcmFuY28iLCJpYXQiOjE2NDYwNTY2NDd9.UgPj1-M3letdzrDIF844klQ1KfvLFgtaDmywTZ8P1y8">
                                         Directora General

@@ -216,7 +216,7 @@ class Workflow {
         const q = query(
             collection(firebaseManager.getDB(), 'process'),
             where('spec.id', '==', specId),
-            limit(10)
+            limit(100)
         )
 
         const processes: Array<WorkflowProcess> = (await getDocs(q)).docs.map(
