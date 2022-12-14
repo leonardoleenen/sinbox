@@ -1,34 +1,64 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Abstract 
 
-## Getting Started
+Sinbox (Bandeja de entrada simplificada) es una aplicación que permite administrar procesos administrativos (del formato expediente) para usuarios internos y externos. 
 
-First, run the development server:
+# Layout 
+La aplicación cuenta con 3 componentes: La Aplicación web, dos motores de base de datos y un motor para procesar reglas de negocios. La aplación es 100% web y se puede acceder desde cualquier navegador. 
+
+## Aplicación WEB
+Tal como se ha mencionado anteriormente la aplicación es 100% una aplicación WEB la cual corre en un contender o motor Web (apache, nginx, etc). Dicha aplicación está construida con el siguiente stack: 
+
+* NodeJS 17.x
+* NextJS 
+* TypeScript 
+* TailwindCSS 
+
+### Despliege en Staging o Producción modo Cloud 
+Para poder desplegar la aplicación es necesario un contendor web. En el caso de desplegar en la nube recomendamos el uso de Vercel. Para ello se debe configurar una cuenta en vercel (https://vercel.com/) y declarar las variables de ambiente que se mencionan a continuación: 
+
+FIREBASE=<FIREBASE_KEY_BASE64>
 
 ```bash
-npm run dev
-# or
-yarn dev
+CUBEJS_DEV_MODE=false
+CUBEJS_DB_TYPE=postgres
+CUBEJS_DB_HOST=<URL_SERVER_POSTGRES>
+CUBEJS_DB_NAME=sinbox
+CUBEJS_DB_USER=<USER_POSTGRES>
+CUBEJS_DB_PASS=<DB_PASSWORD>
+CUBEJS_API_SECRET=<CUBEJS SECRETE>
+CUBEJS_EXTERNAL_DEFAULT=true
+CUBEJS_SCHEDULED_REFRESH_DEFAULT=true
+CUBEJS_WEB_SOCKETS=true
+PORT=14000
+
+KNEX_DB_NAME=sinbox
+KNEX_DB_USER=<USER_POSTGRES>
+KNEX_DB_PASSWORD=<DB_PASSWORD>
+KNEX_HOST=<URL_SERVER_POSTGRES>
+API_URL=<URL_SERVER_POSTGRES>
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Motores de base de datos 
+La aplicación trabaja con dos tipos de motores de datos: Un motor de Tipo noSQL el cual cubre las necesidades operativas de la solución y un motor de tipo SQL (postgres) el cual está orientado a cubrir las necesidades analíticas de la solución. 
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+### Deploy Cloud
+Para hacer el deploy de la solución ON CLOUD es indispensable contar con servicios Cloud de Base De Datos. Para ello se propone:
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+* Firebase https://firebase.google.com
+* Postgres https://www.elephantsql.com
 
-## Learn More
+## Motor para procesar las reglas de negocio 
+Para dicho fin se ha implementado KIE (https://kogito.kie.org/) como motor DMN1.3. Este motor tiene la capacidad de procesar reglas de inferencia escritas en DNMN
 
-To learn more about Next.js, take a look at the following resources:
+### Deploy onCloud
+Debido a que este servicio no se puede contratar ON CLOUD se ha configurado un servidor para tal fin. Para poder levantar el servicio se debe correr estos comandos en dicho servidor (no se proveen las credenciales en forma pública). 
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Acceder al server mediante un XWindow 
+2. Abrir una terminal 
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```bash 
+cd kie_sandbox_extended_services 
+./kie_sandbox_extended_services 
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```
